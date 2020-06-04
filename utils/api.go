@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/astaxie/beego"
+	"log"
 )
 
 // Api 数据模型
@@ -51,7 +52,7 @@ func GetEmptyStruct() interface{} {
 }
 
 // Api 成功
-func ApiOk(msg string, data interface{}) (cb ApiDataStruct) {
+func ApiJsonOk(msg string, data interface{}) (cb ApiDataStruct) {
 	return ApiDataStruct{
 		Code: 0,
 		Msg:  msg,
@@ -60,7 +61,7 @@ func ApiOk(msg string, data interface{}) (cb ApiDataStruct) {
 }
 
 // Api 失败
-func ApiErr(msg string) (cb ApiDataStruct) {
+func ApiJsonErr(msg string) (cb ApiDataStruct) {
 	return ApiDataStruct{
 		Code: 1,
 		Msg:  msg,
@@ -68,7 +69,7 @@ func ApiErr(msg string) (cb ApiDataStruct) {
 	}
 }
 
-func ApiOpt(code int, msg string, data interface{}) (cb ApiDataStruct) {
+func ApiJsonOpt(code int, msg string, data interface{}) (cb ApiDataStruct) {
 	return ApiDataStruct{
 		Code: code,
 		Msg:  msg,
@@ -76,11 +77,49 @@ func ApiOpt(code int, msg string, data interface{}) (cb ApiDataStruct) {
 	}
 }
 
+// 控制器返回成功
+func ApiOk(c beego.Controller, msg string, data interface{}) {
+	db := ApiDataStruct{
+		Code: 0,
+		Msg:  msg,
+		Data: data,
+	}
+	c.Data["json"] = db
+	c.ServeJSON()
+	c.StopRun()
+}
+
+// 控制器返回失败
+func ApiErr(c beego.Controller, msg string) {
+	db := ApiDataStruct{
+		Code: 1,
+		Msg:  msg,
+		Data: nil,
+	}
+	c.Data["json"] = db
+	c.ServeJSON()
+	c.StopRun()
+}
+
+// 控制器返回其他
+func ApiOpt(c beego.Controller, code int, msg string, data interface{}) {
+	db := ApiDataStruct{
+		Code: code,
+		Msg:  msg,
+		Data: data,
+	}
+	c.Data["json"] = db
+	c.ServeJSON()
+	c.StopRun()
+}
+
 // 获取post 过来的json 实例
-func GetPostJson(c beego.Controller, cb interface{}) (err error) {
+func GetPostJson(c beego.Controller, cb interface{}) {
 	data := c.Ctx.Input.RequestBody
 	if err := JsonDecode(string(data), &cb); err != nil {
-		return err
+		log.Println("canshucuowu")
+		ApiErr(c, "参数解析有误")
+		return
 	}
 	return
 }

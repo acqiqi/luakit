@@ -28,11 +28,11 @@ func InitModel() {
 		// 表前缀
 		Prefix("vhake_").
 		// 是否添加json tag
-		EnableJsonTag(true).
+		EnableJsonTag(false).
 		// 生成struct的包名(默认为空的话, 则取名为: package model)
 		PackageName("model").
 		// tag字段的key值,默认是orm
-		//TagKey("orm").
+		TagKey("orm").
 		// 是否添加结构体方法获取表名
 		//RealNameMethod("TableName").
 		// 生成的结构体保存路径

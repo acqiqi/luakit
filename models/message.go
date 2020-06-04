@@ -11,34 +11,42 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-type UcenterPlatform struct {
-	Id                 int64     `json:"id"`
-	CreatedAt          time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
-	UpdatedAt          time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
-	PlatformName       string    `json:"platform_name"`     // 平台名称
-	PlatformUsername   string    `json:"platform_username"` // 平台账号
-	PlatformPassword   string    `json:"platform_password"` // 平台密码
-	PlatformAppType    int       `json:"platform_app_type"` // 平台类型 0 api 1 web 5 wechat 6 alipay
-	PlatformKey        string    `json:"platform_key"`      // 平台key 完全标识
-	Status             int       `json:"status"`            // 状态 1运行 0暂停维护 -1禁用
-	Flag               int       `json:"flag"`              // 删除标识
-	Ak                 string    `json:"ak"`
-	Sk                 string    `json:"sk"`
-	PayName            string    `json:"pay_name"`
-	PayAk              string    `json:"pay_ak"`
-	PaySk              string    `json:"pay_sk"`
-	PayNotifyUrl       string    `json:"pay_notify_url"` // 支付回调
-	PayNotifyFunc      string    `json:"pay_notify_func"`
-	MessageCallbackUrl string    `json:"message_callback_url"` //消息中心回调地址
+type Message struct {
+	Id              int64     `json:"id"`
+	CreatedAt       time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
+	UpdatedAt       time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
+	Cuid            int64     `json:"cuid"`
+	MessageKey      string    `json:"message_key"`
+	Title           string    `json:"title"`        // 标题
+	Desc            string    `json:"desc"`         // 描述
+	Content         string    `json:"content"`      // 内容
+	MessageType     int       `json:"message_type"` // 消息类型
+	PathType        string    `json:"path_type"`    // 链接类型
+	PathId          string    `json:"path_id"`      // 链接id
+	IsFormId        int       `json:"is_form_id"`   // 是否消息模板
+	SmallTplId      string    `json:"small_tpl_id"` // 消息模板id
+	SmallTplContent string    `json:"small_tpl_content"`
+	SmallTplOpenid  string    `json:"small_tpl_openid"`
+	IsSms           int       `json:"is_sms"` // 是否发送短信
+	Mobile          string    `json:"mobile"`
+	SmsContent      string    `json:"sms_content"` // 短信内容
+	IsEmail         int       `json:"is_email"`    // 是否发邮件
+	Email           string    `json:"email"`
+	EmailTitle      string    `json:"email_title"`
+	EmailContent    string    `json:"email_content"`
+	MsgTplId        int64     `json:"msg_tpl_id"`   // message tpl id
+	PlatformKey     string    `json:"platform_key"` // 平台key
+	PushData        string    `json:"push_data"`
+	Flag            int       `json:"flag"` // -1删除
 }
 
 func init() {
-	orm.RegisterModelWithPrefix(utils.DataBaseObj.String("prefix"), new(UcenterPlatform))
+	orm.RegisterModelWithPrefix(utils.DataBaseObj.String("prefix"), new(Message))
 }
 
 // AddPost insert a new Post into database and returns
 // last inserted Id on success.
-func AddPlatform(m *UcenterPlatform) (id int64, err error) {
+func AddMessage(m *Message) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return
@@ -46,21 +54,22 @@ func AddPlatform(m *UcenterPlatform) (id int64, err error) {
 
 // GetPostById retrieves Post by Id. Returns error if
 // Id doesn't exist
-func GetPlatformById(id int64) (v *UcenterPlatform, err error) {
+func GetMessageById(id int64) (v *Message, err error) {
 	o := orm.NewOrm()
-	v = &UcenterPlatform{}
+	v = &Message{}
 
-	if err = o.QueryTable(new(UcenterPlatform)).Filter("Id", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
+	if err = o.QueryTable(new(Message)).Filter("Id", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
 }
 
-func GetPlatformByKey(platform_key string) (v *UcenterPlatform, err error) {
+// 根据messagekey 获取消息模板
+func GetMessageByMessageKey(message_key string) (v *Message, err error) {
 	o := orm.NewOrm()
-	v = &UcenterPlatform{}
+	v = &Message{}
 
-	if err = o.QueryTable(new(UcenterPlatform)).Filter("PlatformKey", platform_key).Filter("flag", 1).RelatedSel().One(v); err == nil {
+	if err = o.QueryTable(new(Message)).Filter("MessageKey", message_key).Filter("flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
@@ -68,10 +77,10 @@ func GetPlatformByKey(platform_key string) (v *UcenterPlatform, err error) {
 
 // GetAllPost retrieves all Post matches certain condition. Returns empty list if
 // no records exist
-func GetAllPlatform(query map[string]string, fields []string, sortby []string, order []string,
+func GetAllMessage(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(UcenterPlatform))
+	qs := o.QueryTable(new(Message))
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -117,7 +126,7 @@ func GetAllPlatform(query map[string]string, fields []string, sortby []string, o
 		}
 	}
 
-	var l []UcenterPlatform
+	var l []Message
 	qs = qs.OrderBy(sortFields...).RelatedSel()
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
@@ -142,9 +151,9 @@ func GetAllPlatform(query map[string]string, fields []string, sortby []string, o
 
 // UpdatePost updates Post by Id and returns error if
 // the record to be updated doesn't exist
-func UpdatePlatformById(m *UcenterPlatform) (err error) {
+func UpdateMessageById(m *Message) (err error) {
 	o := orm.NewOrm()
-	v := UcenterPlatform{Id: m.Id}
+	v := Message{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -157,13 +166,13 @@ func UpdatePlatformById(m *UcenterPlatform) (err error) {
 
 // DeletePost deletes Post by Id and returns error if
 // the record to be deleted doesn't exist
-func DeletePlatform(id int64) (err error) {
+func DeleteMessage(id int64) (err error) {
 	o := orm.NewOrm()
-	v := UcenterPlatform{Id: id}
+	v := Message{Id: id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
-		if num, err = o.Delete(&UcenterPlatform{Id: id}); err == nil {
+		if num, err = o.Delete(&Message{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
 	}

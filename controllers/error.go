@@ -10,9 +10,7 @@ type ErrorController struct {
 }
 
 func (c *ErrorController) Error404() {
-	c.Data["json"] = utils.ApiOpt(utils.Api404, utils.GetApiMsg(utils.Api404), nil)
-	c.ServeJSON()
-
+	utils.ApiOpt(c.Controller, utils.Api404, utils.GetApiMsg(utils.Api404), nil)
 }
 
 func (c *ErrorController) Error501() {

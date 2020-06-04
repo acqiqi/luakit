@@ -6,36 +6,37 @@ import (
 	"luakit/utils"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego/orm"
 )
 
 type MessageTpl struct {
-	Id              int64
-	CreatedAt       string `orm:"auto_now_add;type(datetime)";json:"created_at"`
-	UpdatedAt       string `orm:"auto_now;type(datetime)";json:"updated_at"`
-	DeletedAt       string `json:"deleted_at"`
-	MessageKey      string `json:"message_key"` // 唯一标识
-	Title           string `json:"title"`
-	Desc            string `json:"desc"`
-	Content         string `json:"content"`
-	AppType         int    `json:"app_type"` // 0用户端 1商家端
-	IsMsg           int    `json:"is_msg"`   // 是否发送消息
-	MessageType     string `json:"message_type"`
-	PathType        string `json:"path_type"`         // 路径类型
-	PathId          string `json:"path_id"`           // 路径id 或者路径
-	IsFormId        int    `json:"is_form_id"`        // 是否使用小程序模板id推送
-	SmallTplId      string `json:"small_tpl_id"`      // 小程序模板id
-	SmallTplContent string `json:"small_tpl_content"` // 小程序模板内容 json
-	IsSms           int    `json:"is_sms"`            // 是否发送短信
-	SmsContent      string `json:"sms_content"`       // 短信内容
-	IsEmail         int    `json:"is_email"`          // 是否发送短信
-	EmailTitle      string `json:"email_title"`
-	EmailContent    string `json:"email_content"`
-	Flag            int    `json:"flag"`     // -1删除
-	IsUcId          int    `json:"is_uc_id"` // 是否使用用户平台
-	PlatformKey     string `json:"platform_key"`
-	SmallTplPath    string `json:"small_tpl_path"`
+	Id              int64     `json:"id"`
+	CreatedAt       time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
+	UpdatedAt       time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
+	DeletedAt       string    `json:"deleted_at"`
+	MessageKey      string    `json:"message_key"` // 唯一标识
+	Title           string    `json:"title" valid:"Required;MaxSize(100)"`
+	Desc            string    `json:"desc"`
+	Content         string    `json:"content"`
+	AppType         int       `json:"app_type"` // 0用户端 1商家端
+	IsMsg           int       `json:"is_msg"`   // 是否发送消息
+	MessageType     string    `json:"message_type"`
+	PathType        string    `json:"path_type"`         // 路径类型
+	PathId          string    `json:"path_id"`           // 路径id 或者路径
+	IsFormId        int       `json:"is_form_id"`        // 是否使用小程序模板id推送
+	SmallTplId      string    `json:"small_tpl_id"`      // 小程序模板id
+	SmallTplContent string    `json:"small_tpl_content"` // 小程序模板内容 json
+	IsSms           int       `json:"is_sms"`            // 是否发送短信
+	SmsContent      string    `json:"sms_content"`       // 短信内容
+	IsEmail         int       `json:"is_email"`          // 是否发送短信
+	EmailTitle      string    `json:"email_title"`
+	EmailContent    string    `json:"email_content"`
+	Flag            int       `json:"flag"`     // -1删除
+	IsUcId          int       `json:"is_uc_id"` // 是否使用用户平台
+	PlatformKey     string    `json:"platform_key"`
+	SmallTplPath    string    `json:"small_tpl_path"`
 }
 
 func init() {
@@ -57,6 +58,17 @@ func GetMessageTplById(id int64) (v *MessageTpl, err error) {
 	v = &MessageTpl{}
 
 	if err = o.QueryTable(new(MessageTpl)).Filter("Id", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+// 根据messagekey 获取消息模板
+func GetMessageTplByMessageKey(message_key string) (v *MessageTpl, err error) {
+	o := orm.NewOrm()
+	v = &MessageTpl{}
+
+	if err = o.QueryTable(new(MessageTpl)).Filter("MessageKey", message_key).Filter("flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
