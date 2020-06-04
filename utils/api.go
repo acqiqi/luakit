@@ -1,5 +1,9 @@
 package utils
 
+import (
+	"github.com/astaxie/beego"
+)
+
 // Api 数据模型
 type ApiDataStruct struct {
 	Code int         `json:"code"`
@@ -17,6 +21,7 @@ const (
 	ApiNotReg           = 41004 //ucenter未注册
 	ApiThirdNotReg      = 41005 //三方信息不存在
 	ApiPlatformErrAppid = 42001 //平台appid不正确
+	ApiPlatformErr      = 42002 //平台错误
 	ApiJsonDecodeErr    = 49001 //Json解析错误
 )
 
@@ -30,6 +35,7 @@ var statusText = map[int]string{
 	ApiNotReg:           "UserCenter未注册",
 	ApiThirdNotReg:      "三方信息不存在",
 	ApiPlatformErrAppid: "平台appid不正确",
+	ApiPlatformErr:      "平台有误",
 	ApiJsonDecodeErr:    "Json解析错误",
 }
 
@@ -68,4 +74,13 @@ func ApiOpt(code int, msg string, data interface{}) (cb ApiDataStruct) {
 		Msg:  msg,
 		Data: data,
 	}
+}
+
+// 获取post 过来的json 实例
+func GetPostJson(c beego.Controller, cb interface{}) (err error) {
+	data := c.Ctx.Input.RequestBody
+	if err := JsonDecode(string(data), &cb); err != nil {
+		return err
+	}
+	return
 }
