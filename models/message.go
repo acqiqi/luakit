@@ -15,6 +15,7 @@ type Message struct {
 	Id              int64     `json:"id"`
 	CreatedAt       time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
 	UpdatedAt       time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
+	Flag            int       `orm:"default(1)" json:"flag"` //-1删除
 	Cuid            int64     `json:"cuid"`
 	MessageKey      string    `json:"message_key"`
 	Title           string    `json:"title"`        // 标题
@@ -37,7 +38,6 @@ type Message struct {
 	MsgTplId        int64     `json:"msg_tpl_id"`   // message tpl id
 	PlatformKey     string    `json:"platform_key"` // 平台key
 	PushData        string    `json:"push_data"`
-	Flag            int       `json:"flag"` // -1删除
 }
 
 func init() {

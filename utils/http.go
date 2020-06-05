@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 // Http Get Json 请求
-func HttpGetJson(url string, cb *interface{}) error {
+func HttpGetJson(url string, cb interface{}) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
@@ -48,7 +49,7 @@ func HttpPostJson(url string, body interface{}, cb interface{}) error {
 	if resp.StatusCode != 200 {
 		return errors.New(string(b))
 	}
-
+	log.Println(string(b))
 	JsonDecode(string(b), &cb)
 	return nil
 }

@@ -13,7 +13,7 @@ func init() {
 	log.Println("Init Task")
 	messageQueueTk := toolbox.NewTask("messageQueueTk", "0/1 * * * * *", messagePushQueue)
 	toolbox.AddTask("messagequeuetk", messageQueueTk)
-	//toolbox.StartTask()
+	toolbox.StartTask()
 }
 
 func onTask() error {
@@ -25,21 +25,26 @@ func messagePushQueue() error {
 
 	queue, err := models.MessageQueuePop()
 	if err != nil {
-		log.Println(err.Error())
+		//log.Println(err.Error())
 		return err
 	}
 
 	user, err := models.GetUcenterUsersById(queue.Cuid)
 	if err != nil {
-		log.Println(err)
+		//log.Println(err)
 		return errors.New("用户不存在")
 	}
 
 	platform, err := models.GetPlatformByKey(queue.PlatformKey)
 	if err != nil {
-		log.Println(err)
+		//log.Println("平台有误")
+		//log.Println(err)
 		return errors.New("平台有误")
 	}
+
+	queue.IsSend = 1
+	queue.IsPop = 1
+	models.UpdateMessageQueueById(queue)
 
 	//处理消息
 	if queue.IsSms == 1 {
@@ -49,6 +54,21 @@ func messagePushQueue() error {
 
 	if queue.IsFormId == 1 {
 		// 处理消息模板
+		uo, err := models.GetUcenterOpenid(queue.PlatformKey, queue.Cuid)
+		if err == nil {
+			//处理微信消息
+
+			wechat := new(utils.WechatUtils)
+			wechat.Init(platform.Ak, platform.Sk)
+			wechat.GetAccessToken()
+			wechat.SendMessageData.Page = ""
+			wechat.SendMessageData.TemplateId = queue.SmallTplId
+			wechat.SendMessageData.Touser = uo.Openid
+			wechat.SendMessageData.Data = make(map[string]interface{})
+			utils.JsonDecode(queue.SmallTplContent, &wechat.SendMessageData.Data)
+			log.Println(wechat.SendMessageData.Data)
+			wechat.SendMessage()
+		}
 	}
 
 	log.Println("处理回调")
@@ -82,8 +102,8 @@ func messagePushQueue() error {
 	messge.MsgTplId = queue.MsgTplId
 	messge.PlatformKey = platform.PlatformKey
 	messge.PushData = queue.PushData
+	messge.Flag = 1
 	models.AddMessage(&messge)
-
 	return nil
 
 	//fmt.Print("hello world")

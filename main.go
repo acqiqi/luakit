@@ -11,10 +11,5 @@ import (
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置全局log 打印带行数
 	//utils.InitModel()
-
-	//o ,err:= models.GetMessageTplById(34)
-	//if err != nil {
-	//	 log.Println(err.Error())
-	//}
 	beego.Run()
 }

@@ -70,7 +70,7 @@ func (this *ApiController) PublishMessageQueue() {
 	queueModel.EmailTitle = mt.EmailTitle
 	queueModel.EmailContent = mt.EmailContent
 	queueModel.SmallTplPath = mt.SmallTplPath
-
+	queueModel.Flag = 1
 	for k, v := range bindData.PushData {
 		//fmt.Println(k, ":", v)
 
