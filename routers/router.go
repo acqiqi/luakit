@@ -5,6 +5,8 @@ import (
 	"luakit/controllers"
 	"luakit/controllers/sm"
 	"luakit/controllers/v1/message"
+	"luakit/controllers/v1/platform"
+	"luakit/controllers/v1/ucenter"
 )
 
 func init() {
@@ -20,6 +22,19 @@ func init() {
 		beego.NSNamespace("/message",
 			beego.NSAutoRouter(
 				&message.ApiController{},
+			),
+		),
+		beego.NSNamespace("/ucenter",
+			beego.NSAutoRouter(
+				&ucenter.PublicController{},
+			),
+			beego.NSAutoRouter(
+				&ucenter.ApiController{},
+			),
+		),
+		beego.NSNamespace("/platform",
+			beego.NSAutoRouter(
+				&platform.PublicController{},
 			),
 		),
 	)

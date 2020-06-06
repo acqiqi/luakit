@@ -51,6 +51,13 @@ func GetEmptyStruct() interface{} {
 	}{}
 }
 
+// 带分页数据结构体
+type PageDataStruct struct {
+	Page  int64       `json:"page"`
+	Limit int64       `json:"limit"`
+	Lists interface{} `json:"lists"`
+}
+
 // Api 成功
 func ApiJsonOk(msg string, data interface{}) (cb ApiDataStruct) {
 	return ApiDataStruct{

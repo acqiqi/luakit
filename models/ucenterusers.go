@@ -54,6 +54,36 @@ type UcenterUsers struct {
 	PayPassword    string  `json:"pay_password"`     // 支付密码
 }
 
+// 用于给Api展示的结构体
+type UcenterUsersMini struct {
+	Id        int64     `json:"id"`
+	CreatedAt time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
+	UpdatedAt time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
+	Username  string    `json:"username"` // 账号
+	Mobile    string    `json:"mobile"`   // 手机号
+	Nickname  string    `json:"nickname"` // 昵称
+	Email     string    `json:"email"`    // 邮箱
+	Avatar    string    `json:"avatar"`   // 头像
+	Gender    string    `json:"gender"`   // 性别
+	Status    int       `json:"status"`   // 状态 0停用 1启用
+
+	Score         int     `json:"score"`           // 积分
+	Money         float64 `json:"money"`           // 余额
+	OkMoney       float64 `json:"ok_money"`        // 可提现余额
+	NoMoney       float64 `json:"no_money"`        // 不可提现金额
+	LastLoginIp   string  `json:"last_login_ip"`   // 最后一次登录ip
+	LastLoginTime int     `json:"last_login_time"` // 最后一次登录时间戳
+	LastLongitude float64 `json:"last_longitude"`  // 最后一次经度
+	LastLatitude  float64 `json:"last_latitude"`   // 最后一次维度
+
+	IsAuth    int    `json:"is_auth"`    // 是否实名认证 0 否 1审核 2通过 -1拒绝
+	IdcardTop string `json:"idcard_top"` // 身份证正面
+	IdcardBom string `json:"idcard_bom"` // 身份证背面
+	IdcardId  string `json:"idcard_id"`  // 身份证号
+	ShareOne  int    `json:"share_one"`  // 一级分享
+	ShareTwo  int    `json:"share_two"`  // 二级分享
+}
+
 func init() {
 	orm.RegisterModelWithPrefix(utils.DataBaseObj.String("prefix"), new(UcenterUsers))
 }
@@ -78,11 +108,11 @@ func GetUcenterUsersById(id int64) (v *UcenterUsers, err error) {
 	return nil, err
 }
 
-func GetUcenterUsersByKey(platform_key string) (v *UcenterUsers, err error) {
+func GetUcenterUsersByMobile(mobile string) (v *UcenterUsers, err error) {
 	o := orm.NewOrm()
 	v = &UcenterUsers{}
 
-	if err = o.QueryTable(new(UcenterUsers)).Filter("PlatformKey", platform_key).Filter("flag", 1).RelatedSel().One(v); err == nil {
+	if err = o.QueryTable(new(UcenterUsers)).Filter("Mobile", mobile).Filter("flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
@@ -92,6 +122,7 @@ func GetUcenterUsersByKey(platform_key string) (v *UcenterUsers, err error) {
 // no records exist
 func GetAllUcenterUsers(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
+	query["flag"] = "1"
 	o := orm.NewOrm()
 	qs := o.QueryTable(new(UcenterUsers))
 	// query k=v

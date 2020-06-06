@@ -31,6 +31,7 @@ type UcenterPlatform struct {
 	PayNotifyUrl       string `json:"pay_notify_url"` // 支付回调
 	PayNotifyFunc      string `json:"pay_notify_func"`
 	MessageCallbackUrl string `json:"message_callback_url"` //消息中心回调地址
+	PlatformSecret     string `json:"platform_secret"`
 }
 
 func init() {
