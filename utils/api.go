@@ -51,6 +51,13 @@ func GetEmptyStruct() interface{} {
 	}{}
 }
 
+// 返回数据
+type CallBackStrcut struct {
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
+}
+
 // 带分页数据结构体
 type PageDataStruct struct {
 	Page  int64       `json:"page"`
