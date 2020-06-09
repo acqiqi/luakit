@@ -13,10 +13,11 @@ import (
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置全局log 打印带行数
 	//utils.InitModel()
+	log.Println("Init Project")
 	utils.RedisLPush("vhake", "heihei")
 	str, _ := utils.RedisLPop("vhake")
 	log.Println(str)
-	setup()
+	//setup()
 }
 
 func setup() {

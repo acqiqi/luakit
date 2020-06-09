@@ -5,6 +5,7 @@ import (
 	"log"
 	"luakit/controllers/v1/apibase"
 	"luakit/models"
+	"luakit/utils"
 )
 
 type SeckillController struct {
@@ -18,7 +19,16 @@ func (this *SeckillController) Prepare() {
 	this.Platform = *platform
 }
 
+// 执行秒杀服务插入队列
+func (this *SeckillController) PushKillQeue() {
+	bindData := struct {
+		SeckillId int64 `json:"seckill_id"`
+	}{}
+	utils.GetPostJson(this.Controller, &bindData)
+
+}
+
 // 秒杀下单
-func (this *SeckillController) kill() {
+func (this *SeckillController) Kill() {
 
 }
