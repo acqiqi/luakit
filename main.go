@@ -17,7 +17,7 @@ func main() {
 	utils.RedisLPush("vhake", "heihei")
 	str, _ := utils.RedisLPop("vhake")
 	log.Println(str)
-	//setup()
+	setup()
 }
 
 func setup() {
