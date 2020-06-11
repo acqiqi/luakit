@@ -6,3 +6,6 @@
     4.go run main.go
     
     git push -u origin master
+    
+    
+    scp -r main root@192.168.8.1:/tmp
