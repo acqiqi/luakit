@@ -18,21 +18,73 @@ import (
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置全局log 打印带行数
-	utils.InitModel()
+	//utils.InitModel()
 	log.Println("Init Project")
 
+	//str := "赵钱孙李"
+	//str2 := strings.Replace(str, "赵", "钱", -1)
+	//log.Println(str2)
+	//daoruAccount() //导入收支
 	//daoruClientUsers() //导入客户端用户
 
-	//setup()
+	setup()
 }
 
 func daoruAccount() {
-	//b, err := ioutil.ReadFile("daoru/files/vhake_accounts.json") // just pass the file name
-	//if err != nil {
-	//	fmt.Print(err)
-	//}
-	//str := string(b) // convert content to a 'string'
-	//
+	b, err := ioutil.ReadFile("daoru/files/vhake_accounts.json") // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	str := string(b) // convert content to a 'string'
+	var list []daoru.Accounts
+	utils.JsonDecode(str, &list)
+	//log.Println(list)
+
+	for i, v := range list {
+		user_type, _ := strconv.Atoi(v.UserType)
+
+		if user_type == 0 {
+			c_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.CreatedAt, time.Local) //使用parseInLocation将字符串格式化返回本地时区时间
+			u_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.UpdatedAt, time.Local)
+			ctype, _ := strconv.Atoi(v.Type)
+			cuid, _ := strconv.Atoi(v.UID)
+
+			lv, _ := strconv.Atoi(v.Lv)
+			price, _ := strconv.ParseFloat(v.Price, 32)
+			share_uid, _ := strconv.Atoi(v.ShareUID)
+
+			if ctype == 0 || ctype == 1 || ctype == 2 {
+				log.Println("ojbk")
+
+				model := models.UcenterAccounts{
+					Id:          0,
+					CreatedAt:   c_at,
+					UpdatedAt:   u_at,
+					Flag:        1,
+					Cuid:        cuid,
+					PlatformKey: "DDSM_CLIENT",
+					Type:        ctype,
+					Level:       lv,
+					Content:     v.Content,
+					Describe:    v.Desc,
+					ProjectId:   0,
+					OrderId:     0,
+					OrderNo:     0,
+					Price:       price,
+					IsDz:        1,
+					SourceCuid:  share_uid,
+					ProjectName: "",
+					Title:       v.Desc,
+					AccountNo:   "DDSMOLD" + v.ID,
+					IsOld:       1,
+				}
+				models.AddUcenterAccounts(&model)
+				log.Println(i)
+			}
+
+		}
+
+	}
 
 }
 

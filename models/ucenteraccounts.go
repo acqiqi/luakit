@@ -31,6 +31,7 @@ type UcenterAccounts struct {
 	ProjectName string  `orm:"project_name"` // 项目名称
 	Title       string  `orm:"title"`        // 标题
 	AccountNo   string  `orm:"account_no"`   // 订单号
+	IsOld       int     `json:"is_old"`      //是否老订单
 }
 
 func init() {
