@@ -26,8 +26,58 @@ func main() {
 	//log.Println(str2)
 	//daoruAccount() //导入收支
 	//daoruClientUsers() //导入客户端用户
-
+	//daoruComment() //导入评论
 	setup()
+}
+
+func daoruComment() {
+	b, err := ioutil.ReadFile("daoru/files/vhake_comment.json") // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	str := string(b) // convert content to a 'string'
+	var list []daoru.Comment
+	utils.JsonDecode(str, &list)
+
+	for i, v := range list {
+		c_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.CreatedAt, time.Local) //使用parseInLocation将字符串格式化返回本地时区时间
+		u_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.UpdatedAt, time.Local)
+
+		quck_id, _ := strconv.Atoi(v.QuckID)
+
+		cuid, _ := strconv.Atoi(v.UID)
+
+		if quck_id == 2 && v.Content != "" {
+			usr, err := models.GetUcenterUsersById(int64(cuid))
+			if err == nil {
+				model := models.SmUsersComment{
+					Id:             0,
+					CreatedAt:      c_at,
+					UpdatedAt:      u_at,
+					Flag:           1,
+					ServiceId:      1,
+					ApptId:         0,
+					ServiceSkuId:   0,
+					OrderId:        0,
+					UsersServiceId: 0,
+					ServiceAreaId:  0,
+					Cuid:           cuid,
+					Type:           0,
+					Content:        v.Content,
+					Pics:           v.Pics,
+					VideoUrl:       "",
+					Avatar:         usr.Avatar,
+					Nickname:       usr.Nickname,
+					Star:           5,
+					Tags:           "",
+					IsOld:          1,
+				}
+				models.AddSmUsersComment(&model)
+				log.Println(i)
+			}
+		}
+
+	}
 }
 
 func daoruAccount() {
@@ -46,12 +96,12 @@ func daoruAccount() {
 		if user_type == 0 {
 			c_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.CreatedAt, time.Local) //使用parseInLocation将字符串格式化返回本地时区时间
 			u_at, _ := time.ParseInLocation("2006/1/2 15:04:05", v.UpdatedAt, time.Local)
-			ctype, _ := strconv.Atoi(v.Type)
+			ctype, _ := strconv.Atoi(v.ProjectType)
 			cuid, _ := strconv.Atoi(v.UID)
 
 			lv, _ := strconv.Atoi(v.Lv)
 			price, _ := strconv.ParseFloat(v.Price, 32)
-			share_uid, _ := strconv.Atoi(v.ShareUID)
+			share_uid, _ := strconv.Atoi(v.ClientUID)
 
 			if ctype == 0 || ctype == 1 || ctype == 2 {
 				log.Println("ojbk")
