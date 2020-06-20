@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"luakit/controllers"
 	"luakit/controllers/sm"
+	"luakit/controllers/v1/marketing"
 	"luakit/controllers/v1/message"
 	"luakit/controllers/v1/platform"
 	"luakit/controllers/v1/ucenter"
@@ -14,6 +15,14 @@ func init() {
 	beego.ErrorController(&controllers.ErrorController{})
 
 	ns := beego.NewNamespace("/v1",
+		beego.NSNamespace("/marketing",
+			beego.NSAutoRouter(
+				&marketing.SeckillController{},
+			),
+			beego.NSAutoRouter(
+				&marketing.CouponController{},
+			),
+		),
 		beego.NSNamespace("/sm",
 			beego.NSAutoRouter(
 				&sm.ApiController{},
@@ -30,6 +39,9 @@ func init() {
 			),
 			beego.NSAutoRouter(
 				&ucenter.ApiController{},
+			),
+			beego.NSAutoRouter(
+				&ucenter.OrdersController{},
 			),
 		),
 		beego.NSNamespace("/platform",

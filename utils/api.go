@@ -13,9 +13,12 @@ type ApiDataStruct struct {
 }
 
 const (
-	ApiSuccess          = 0
-	ApiError            = 1
-	Api404              = 404
+	ApiSuccess = 0
+	ApiError   = 1
+	Api404     = 404
+	Api501     = 501
+	Api502     = 502
+
 	ApiNotAuth          = 45000 //未登录
 	ApiNotBindMobile    = 41001
 	ApiNotBindUserInfo  = 41002 //三方用户未注册
@@ -30,6 +33,8 @@ var statusText = map[int]string{
 	ApiSuccess:          "操作成功",
 	ApiError:            "操作失败",
 	Api404:              "页面丢了",
+	Api501:              "页面丢了",
+	Api502:              "页面丢了",
 	ApiNotAuth:          "未登录或登录超时",
 	ApiNotBindMobile:    "没有绑定手机号",
 	ApiNotBindUserInfo:  "没有绑定用户信息",

@@ -11,14 +11,15 @@ type ErrorController struct {
 
 func (c *ErrorController) Error404() {
 	utils.ApiOpt(c.Controller, utils.Api404, utils.GetApiMsg(utils.Api404), nil)
+	return
 }
 
 func (c *ErrorController) Error501() {
-	c.Data["content"] = "server error"
-	c.TplName = "501.tpl"
+	utils.ApiOpt(c.Controller, utils.Api501, utils.GetApiMsg(utils.Api501), nil)
+	return
 }
 
 func (c *ErrorController) ErrorDb() {
-	c.Data["content"] = "database is now down"
-	c.TplName = "dberror.tpl"
+	utils.ApiOpt(c.Controller, utils.Api501, utils.GetApiMsg(utils.Api501), nil)
+	return
 }
