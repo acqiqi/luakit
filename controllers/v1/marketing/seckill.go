@@ -40,7 +40,7 @@ func (this *SeckillController) Kill() {
 	seckill, err := models.GetMarketingSeckillPacketOrBegin()
 	if err != nil {
 		killlock.Unlock()
-		utils.ApiErr(this.Controller, "秒杀不存在")
+		utils.ApiErr(this.Controller, "本次红包已经抢完")
 	}
 
 	// 检测是否抢过
@@ -93,7 +93,7 @@ func (this *SeckillController) Kill() {
 	link.Flag = list[i].(models.MarketingSeckillPacketLink).Flag
 	link.SeckillPacketId = list[i].(models.MarketingSeckillPacketLink).SeckillPacketId
 	link.Price = list[i].(models.MarketingSeckillPacketLink).Price
-	link.Num = list[i].(models.MarketingSeckillPacketLink).Num - 1
+	link.Num = list[i].(models.MarketingSeckillPacketLink).Num
 	link.UseNum = list[i].(models.MarketingSeckillPacketLink).UseNum + 1
 	log.Println("3333")
 

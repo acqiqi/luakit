@@ -136,7 +136,7 @@ func ApiOpt(c beego.Controller, code int, msg string, data interface{}) {
 func GetPostJson(c beego.Controller, cb interface{}) {
 	data := c.Ctx.Input.RequestBody
 	if err := JsonDecode(string(data), &cb); err != nil {
-		log.Println("canshucuowu")
+		log.Println("参数解析有误", err.Error())
 		ApiErr(c, "参数解析有误")
 		return
 	}

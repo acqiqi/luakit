@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	connect_str := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8",
+	connect_str := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&loc=Local",
 		utils.DataBaseObj.String("username"),
 		utils.DataBaseObj.String("password"),
 		utils.DataBaseObj.String("host"),
