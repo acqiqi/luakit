@@ -108,13 +108,22 @@ func (this *OrdersController) CreateOrders() {
 	if bindData.Price <= 0 {
 		utils.ApiErr(this.Controller, "请设置价格")
 	}
+
+	//查询优惠券
+	if bindData.CouponId > 0 {
+		_, err := models.GetMarketingCouponById(int64(bindData.CouponId))
+		if err != nil {
+			utils.ApiErr(this.Controller, "优惠券不存在")
+		}
+	}
+
 	model := models.UcenterOrders{
 		Flag:        1,
 		OrderNo:     uuid.NewV4().String(), // 订单号
 		PlatformKey: this.Platform.PlatformKey,
 		Cuid:        int(user.Id),
 		CouponKey:   "",
-		CouponId:    0,
+		CouponId:    bindData.CouponId,
 		CouponPrice: 0,
 		CostPrice:   bindData.CostPrice,
 		UnitPrice:   bindData.UnitPrice,
