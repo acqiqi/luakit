@@ -175,6 +175,15 @@ func (this *OrdersController) NotifyOnlinePay() {
 	if err := models.UpdateUcenterOrdersById(order); err != nil {
 		utils.ApiErr(this.Controller, "操作失败"+err.Error())
 	}
+
+	mp := models.UcenterPriceLog{
+		Flag:        1,
+		Cuid:        order.Cuid,
+		Price:       order.Price,
+		PlatformKey: order.PlatformKey,
+	}
+	models.AddUcenterPriceLog(&mp)
+
 	utils.ApiOk(this.Controller, "操作成功", order)
 }
 
