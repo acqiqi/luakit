@@ -1,15 +1,94 @@
-package main
+package daoru
 
 import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"luakit/daoru"
 	"luakit/models"
 	"luakit/utils"
 	"strconv"
 	"time"
 )
+
+func DaoruManagerUsers() {
+	b, err := ioutil.ReadFile("daoru/files/vhake_manager_users.json") // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	str := string(b) // convert content to a 'string'
+	var list []ManagerUsers
+	utils.JsonDecode(str, &list)
+	log.Println(list)
+
+	for i, v := range list {
+		if v.Mobile == "" {
+			//直接跳出当前循环
+			continue
+		}
+		m_id, _ := strconv.Atoi(v.ID)
+		m_score, _ := strconv.Atoi(v.Score)
+		money, _ := strconv.ParseFloat(v.Money, 32)
+
+		lv1, _ := strconv.Atoi(v.ShareLv1)
+		lv2, _ := strconv.Atoi(v.ShareLv2)
+
+		u, err := models.GetUcenterUsersByMobile(v.Mobile)
+		if err == nil {
+			log.Println("有数据")
+			log.Println("对比1")
+			log.Println(u.Mobile)
+			log.Println("对比2")
+			log.Println(v.Mobile)
+			return
+		} else {
+			log.Println("无数据")
+			model := models.UcenterUsers{
+				Id:             int64(m_id),
+				CreatedAt:      time.Time{},
+				UpdatedAt:      time.Time{},
+				Flag:           1,
+				Username:       "",
+				Password:       "",
+				Mobile:         v.Mobile,
+				Nickname:       v.Nickname,
+				Email:          v.Email,
+				Avatar:         v.Avatar,
+				Gender:         v.Gender,
+				Status:         1,
+				RoleType:       0,
+				Score:          m_score,
+				Money:          money,
+				OkMoney:        money,
+				NoMoney:        0,
+				LastLoginIp:    "",
+				LastLoginTime:  0,
+				LastLongitude:  0,
+				LastLatitude:   0,
+				IsAuth:         0,
+				IdcardTop:      "",
+				IdcardBom:      "",
+				IdcardId:       "",
+				ShareOne:       lv1,
+				ShareTwo:       lv2,
+				StOne:          0,
+				StTwo:          0,
+				UserKey:        "",
+				WechatUnionid:  "",
+				RegType:        0,
+				RegSource:      "",
+				RegPlatformKey: "",
+				BindUserinfo:   0,
+				IsVip:          0,
+				VipEndTime:     "",
+				IsPayPassword:  0,
+				PayPassword:    "",
+			}
+			//models.AddUcenterUsers(&model)
+			log.Println(model)
+		}
+		log.Println(i)
+	}
+}
 
 func daoruComment() {
 	b, err := ioutil.ReadFile("daoru/files/vhake_comment.json") // just pass the file name
@@ -17,7 +96,7 @@ func daoruComment() {
 		fmt.Print(err)
 	}
 	str := string(b) // convert content to a 'string'
-	var list []daoru.Comment
+	var list []Comment
 	utils.JsonDecode(str, &list)
 
 	for i, v := range list {
@@ -67,7 +146,7 @@ func daoruAccount() {
 		fmt.Print(err)
 	}
 	str := string(b) // convert content to a 'string'
-	var list []daoru.Accounts
+	var list []Accounts
 	utils.JsonDecode(str, &list)
 	//log.Println(list)
 
@@ -125,7 +204,7 @@ func daoruClientUsers() {
 		fmt.Print(err)
 	}
 	str := string(b) // convert content to a 'string'
-	var list []daoru.ClientUsers
+	var list []ClientUsers
 	utils.JsonDecode(str, &list)
 	for i, v := range list {
 		m_id, _ := strconv.Atoi(v.ID)
