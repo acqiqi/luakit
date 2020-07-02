@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/orm"
 	"luakit/utils"
 	"time"
@@ -49,5 +50,27 @@ func init() {
 func AddSmUsers(m *SmUsers) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
+	return
+}
+
+func GetSmUsersByCuid(id int64) (v *SmUsers, err error) {
+	o := orm.NewOrm()
+	v = &SmUsers{}
+	if err = o.QueryTable(new(SmUsers)).Filter("Cuid", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+func UpdateSmUsersById(m *SmUsers) (err error) {
+	o := orm.NewOrm()
+	v := SmUsers{Id: m.Id}
+	// ascertain id exists in the database
+	if err = o.Read(&v); err == nil {
+		var num int64
+		if num, err = o.Update(m); err == nil {
+			fmt.Println("Number of records updated in database:", num)
+		}
+	}
 	return
 }

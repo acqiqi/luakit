@@ -52,6 +52,7 @@ type UcenterUsers struct {
 	VipEndTime     string  `json:"vip_end_time"`     // vip到期时间
 	IsPayPassword  int     `json:"is_pay_password"`  // 是否填写支付密码
 	PayPassword    string  `json:"pay_password"`     // 支付密码
+	OldManagerCuid int     `json:"ld_manager_cuid"`
 }
 
 // 用于给Api展示的结构体
@@ -102,7 +103,17 @@ func GetUcenterUsersById(id int64) (v *UcenterUsers, err error) {
 	o := orm.NewOrm()
 	v = &UcenterUsers{}
 
-	if err = o.QueryTable(new(UcenterUsers)).Filter("Id", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
+	if err = o.QueryTable(new(UcenterUsers)).Filter("Id", id).Filter("flag", 1).OrderBy("-Id").RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+func GetUcenterUsersByOldId(id int64) (v *UcenterUsers, err error) {
+	o := orm.NewOrm()
+	v = &UcenterUsers{}
+
+	if err = o.QueryTable(new(UcenterUsers)).Filter("OldManagerCuid", id).Filter("flag", 1).OrderBy("-Id").RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
