@@ -106,6 +106,7 @@ func (this *ApiController) PublishMessageQueue() {
 		//处理三方系统自己的用户业务
 		// 暂时不处理
 	}
+	log.Println(queueModel)
 	_, err = models.AddMessageQueue(queueModel)
 	if err != nil {
 		log.Println(err.Error())
