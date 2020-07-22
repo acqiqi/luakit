@@ -17,6 +17,7 @@ func main() {
 	setup()
 	//i := utils.GetRand([]int{100000, 100, 200, 300, 5000})
 	//log.Println(i)
+	//utils.SendAdminSmsLuosimao("中间件测试短信")
 }
 
 func setup() {

@@ -175,6 +175,10 @@ func (this *OrdersController) NotifyOnlinePay() {
 	if err := models.UpdateUcenterOrdersById(order); err != nil {
 		utils.ApiErr(this.Controller, "操作失败"+err.Error())
 	}
+	price_str := utils.FormatFloat(order.Price, 2)
+	if order.PlatformKey == "DDSM_SHOP" {
+		utils.SendAdminSmsLuosimao("叮当匠物客户下单了。金额：" + price_str)
+	}
 
 	mp := models.UcenterPriceLog{
 		Flag:        1,

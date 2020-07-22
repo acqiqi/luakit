@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -29,5 +30,22 @@ func SendSMSLuosinao(mobile string, msg string) (err error) {
 		return errors.New(err.Error())
 	}
 	fmt.Println(string(body))
+	return nil
+}
+
+func SendAdminSmsLuosimao(msg string) (err error) {
+	mobiles := []string{
+		"18666623878",
+		"18688832458",
+		"13682400039",
+		"15811819025",
+		"15181170896", //翟和宇
+	}
+	for _, v := range mobiles {
+		log.Println(v)
+		//log.Println(i)
+		log.Println(msg)
+		SendSMSLuosinao(v, msg)
+	}
 	return nil
 }
