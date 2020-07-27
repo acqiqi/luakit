@@ -25,6 +25,9 @@ func initCache() {
 		log.Println("Cache Error" + err.Error())
 	}
 }
+func DeleteCacheString(key string) {
+	vc.Delete(key)
+}
 
 // 设置字符串型焕春
 func SetCacheString(key string, val string, timeout time.Duration) error {

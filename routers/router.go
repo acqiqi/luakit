@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/astaxie/beego"
 	"luakit/controllers"
+	"luakit/controllers/v1/face"
 	"luakit/controllers/v1/marketing"
 	"luakit/controllers/v1/message"
 	"luakit/controllers/v1/platform"
@@ -20,6 +21,11 @@ func init() {
 			),
 			beego.NSAutoRouter(
 				&marketing.CouponController{},
+			),
+		),
+		beego.NSNamespace("/face",
+			beego.NSAutoRouter(
+				&face.FaceController{},
 			),
 		),
 		beego.NSNamespace("/message",
