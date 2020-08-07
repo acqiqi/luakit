@@ -27,10 +27,10 @@ func init() {
 }
 
 // 根据订单编号获取订单
-func GetUcenterCommissionById(id int64) (v *UcenterCommission, err error) {
+func GetUcenterCommissionByPlatformKey(platform_key string) (v *UcenterCommission, err error) {
 	o := orm.NewOrm()
 	v = &UcenterCommission{}
-	if err = o.QueryTable(new(UcenterCommission)).Filter("Id", id).Filter("Flag", 1).RelatedSel().One(v); err == nil {
+	if err = o.QueryTable(new(UcenterCommission)).Filter("PlatformKey", platform_key).Filter("Flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err

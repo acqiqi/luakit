@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"math/rand"
 	"reflect"
 	"strconv"
@@ -108,4 +109,9 @@ func GetRand(proArr []int) int {
 		}
 	}
 	return result
+}
+
+// 保留两位小数点
+func Decimal(value float64) float64 {
+	return math.Trunc(value*1e2+0.5) * 1e-2
 }

@@ -13,17 +13,17 @@ type UcenterAddress struct {
 	UpdatedAt time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
 	Flag      int       `orm:"default(1)" json:"flag"` //-1删除
 
-	AdrName        string  `orm:"adr_name"`      // 选择地址名称
-	AdrLatitude    float64 `orm:"adr_latitude"`  // 维度
-	AdrLongitude   float64 `orm:"adr_longitude"` // 经度
-	Address        string  `orm:"address"`       // 详细门牌号
-	Cuid           int     `orm:"cuid"`
-	IsDefault      int     `orm:"is_default"`       // 是否默认
-	Name           string  `orm:"name"`             // 姓名
-	Mobile         string  `orm:"mobile"`           // 手机号
-	AreaLevel      int     `orm:"area_level"`       // 0省1市 2区 3小区
-	AddreaaCheckId int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
-	PlatformKey    string  `orm:"platform_key"`     // 平台key
+	AdrName        string  `json:"adr_name"`      // 选择地址名称
+	AdrLatitude    float64 `json:"adr_latitude"`  // 维度
+	AdrLongitude   float64 `json:"adr_longitude"` // 经度
+	Address        string  `json:"address"`       // 详细门牌号
+	Cuid           int     `json:"cuid"`
+	IsDefault      int     `json:"is_default"`       // 是否默认
+	Name           string  `json:"name"`             // 姓名
+	Mobile         string  `json:"mobile"`           // 手机号
+	AreaLevel      int     `json:"area_level"`       // 0省1市 2区 3小区
+	AddreaaCheckId int     `json:"addreaa_check_id"` // 对应的id city 或者housingid
+	PlatformKey    string  `json:"platform_key"`     // 平台key
 }
 
 func init() {

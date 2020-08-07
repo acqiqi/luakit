@@ -42,6 +42,7 @@ type UcenterOrders struct {
 	OptLv2        float64 `json:"opt_lv2"`        // 二级其他分享
 	ShareLv1Cuid  int     `json:"share_lv1_cuid"` // 一级分享用户id
 	ShareLv2Cuid  int     `json:"share_lv2_cuid"`
+	IsAccounts    int     `json:"is_accounts"` // 是否结算
 	OptLv1Cuid    int     `json:"opt_lv1_cuid"`
 	OptLv2Cuid    int     `json:"opt_lv2_cuid"`
 	OrderType     int     `json:"order_type"` // 订单类型0常规购买订单  1团购 10VIP
@@ -50,12 +51,16 @@ type UcenterOrders struct {
 	ProjectId     int     `json:"project_id"`
 	VipPriceD     float64 `json:"vip_price_d"` // vip折扣多少钱
 	Pics          string  `json:"pics"`
+	PartnerPrice  float64 `json:"partner_price"`   //合伙人金额
+	PartnerId     int     `json:"partner_id"`      //合伙人id
+	TotalUsePrice float64 `json:"total_use_price"` //全部占用金额
 }
 
 func init() {
 	orm.RegisterModelWithPrefix(utils.DataBaseObj.String("prefix"), new(UcenterOrders))
 }
 
+// 新增用户订单
 func AddUcenterOrders(m *UcenterOrders) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
@@ -67,6 +72,15 @@ func GetUcenterOrdersOrOrderNo(order_no string) (v *UcenterOrders, err error) {
 	o := orm.NewOrm()
 	v = &UcenterOrders{}
 	if err = o.QueryTable(new(UcenterOrders)).Filter("OrderNo", order_no).Filter("Flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+func GetUcenterOrdersOrOrderId(id int) (v *UcenterOrders, err error) {
+	o := orm.NewOrm()
+	v = &UcenterOrders{}
+	if err = o.QueryTable(new(UcenterOrders)).Filter("id", id).Filter("Flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
@@ -171,4 +185,18 @@ func DeleteUcenterOrders(id int64) (err error) {
 		}
 	}
 	return
+}
+
+// 设置服务是结算状态
+func SetUcenterOrdersAccount(id int64, total_use_price float64) error {
+	order, err := GetUcenterOrdersOrOrderId(int(id))
+	if err != nil {
+		return err
+	}
+	order.TotalUsePrice = total_use_price
+	order.IsAccounts = 1
+	if err := UpdateUcenterOrdersById(order); err != nil {
+		return err
+	}
+	return nil
 }

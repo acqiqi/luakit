@@ -15,11 +15,20 @@ func main() {
 	//utils.InitModel()
 	go mqtt.Init()
 	log.Println("Init Project")
-	//daoru.DaoruManagerAccount()
 	setup()
 	//i := utils.GetRand([]int{100000, 100, 200, 300, 5000})
 	//log.Println(i)
 	//utils.SendAdminSmsLuosimao("中间件测试短信")
+
+	//accounts_utils := new(common.Accounts)
+	//accounts_utils.SmUsersServiceId = 277
+	//if err := accounts_utils.InitSmUsersService();err != nil {
+	//	log.Println("mdzz?"+err.Error())
+	//}
+	//if err := accounts_utils.AccountsSmServiceOrders() ;err != nil {
+	//	log.Println(err)
+	//}
+
 }
 
 func setup() {

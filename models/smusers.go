@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"luakit/utils"
@@ -53,10 +54,29 @@ func AddSmUsers(m *SmUsers) (id int64, err error) {
 	return
 }
 
+// 根据id 查询用户
 func GetSmUsersByCuid(id int64) (v *SmUsers, err error) {
 	o := orm.NewOrm()
 	v = &SmUsers{}
 	if err = o.QueryTable(new(SmUsers)).Filter("Cuid", id).Filter("flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+// 检测是否有师傅
+func CheckStUser(cuid int64) (v *SmUsers, err error) {
+	user, err := GetSmUsersByCuid(cuid)
+	if err != nil {
+		return nil, err
+	}
+	if user.GjSfCuid == 0 {
+		return nil, errors.New("无师傅")
+	}
+
+	o := orm.NewOrm()
+	v = &SmUsers{}
+	if err = o.QueryTable(new(SmUsers)).Filter("Cuid", user.GjSfCuid).Filter("IsSf", 1).Filter("flag", 1).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err

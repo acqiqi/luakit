@@ -1,14 +1,86 @@
 package main
 
-type Admin_icon struct {
-	Id         int    `orm:"id"`
-	Name       string `orm:"name"`        // 图标名称
-	Url        string `orm:"url"`         // 图标css地址
-	Prefix     string `orm:"prefix"`      // 图标前缀
-	FontFamily string `orm:"font_family"` // 字体名
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	Status     int    `orm:"status"`      // 状态
+type Marketing_pw struct {
+	Id          int     `orm:"id"`
+	PwName      string  `orm:"pw_name"`  // 转盘名称
+	Describe    string  `orm:"describe"` // 描述
+	PlatformKey string  `orm:"platform_key"`
+	MinPrice    float64 `orm:"min_price"`  // 最低达成金额
+	Background  string  `orm:"background"` // 背景图
+	ShareNum    int     `orm:"share_num"`  // 需要分享人数量
+	Circle      int     `orm:"circle"`     // 周期 天
+	BeginTime   string  `orm:"begin_time"` // 开始时间
+	IsStart     int     `orm:"is_start"`   // 是否开始
+	Flag        int     `orm:"flag"`       // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	RuleContent string  `orm:"rule_content"` // 规则描述富文本
+}
+
+type Ucenter_collect struct {
+	Id          int    `orm:"id"`
+	ProjectType string `orm:"project_type"` // 项目类型
+	PlatformKey string `orm:"platform_key"` // 平台key
+	Cuid        int    `orm:"cuid"`         // 用户id
+	ProjectId   int    `orm:"project_id"`   // 项目id
+	Flag        int    `orm:"flag"`         // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+}
+
+type Admin_module struct {
+	Id           int    `orm:"id"`
+	Name         string `orm:"name"`          // 模块名称（标识）
+	Title        string `orm:"title"`         // 模块标题
+	Icon         string `orm:"icon"`          // 图标
+	Description  string `orm:"description"`   // 描述
+	Author       string `orm:"author"`        // 作者
+	AuthorUrl    string `orm:"author_url"`    // 作者主页
+	Config       string `orm:"config"`        // 配置信息
+	Access       string `orm:"access"`        // 授权配置
+	Version      string `orm:"version"`       // 版本号
+	Identifier   string `orm:"identifier"`    // 模块唯一标识符
+	SystemModule int    `orm:"system_module"` // 是否为系统模块
+	CreateTime   int    `orm:"create_time"`   // 创建时间
+	UpdateTime   int    `orm:"update_time"`   // 更新时间
+	Sort         int    `orm:"sort"`          // 排序
+	Status       int    `orm:"status"`        // 状态
+}
+
+type Helper struct {
+	Id          int    `orm:"id"`
+	CatId       int    `orm:"cat_id"`
+	Title       string `orm:"title"`   // 标题
+	Content     string `orm:"content"` // 富文本
+	Logo        string `orm:"logo"`    // logo
+	Sort        int    `orm:"sort"`    // 排序
+	Flag        int    `orm:"flag"`    // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	PlatformKey string `orm:"platform_key"`
+	IsTopic     int    `orm:"is_topic"`
+	IsShow      int    `orm:"is_show"` // 是否显示
+}
+
+type Xinxi_jobs struct {
+	Id                int     `orm:"id"`
+	Pics              string  `orm:"pics"`
+	Mobile            string  `orm:"mobile"`
+	Title             string  `orm:"title"`
+	Name              string  `orm:"name"`
+	WorkType          string  `orm:"work_type"`
+	LocationAddress   string  `orm:"location_address"`
+	LocationArea      string  `orm:"location_area"`
+	LocationLongitude float64 `orm:"location_longitude"`
+	LocationLatitude  float64 `orm:"location_latitude"`
+	LocationProvince  string  `orm:"location_province"`
+	LocationCity      string  `orm:"location_city"`
+	Content           string  `orm:"content"`
+	Flag              int     `orm:"flag"` // 删除标识
+	CreatedAt         string  `orm:"created_at"`
+	UpdatedAt         string  `orm:"updated_at"`
+	Cuid              int     `orm:"cuid"`
+	IsVerify          int     `orm:"is_verify"`
 }
 
 type Admin_role struct {
@@ -25,202 +97,88 @@ type Admin_role struct {
 	DefaultModule int    `orm:"default_module"` // 默认访问模块
 }
 
-type Marketing_seckill_packet struct {
-	Id        int    `orm:"id"`
-	Type      int    `orm:"type"`   // 0红包(不需要付费)
-	Title     string `orm:"title"`  // 标题
-	Status    int    `orm:"status"` // 0未开始 1开始 2结束
-	Flag      int    `orm:"flag"`   // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type Partner_accounts struct {
-	Id         int     `orm:"id"`
-	PartnerId  int     `orm:"partner_id"`  // 合伙人id
-	OrderId    int     `orm:"order_id"`    // 订单id
-	Price      float64 `orm:"price"`       // 到账金额
-	AreaType   int     `orm:"area_type"`   // 0 全国 1全省 2市 3区 4小区
-	HousingId  int     `orm:"housing_id"`  // 小区id
-	ProvinceId int     `orm:"province_id"` // 省id
-	CityId     int     `orm:"city_id"`     // 市id
-	AreaId     int     `orm:"area_id"`     // 区id
-	Flag       int     `orm:"flag"`        // 删除标识
-	CreatedAt  string  `orm:"created_at"`
-	UpdatedAt  string  `orm:"updated_at"`
-}
-
-type Sm_service_appt_tpl struct {
-	Id        int    `orm:"id"`
-	TplName   string `orm:"tpl_name"` // 模板名称
-	Describe  string `orm:"describe"` // 描述
-	Flag      int    `orm:"flag"`     // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type Sm_service_log struct {
-	Id             int    `orm:"id"`
-	ServiceId      int    `orm:"service_id"`
-	ServiceSkuId   int    `orm:"service_sku_id"`   // sku id
-	ServiceAreaId  int    `orm:"service_area_id"`  // 区域id
-	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
-	Cuid           int    `orm:"cuid"`
-	Content        string `orm:"content"`
-	Pics           string `orm:"pics"`
-	Avatar         string `orm:"avatar"`   // 备份头像
-	Nickname       string `orm:"nickname"` // 备份昵称
-	Flag           int    `orm:"flag"`     // 删除标识
-	CreatedAt      string `orm:"created_at"`
-	UpdatedAt      string `orm:"updated_at"`
-}
-
-type Ucenter_users struct {
-	Id             int     `orm:"id"`
-	Username       string  `orm:"username"`        // 账号
-	Password       string  `orm:"password"`        // 密码
-	Mobile         string  `orm:"mobile"`          // 手机号
-	Nickname       string  `orm:"nickname"`        // 昵称
-	Email          string  `orm:"email"`           // 邮箱
-	Avatar         string  `orm:"avatar"`          // 头像
-	Gender         string  `orm:"gender"`          // 性别
-	Status         int     `orm:"status"`          // 状态 0停用 1启用
-	RoleType       int     `orm:"role_type"`       // 0无权限 1小区合伙人 2区县级合伙人 3城市合伙人 4省合伙人
-	Score          int     `orm:"score"`           // 积分
-	Money          float64 `orm:"money"`           // 余额
-	OkMoney        float64 `orm:"ok_money"`        // 可提现余额
-	NoMoney        float64 `orm:"no_money"`        // 不可提现金额
-	LastLoginIp    string  `orm:"last_login_ip"`   // 最后一次登录ip
-	LastLoginTime  int     `orm:"last_login_time"` // 最后一次登录时间戳
-	LastLongitude  float64 `orm:"last_longitude"`  // 最后一次经度
-	LastLatitude   float64 `orm:"last_latitude"`   // 最后一次维度
-	IsAuth         int     `orm:"is_auth"`         // 是否实名认证 0 否 1审核 2通过 -1拒绝
-	IdcardTop      string  `orm:"idcard_top"`      // 身份证正面
-	IdcardBom      string  `orm:"idcard_bom"`      // 身份证背面
-	IdcardId       string  `orm:"idcard_id"`       // 身份证号
-	ShareOne       int     `orm:"share_one"`       // 一级分享
-	ShareTwo       int     `orm:"share_two"`       // 二级分享
-	StOne          int     `orm:"st_one"`          // 一级师徒
-	StTwo          int     `orm:"st_two"`          // 二级师徒
-	UserKey        string  `orm:"user_key"`        // 用户注册唯一key
-	WechatUnionid  string  `orm:"wechat_unionid"`  // 微信相关unionid
-	RegType        int     `orm:"reg_type"`        // 注册类型 0手机号验证码 1账号
-	RegSource      string  `orm:"reg_source"`      // 注册来源 例如 手机 微信 小程序
-	Flag           int     `orm:"flag"`            // 删除标识
-	CreatedAt      string  `orm:"created_at"`
-	UpdatedAt      string  `orm:"updated_at"`
-	RegPlatformKey string  `orm:"reg_platform_key"` // 从哪个平台注册的
-	BindUserinfo   int     `orm:"bind_userinfo"`    // 是否绑定用户信息
-	IsVip          int     `orm:"is_vip"`           // 是否是vip
-	VipEndTime     string  `orm:"vip_end_time"`     // vip到期时间
-	IsPayPassword  int     `orm:"is_pay_password"`  // 是否填写支付密码
-	PayPassword    string  `orm:"pay_password"`     // 支付密码
-}
-
-type Admin_action struct {
-	Id         int    `orm:"id"`
-	Module     string `orm:"module"`      // 所属模块名
-	Name       string `orm:"name"`        // 行为唯一标识
-	Title      string `orm:"title"`       // 行为标题
-	Remark     string `orm:"remark"`      // 行为描述
-	Rule       string `orm:"rule"`        // 行为规则
-	Log        string `orm:"log"`         // 日志规则
-	Status     int    `orm:"status"`      // 状态
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-}
-
-type Admin_icon_list struct {
-	Id     int    `orm:"id"`
-	IconId int    `orm:"icon_id"` // 所属图标id
-	Title  string `orm:"title"`   // 图标标题
-	Class  string `orm:"class"`   // 图标类名
-	Code   string `orm:"code"`    // 图标关键词
-}
-
-type Face_device struct {
-	Id            int     `orm:"id"`
-	Name          string  `orm:"name"`           // 设备名字
-	Describe      string  `orm:"describe"`       // 设备描述
-	Address       string  `orm:"address"`        // 详细地址
-	Mac           string  `orm:"mac"`            // 设备mac
-	Sign          string  `orm:"sign"`           // 设备sign
-	Cmd           int     `orm:"cmd"`            // 荔枝默认14
-	RelayOpenVol  int     `orm:"relay_open_vol"` // 继电器极性
-	ChkFacePose   int     `orm:"chk_face_pose"`  // 正脸判断使能
-	FaceThreshold int     `orm:"face_threshold"` // 不传则表示不修改。识别阈值，范围1-100。建议80
-	LedBright     float64 `orm:"led_bright"`     // 不传则表示不修改。补光灯亮度调节，如0.1， 0.01
-	RelayOpenS    int     `orm:"relay_open_s"`   // 不传则表示不修改。继电器开光延时，可选1，2，3等
-	Flag          int     `orm:"flag"`           // 删除标识
-	CreatedAt     string  `orm:"created_at"`
-	UpdatedAt     string  `orm:"updated_at"`
-	IsDelete      int     `orm:"is_delete"`    // 是否远程删除
-	NetworkType   int     `orm:"network_type"` // 0 wifi 1网口 2 4G
-	NetworkData   string  `orm:"network_data"` // 联网配置参数存储
-}
-
-type Sm_service_appt struct {
-	Id            int    `orm:"id"`
-	ApptItemTplId int    `orm:"appt_item_tpl_id"` // 对应服务时间名
-	BeginTime     string `orm:"begin_time"`       // 开始时间
-	EndTime       string `orm:"end_time"`         // 结束时间
-	Title         string `orm:"title"`            // 用于前台展示
-	Sort          int    `orm:"sort"`             // 排序
-	IsShow        int    `orm:"is_show"`          // 是否显示
-	Num           int    `orm:"num"`              // 可预约次数
-	Status        int    `orm:"status"`           // 0待预约 1已约满  9暂停预约 -1禁止预约
-	UseNum        int    `orm:"use_num"`          // 已预约人数
-	AreaType      int    `orm:"area_type"`        // 限定区域范围等级 0全国 1省 2市 3区 4小区
-	ProvinceId    int    `orm:"province_id"`      // 省id
-	CityId        int    `orm:"city_id"`          // 市id
-	AreaId        int    `orm:"area_id"`          // 区id
-	HousingId     int    `orm:"housing_id"`       // 小区id
-	CreatedAt     string `orm:"created_at"`
-	ServiceId     int    `orm:"service_id"`     // 服务id
-	ServiceSkuId  int    `orm:"service_sku_id"` // sku id
-	UpdatedAt     string `orm:"updated_at"`
-	Flag          int    `orm:"flag"`        // 删除标识
-	ApptDate      string `orm:"appt_date"`   // 预约日期
-	ApptTplId     int    `orm:"appt_tpl_id"` // 预生成模板id
-	ServiceAreaId int    `orm:"service_area_id"`
-}
-
-type System_pages struct {
-	Id          int    `orm:"id"`
-	Title       string `orm:"title"`    // 标题
-	Describe    string `orm:"describe"` // 描述
-	Content     string `orm:"content"`  // 富文本
-	PlatformKey string `orm:"platform_key"`
-	IsShow      int    `orm:"is_show"`
-	Flag        int    `orm:"flag"` // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	Sort        int    `orm:"sort"` // 排序
-	Logo        string `orm:"logo"`
-	PageKey     string `orm:"page_key"` // 页面key
-}
-
-type Ucenter_accounts struct {
+type Ucenter_tixian struct {
 	Id          int     `orm:"id"`
-	Cuid        int     `orm:"cuid"`         // ucenter uid
-	PlatformKey string  `orm:"platform_key"` // 牵扯的平台
-	Type        int     `orm:"type"`         // 0直接收益 1分润收益 2师徒收益 10现金红包收益 50充值收益 100提现 101购买商品
-	Level       int     `orm:"level"`        // 收益等级 比如 0一级分享收益 1二级分享收益
-	Content     string  `orm:"content"`      // 详细内容
-	Describe    string  `orm:"describe"`     // 描述  主要是显示这里
-	ProjectId   int     `orm:"project_id"`   // 项目id
-	OrderId     int     `orm:"order_id"`     // 订单id
-	OrderNo     int     `orm:"order_no"`     // 订单编号
-	Price       float64 `orm:"price"`        // 金额
-	IsDz        int     `orm:"is_dz"`        // 是否到账 1是
-	SourceCuid  int     `orm:"source_cuid"`  // 来源用户。比如是谁分享产生的给你费用
-	ProjectName string  `orm:"project_name"` // 项目名称
-	Title       string  `orm:"title"`        // 标题
+	PlatformKey string  `orm:"platform_key"` // 平台key
+	Cuid        int     `orm:"cuid"`         // ucenter id
+	Price       float64 `orm:"price"`        // 提现金额
+	FirstMoney  float64 `orm:"first_money"`  // 提现前金额
+	Status      int     `orm:"status"`       // 状态0提现中 1成功 -1 失败
+	TixianFlag  string  `orm:"tixian_flag"`  // 空或者bank 银行 wechat 微信钱包 alipay 支付宝钱包
+	BankName    string  `orm:"bank_name"`    // 银行卡银行
+	BankId      string  `orm:"bank_id"`      // 银行卡号
+	BankUser    string  `orm:"bank_user"`    // 银行卡姓名
+	BankAddress string  `orm:"bank_address"` // 开户行详细地址
 	Flag        int     `orm:"flag"`         // 删除标识
 	CreatedAt   string  `orm:"created_at"`
 	UpdatedAt   string  `orm:"updated_at"`
-	AccountNo   string  `orm:"account_no"` // 订单号
-	IsOld       int     `orm:"is_old"`     // 是否是老订单
+	TixianNo    string  `orm:"tixian_no"`
+}
+
+type Message_tpl struct {
+	Id              int    `orm:"id"`
+	MessageKey      string `orm:"message_key"` // 唯一标识
+	Title           string `orm:"title"`
+	Desc            string `orm:"desc"`
+	Content         string `orm:"content"`
+	AppType         int    `orm:"app_type"` // 0用户端 1商家端
+	IsMsg           int    `orm:"is_msg"`   // 是否发送消息
+	MessageType     string `orm:"message_type"`
+	PathType        string `orm:"path_type"`         // 路径类型
+	PathId          string `orm:"path_id"`           // 路径id 或者路径
+	IsFormId        int    `orm:"is_form_id"`        // 是否使用小程序模板id推送
+	SmallTplId      string `orm:"small_tpl_id"`      // 小程序模板id
+	SmallTplContent string `orm:"small_tpl_content"` // 小程序模板内容 json
+	IsSms           int    `orm:"is_sms"`            // 是否发送短信
+	SmsContent      string `orm:"sms_content"`       // 短信内容
+	IsEmail         int    `orm:"is_email"`          // 是否发送短信
+	EmailTitle      string `orm:"email_title"`
+	EmailContent    string `orm:"email_content"`
+	CreatedAt       string `orm:"created_at"`
+	UpdatedAt       string `orm:"updated_at"`
+	DeletedAt       string `orm:"deleted_at"`
+	Flag            int    `orm:"flag"`     // -1删除
+	IsUcId          int    `orm:"is_uc_id"` // 是否使用用户平台
+	PlatformKey     string `orm:"platform_key"`
+	SmallTplPath    string `orm:"small_tpl_path"`
+}
+
+type Sm_quck_pay struct {
+	Id         int     `orm:"id"`
+	Title      string  `orm:"title"`    // 标题
+	Describe   string  `orm:"describe"` // 描述
+	Logo       string  `orm:"logo"`
+	Background string  `orm:"background"` // 背景图
+	Price      float64 `orm:"price"`      // 支付金额
+	Images     string  `orm:"images"`
+	Flag       int     `orm:"flag"` // 删除标识
+	CreatedAt  string  `orm:"created_at"`
+	UpdatedAt  string  `orm:"updated_at"`
+	IsShow     int     `orm:"is_show"`
+}
+
+type Sm_service_sku_tags struct {
+	Id        int    `orm:"id"`
+	TagName   string `orm:"tag_name"` // 标签名称
+	Describe  string `orm:"describe"` // 描述
+	IsShow    int    `orm:"is_show"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Xinxi_news struct {
+	Id        int    `orm:"id"`
+	Pic       string `orm:"pic"`     // 图片
+	Desc      string `orm:"desc"`    // 描述
+	Source    string `orm:"source"`  // 来源
+	Content   string `orm:"content"` // 详情
+	Flag      int    `orm:"flag"`    // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+	CatId     int    `orm:"cat_id"`
+	Title     string `orm:"title"` // 标题
+	IsShow    int    `orm:"is_show"`
 }
 
 type Address_city struct {
@@ -237,120 +195,129 @@ type Address_city struct {
 	UpdatedAt string  `orm:"updated_at"`
 }
 
-type Marketing_seckill_packet_link struct {
-	Id              int     `orm:"id"`
-	SeckillPacketId int     `orm:"seckill_packet_id"` // 抢红包id
-	Price           float64 `orm:"price"`             // 红包金额
-	Num             int     `orm:"num"`               // 红包数量
-	UseNum          int     `orm:"use_num"`           // 使用数量
-	IsEnd           int     `orm:"is_end"`            // 是否抢完
-	Flag            int     `orm:"flag"`              // 删除标识
-	CreatedAt       string  `orm:"created_at"`
-	UpdatedAt       string  `orm:"updated_at"`
-}
-
-type Sm_users_cart struct {
-	Id            int     `orm:"id"`
-	ServiceId     int     `orm:"service_id"`     // 服务id
-	ServiceSkuId  int     `orm:"service_sku_id"` // sku id
-	ApptId        int     `orm:"appt_id"`        // 对应服务时间id
-	Num           int     `orm:"num"`            // 购物车数量
-	Cuid          int     `orm:"cuid"`           // 用户id
-	UnitPrice     float64 `orm:"unit_price"`     // 售价
-	CostPrice     float64 `orm:"cost_price"`     // 原价
-	ServiceLogo   string  `orm:"service_logo"`
-	ServiceTitle  string  `orm:"service_title"` // 标题
-	ApptTitle     string  `orm:"appt_title"`
-	Flag          int     `orm:"flag"` // 删除标识
-	CreatedAt     string  `orm:"created_at"`
-	UpdatedAt     string  `orm:"updated_at"`
-	AddressId     string  `orm:"address_id"`      // 用户下单的地址id
-	ServiceAreaId int     `orm:"service_area_id"` // 区域id
-	NotAppt       int     `orm:"not_appt"`        // 是否暂时不选择服务区间 0否 1是
-	GjPrice       float64 `orm:"gj_price"`        // 工匠金额
-	IsGjPrice     int     `orm:"is_gj_price"`     // 是否固定工匠金额
-}
-
-type Ucenter_optshare struct {
-	Id           int    `orm:"id"`
-	Cuid         int    `orm:"cuid"`           // 用户id
-	PlatformKey  string `orm:"platform_key"`   // 平台key
-	ShareLv1Cuid int    `orm:"share_lv1_cuid"` // 上级
-	ShareLv2Cuid int    `orm:"share_lv2_cuid"` // 上级二级
-	Level        int    `orm:"level"`          // 分享等级 0一级 1二级
-	Status       int    `orm:"status"`         // 0不产生分润 1产生分润
-	Flag         int    `orm:"flag"`           // 删除标识
-	CreatedAt    string `orm:"created_at"`
-	UpdatedAt    string `orm:"updated_at"`
-}
-
-type Admin_hook struct {
+type Marketing_score_rule struct {
 	Id          int    `orm:"id"`
-	Name        string `orm:"name"`        // 钩子名称
-	Plugin      string `orm:"plugin"`      // 钩子来自哪个插件
-	Description string `orm:"description"` // 钩子描述
-	System      int    `orm:"system"`      // 是否为系统钩子
-	CreateTime  int    `orm:"create_time"` // 创建时间
-	UpdateTime  int    `orm:"update_time"` // 更新时间
-	Status      int    `orm:"status"`      // 状态
+	Name        string `orm:"name"`         // 积分模板名称
+	ClientTitle string `orm:"client_title"` // 获取积分标题
+	PlatformKey string `orm:"platform_key"` // 平台key
+	Score       int    `orm:"score"`        // 获取积分
+	Status      int    `orm:"status"`       // 是否开启
+	IsOne       int    `orm:"is_one"`       // 是否只能获取一次
+	Flag        int    `orm:"flag"`         // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	ScoreKey    string `orm:"score_key"` // 唯一标识key
 }
 
-type Face_check_log struct {
-	Id        int    `orm:"id"`
-	Mac       string `orm:"mac"`       // 设备mac
-	DeviceId  int    `orm:"device_id"` // 设备id
-	CloudUid  string `orm:"cloud_uid"`
-	Photo     string `orm:"photo"`      // 图像
-	CloudTime int    `orm:"cloud_time"` // 云端时间
-	PhotoHash string `orm:"photo_hash"` // hash
-	FaceUid   int    `orm:"face_uid"`
-	Flag      int    `orm:"flag"` // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
+type Sm_service_seckill struct {
+	Id        int     `orm:"id"`
+	ServiceId int     `orm:"service_id"` // 服务id
+	Title     string  `orm:"title"`      // 秒杀标题
+	Content   string  `orm:"content"`    // 富文本
+	Price     float64 `orm:"price"`      // 价格
+	CostPrice float64 `orm:"cost_price"` // 原价
+	BeginTime string  `orm:"begin_time"` // 开始时间
+	EndTime   string  `orm:"end_time"`   // 到期时间
+	LimitType int     `orm:"limit_type"` // 拼团区域限制 0不限制sku相等下单  1限制sku相等下单
+	Status    int     `orm:"status"`     // 0未开始  1已开始 10已结束
+	Logo      string  `orm:"logo"`       // 秒杀Logo
+	Banner    string  `orm:"banner"`     // 秒杀 Banner
+	Num       int     `orm:"num"`        // 秒杀数量
+	UseNum    int     `orm:"use_num"`    // 已秒数量
+	IsTopic   int     `orm:"is_topic"`
+	Flag      int     `orm:"flag"` // 删除标识
+	CreatedAt string  `orm:"created_at"`
+	UpdatedAt string  `orm:"updated_at"`
+	SkuName   string  `orm:"sku_name"` // sku name
+	IsShow    int     `orm:"is_show"`  // 是否显示
 }
 
-type Sm_service struct {
-	Id           int     `orm:"id"`
-	Title        string  `orm:"title"`          // 标题
-	Logo         string  `orm:"logo"`           // 列表logo
-	Icon         string  `orm:"icon"`           // 首页icon
-	Banner       string  `orm:"banner"`         // banner列表 json
-	CatsId       int     `orm:"cats_id"`        // 分类id
-	Describe     string  `orm:"describe"`       // 描述
-	Content      string  `orm:"content"`        // 富文本内容
-	IsVideo      int     `orm:"is_video"`       // 是否显示视频banner
-	VideoUrl     string  `orm:"video_url"`      // 视频url
-	ShowNum      int     `orm:"show_num"`       // 显示数量
-	PayNum       int     `orm:"pay_num"`        // 销售数量
-	CollectNum   int     `orm:"collect_num"`    // 收藏数量
-	ShareNum     int     `orm:"share_num"`      // 分享数量
-	MinPrice     float64 `orm:"min_price"`      // 最小售价（用于限定最低单品购买以及显示）
-	MaxPrice     float64 `orm:"max_price"`      // 最大售价，只用于显示
-	MinCostPrice float64 `orm:"min_cost_price"` // 最小销售原价
-	MaxCostPrice float64 `orm:"max_cost_price"` // 最高售价原价
-	ProjectType  int     `orm:"project_type"`   // 0正常 1团购
-	IsShow       int     `orm:"is_show"`        // 是否显示
-	Status       int     `orm:"status"`         // 0停售 1正常销售  10预售
-	Flag         int     `orm:"flag"`           // 删除标识
-	CreatedAt    string  `orm:"created_at"`
-	UpdatedAt    string  `orm:"updated_at"`
-	IsDelete     int     `orm:"is_delete"`   // 是否远程删除
-	IsTopic      int     `orm:"is_topic"`    // 是否推荐
-	IsNew        int     `orm:"is_new"`      // 是否new
-	Sort         int     `orm:"sort"`        // 排序
-	AreaType     int     `orm:"area_type"`   // 限定区域范围等级 0全国 1省 2市 3区 4小区
-	ProvinceId   int     `orm:"province_id"` // 省id
-	CityId       int     `orm:"city_id"`     // 市id
-	AreaId       int     `orm:"area_id"`     // 区id
-	HousingId    int     `orm:"housing_id"`  // 小区id
+type System_config struct {
+	Id          int    `orm:"id"`
+	K           string `orm:"k"`            // key
+	V           string `orm:"v"`            // value
+	Title       string `orm:"title"`        // 标题
+	Describe    string `orm:"describe"`     // 描述
+	PlatformKey string `orm:"platform_key"` // platform_key  如果全局写ALL
+	Flag        int    `orm:"flag"`         // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
 }
 
-type System_log struct {
-	Id        int    `orm:"id"`
-	Content   string `orm:"content"`
-	Flag      int    `orm:"flag"` // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
+type Ucenter_commission struct {
+	Id            int    `orm:"id"`
+	PlatformKey   string `orm:"platform_key"`    // 平台key
+	AllShareScale int    `orm:"all_share_scale"` // 分享最大比例
+	AllOptScale   int    `orm:"all_opt_scale"`   // 其他收益最大比例
+	ShareLv1Scale int    `orm:"share_lv1_scale"` // 分享一级
+	ShareLv2Scale int    `orm:"share_lv2_scale"` // 分享二级
+	OptLv1Scale   int    `orm:"opt_lv1_scale"`   // 其他收益一级
+	OptLv2Scale   int    `orm:"opt_lv2_scale"`   // 其他收益二级
+	Status        int    `orm:"status"`          // 0停用 1启用
+	Flag          int    `orm:"flag"`            // 删除标识
+	CreatedAt     string `orm:"created_at"`
+	UpdatedAt     string `orm:"updated_at"`
+}
+
+type Xinxi_jubao struct {
+	Id          int    `orm:"id"`
+	Cuid        int    `orm:"cuid"`
+	ProjectId   int    `orm:"project_id"`
+	ProjectType int    `orm:"project_type"`
+	Content     string `orm:"content"`
+	Flag        int    `orm:"flag"` // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+}
+
+type Marketing_coupon struct {
+	Id            int     `orm:"id"`
+	CouponTplId   int     `orm:"coupon_tpl_id"`   // 模板id
+	CouponQueueId int     `orm:"coupon_queue_id"` // 批量发送id 如果有
+	SourceType    int     `orm:"source_type"`     // 0后台发送 1新用户注册 2事件触发
+	Cuid          int     `orm:"cuid"`
+	Logo          string  `orm:"logo"`
+	Title         string  `orm:"title"`        // 优惠券名称
+	PlatformKey   string  `orm:"platform_key"` // 平台key
+	Price         float64 `orm:"price"`        // 优惠金额/最大优惠金额
+	FullPrice     float64 `orm:"full_price"`   // 满金额条件
+	Type          int     `orm:"type"`         // 0满减 1全局折扣 2满折
+	Zkb           int     `orm:"zkb"`          // 折扣比 0 100
+	ProjectId     int     `orm:"project_id"`   // 对应项目id （上门端是skuid 或者serviceid）
+	ProjectType   int     `orm:"project_type"` // 对应项目类型。每个平台不同  （上门端0 sku 1 service）
+	EndTime       int     `orm:"end_time"`     // 到期时间。被转换的时间戳
+	Describe      string  `orm:"describe"`     // 描述
+	IsUse         int     `orm:"is_use"`       // 是否使用
+	OrderId       int     `orm:"order_id"`     // 使用后订单id
+	Flag          int     `orm:"flag"`         // 删除标识
+	UpdatedAt     string  `orm:"updated_at"`
+	CreatedAt     string  `orm:"created_at"`
+	CouponKey     string  `orm:"coupon_key"` // 优惠券唯一key
+}
+
+type Sm_service_gp_sku struct {
+	Id            int    `orm:"id"`
+	ServiceId     int    `orm:"service_id"`
+	ServiceGpId   int    `orm:"service_gp_id"`
+	ServiceAreaId int    `orm:"service_area_id"` // 区域id
+	ServiceSkuId  int    `orm:"service_sku_id"`  // sku id
+	Flag          int    `orm:"flag"`            // 删除标识
+	CreatedAt     string `orm:"created_at"`
+	UpdatedAt     string `orm:"updated_at"`
+}
+
+type Sm_users_service_work struct {
+	Id             int     `orm:"id"`
+	Cuid           int     `orm:"cuid"`
+	UsersServiceId int     `orm:"users_service_id"` // 用户服务表id
+	Price          float64 `orm:"price"`            // 分得金额。默认等分。
+	IsEnd          int     `orm:"is_end"`           // 是否结束，一般跟订单结算
+	ServiceId      int     `orm:"service_id"`       // 服务id
+	OrderId        int     `orm:"order_id"`         // 订单id
+	Flag           int     `orm:"flag"`             // 删除标识
+	CreatedAt      string  `orm:"created_at"`
+	UpdatedAt      string  `orm:"updated_at"`
+	FrPrice        float64 `orm:"fr_price"` // 最终从这个用户分润出去的金额
 }
 
 type Ucenter_platform struct {
@@ -377,81 +344,38 @@ type Ucenter_platform struct {
 	UcCallbackUrl      string `orm:"uc_callback_url"`      // 用户中心回调地址
 }
 
-type Ucenter_tixian struct {
-	Id          int     `orm:"id"`
-	PlatformKey string  `orm:"platform_key"` // 平台key
-	Cuid        int     `orm:"cuid"`         // ucenter id
-	Price       float64 `orm:"price"`        // 提现金额
-	FirstMoney  float64 `orm:"first_money"`  // 提现前金额
-	Status      int     `orm:"status"`       // 状态0提现中 1成功 -1 失败
-	TixianFlag  string  `orm:"tixian_flag"`  // 空或者bank 银行 wechat 微信钱包 alipay 支付宝钱包
-	BankName    string  `orm:"bank_name"`    // 银行卡银行
-	BankId      string  `orm:"bank_id"`      // 银行卡号
-	BankUser    string  `orm:"bank_user"`    // 银行卡姓名
-	BankAddress string  `orm:"bank_address"` // 开户行详细地址
-	Flag        int     `orm:"flag"`         // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
-	TixianNo    string  `orm:"tixian_no"`
-}
-
-type Admin_hook_plugin struct {
-	Id         int    `orm:"id"`
-	Hook       string `orm:"hook"`        // 钩子id
-	Plugin     string `orm:"plugin"`      // 插件标识
-	CreateTime int    `orm:"create_time"` // 添加时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	Sort       int    `orm:"sort"`        // 排序
-	Status     int    `orm:"status"`      // 状态
-}
-
-type Admin_menu struct {
-	Id         int    `orm:"id"`
-	Pid        int    `orm:"pid"`         // 上级菜单id
-	Module     string `orm:"module"`      // 模块名称
-	Title      string `orm:"title"`       // 菜单标题
-	Icon       string `orm:"icon"`        // 菜单图标
-	UrlType    string `orm:"url_type"`    // 链接类型（link：外链，module：模块）
-	UrlValue   string `orm:"url_value"`   // 链接地址
-	UrlTarget  string `orm:"url_target"`  // 链接打开方式：_blank,_self
-	OnlineHide int    `orm:"online_hide"` // 网站上线后是否隐藏
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	Sort       int    `orm:"sort"`        // 排序
-	SystemMenu int    `orm:"system_menu"` // 是否为系统菜单，系统菜单不可删除
-	Status     int    `orm:"status"`      // 状态
-	Params     string `orm:"params"`      // 参数
-}
-
-type Admin_plugin struct {
-	Id          int    `orm:"id"`
-	Name        string `orm:"name"`        // 插件名称
-	Title       string `orm:"title"`       // 插件标题
-	Icon        string `orm:"icon"`        // 图标
-	Description string `orm:"description"` // 插件描述
-	Author      string `orm:"author"`      // 作者
-	AuthorUrl   string `orm:"author_url"`  // 作者主页
-	Config      string `orm:"config"`      // 配置信息
-	Version     string `orm:"version"`     // 版本号
-	Identifier  string `orm:"identifier"`  // 插件唯一标识符
-	Admin       int    `orm:"admin"`       // 是否有后台管理
-	CreateTime  int    `orm:"create_time"` // 安装时间
-	UpdateTime  int    `orm:"update_time"` // 更新时间
-	Sort        int    `orm:"sort"`        // 排序
-	Status      int    `orm:"status"`      // 状态
-}
-
-type Face_users struct {
-	Id        int    `orm:"id"`
-	Name      string `orm:"name"`      // 姓名
-	Mobile    string `orm:"mobile"`    // 手机号
-	Feature   string `orm:"feature"`   // 特征
-	CloudUid  string `orm:"cloud_uid"` // 云端用于匹配的id
-	CloudId   int    `orm:"cloud_id"`  // 云端id
-	Flag      int    `orm:"flag"`      // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-	AvatarUrl string `orm:"avatar_url"` // 头像url
+type Ucenter_users_work struct {
+	Id                int     `orm:"id"`
+	Cuid              int     `orm:"cuid"`
+	Name              string  `orm:"name"`     // 姓名
+	CardId            string  `orm:"card_id"`  // 身份证号
+	CardTop           string  `orm:"card_top"` // 身份证正面
+	CardRen           string  `orm:"card_ren"` // 手持
+	Address           string  `orm:"address"`  // 身份证地址
+	Nation            string  `orm:"nation"`   // 民族
+	Gender            string  `orm:"gender"`   // 性别
+	Province          string  `orm:"province"` // 省
+	City              string  `orm:"city"`     // 市
+	Area              string  `orm:"area"`     // 区
+	IsAuth            int     `orm:"is_auth"`
+	Flag              int     `orm:"flag"` // 删除标识
+	CreatedAt         string  `orm:"created_at"`
+	UpdatedAt         string  `orm:"updated_at"`
+	WorkType          string  `orm:"work_type"`         // 工人类型
+	LocationAddress   string  `orm:"location_address"`  // 定位地址
+	LocationProvince  string  `orm:"location_province"` // 定位省
+	LocationCity      string  `orm:"location_city"`     // 定位市
+	LocationArea      string  `orm:"location_area"`     // 定位区
+	LocationLongitude float64 `orm:"location_longitude"`
+	LocationLatitude  float64 `orm:"location_latitude"`
+	OfficeMobile      string  `orm:"office_mobile"`
+	Miaoshu           string  `orm:"miaoshu"`
+	GongzuoTime       string  `orm:"gongzuo_time"`
+	IsGongren         int     `orm:"is_gongren"`
+	Birth             string  `orm:"birth"` // 生日
+	IsGongzuo         int     `orm:"is_gongzuo"`
+	GongrenType       string  `orm:"gongren_type"`
+	Home              string  `orm:"home"`
 }
 
 type Marketing_coupon_queue struct {
@@ -484,6 +408,223 @@ type Marketing_coupon_queue struct {
 	ErrMsg      string  `orm:"err_msg"`
 }
 
+type Message_queue struct {
+	Id              int    `orm:"id"`
+	Cuid            int    `orm:"cuid"`
+	MessageKey      string `orm:"message_key"`
+	Title           string `orm:"title"`        // 标题
+	Desc            string `orm:"desc"`         // 描述
+	Content         string `orm:"content"`      // 内容
+	MessageType     int    `orm:"message_type"` // 消息类型
+	PathType        string `orm:"path_type"`    // 链接类型
+	PathId          string `orm:"path_id"`      // 链接id
+	IsFormId        int    `orm:"is_form_id"`   // 是否消息模板
+	SmallTplId      string `orm:"small_tpl_id"` // 消息模板id
+	SmallTplContent string `orm:"small_tpl_content"`
+	SmallTplOpenid  string `orm:"small_tpl_openid"`
+	IsSms           int    `orm:"is_sms"` // 是否发送短信
+	Mobile          string `orm:"mobile"`
+	SmsContent      string `orm:"sms_content"` // 短信内容
+	IsEmail         int    `orm:"is_email"`    // 是否发邮件
+	Email           string `orm:"email"`
+	EmailTitle      string `orm:"email_title"`
+	EmailContent    string `orm:"email_content"`
+	IsSend          int    `orm:"is_send"`    // 是否发送
+	MsgTplId        int    `orm:"msg_tpl_id"` // message tpl id
+	CreatedAt       string `orm:"created_at"`
+	UpdatedAt       string `orm:"updated_at"`
+	DeletedAt       string `orm:"deleted_at"`
+	Flag            int    `orm:"flag"`   // -1删除
+	IsPop           int    `orm:"is_pop"` // 1已经出列
+	PushData        string `orm:"push_data"`
+	PlatformKey     string `orm:"platform_key"`
+	IsUcId          int    `orm:"is_uc_id"`
+	SmallTplPath    string `orm:"small_tpl_path"`
+}
+
+type Sm_service_cats struct {
+	Id          int    `orm:"id"`
+	CatName     string `orm:"cat_name"`      // 分类名称
+	CatLogo     string `orm:"cat_logo"`      // 分类logo
+	CatHomeLogo string `orm:"cat_home_logo"` // 用于首页显示的logo
+	CatTags     string `orm:"cat_tags"`      // 分类标签
+	Sort        int    `orm:"sort"`          // 排序 倒序
+	IsShow      int    `orm:"is_show"`
+	Flag        int    `orm:"flag"` // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	Pid         int    `orm:"pid"`
+	Level       int    `orm:"level"`    // 层级
+	IsTopic     int    `orm:"is_topic"` // 是否首页置顶
+	BgColor     string `orm:"bg_color"`
+}
+
+type Sm_users_cart struct {
+	Id            int     `orm:"id"`
+	ServiceId     int     `orm:"service_id"`     // 服务id
+	ServiceSkuId  int     `orm:"service_sku_id"` // sku id
+	ApptId        int     `orm:"appt_id"`        // 对应服务时间id
+	Num           int     `orm:"num"`            // 购物车数量
+	Cuid          int     `orm:"cuid"`           // 用户id
+	UnitPrice     float64 `orm:"unit_price"`     // 售价
+	CostPrice     float64 `orm:"cost_price"`     // 原价
+	ServiceLogo   string  `orm:"service_logo"`
+	ServiceTitle  string  `orm:"service_title"` // 标题
+	ApptTitle     string  `orm:"appt_title"`
+	Flag          int     `orm:"flag"` // 删除标识
+	CreatedAt     string  `orm:"created_at"`
+	UpdatedAt     string  `orm:"updated_at"`
+	AddressId     string  `orm:"address_id"`      // 用户下单的地址id
+	ServiceAreaId int     `orm:"service_area_id"` // 区域id
+	NotAppt       int     `orm:"not_appt"`        // 是否暂时不选择服务区间 0否 1是
+	GjPrice       float64 `orm:"gj_price"`        // 工匠金额
+	IsGjPrice     int     `orm:"is_gj_price"`     // 是否固定工匠金额
+}
+
+type System_log struct {
+	Id        int    `orm:"id"`
+	Content   string `orm:"content"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Marketing_card_tpl struct {
+	Id          int    `orm:"id"`
+	PlatformKey string `orm:"platform_key"`
+	EndTime     int    `orm:"end_time"`    // 到期时间-模板是天数
+	CardLogo    string `orm:"card_logo"`   // 卡片的logo
+	CardPic     string `orm:"card_pic"`    // 卡片图片
+	Num         int    `orm:"num"`         // 预留最大生成数量
+	AreaType    int    `orm:"area_type"`   // 区域类型 0 全国 1省 2 市 3区 4小区
+	ProvinceId  int    `orm:"province_id"` // 省id
+	CityId      int    `orm:"city_id"`     // 市id
+	AreaId      int    `orm:"area_id"`     // 区id
+	HousingId   int    `orm:"housing_id"`  // 小区id
+	Flag        int    `orm:"flag"`        // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	Describe    string `orm:"describe"` // 描述
+	Title       string `orm:"title"`    // 卡券标题
+}
+
+type Partner_area struct {
+	Id         int    `orm:"id"`
+	PartenrId  int    `orm:"partenr_id"`
+	AreaType   int    `orm:"area_type"`   // 0 全国 1全省 2市 3区 4小区
+	ProvinceId int    `orm:"province_id"` // 省id
+	CityId     int    `orm:"city_id"`     // 市id
+	AreaId     int    `orm:"area_id"`     // 区id
+	HousingId  int    `orm:"housing_id"`  // 小区id
+	Flag       int    `orm:"flag"`        // 删除标识
+	CreatedAt  string `orm:"created_at"`
+	UpdatedAt  string `orm:"updated_at"`
+	IsDefault  int    `orm:"is_default"` // 是否默认
+}
+
+type Sm_service_gp struct {
+	Id        int     `orm:"id"`
+	ServiceId int     `orm:"service_id"`  // 服务id
+	Title     string  `orm:"title"`       // 团购标题
+	Content   string  `orm:"content"`     // 富文本
+	AllNum    int     `orm:"all_num"`     // 满足多少成大团
+	ShareNum  int     `orm:"share_num"`   // 满足多少成小团
+	Type      int     `orm:"type"`        // 0满大团 1满小团  2满大小团 5阶梯团 10不管团多少都tm成
+	Price     float64 `orm:"price"`       // 价格
+	CostPrice float64 `orm:"cost_price"`  // 原价
+	BeginTime string  `orm:"begin_time"`  // 开始时间
+	EndTime   string  `orm:"end_time"`    // 到期时间
+	LimitType int     `orm:"limit_type"`  // 拼团区域限制 0不限制sku相等下单  1限制sku相等下单
+	UseMaxNum int     `orm:"use_max_num"` // 当前拼团一个用户最大可拼次数
+	Status    int     `orm:"status"`      // 0未开始  1已开始 10已结束
+	Flag      int     `orm:"flag"`        // 删除标识
+	CreatedAt string  `orm:"created_at"`
+	UpdatedAt string  `orm:"updated_at"`
+	IsShow    int     `orm:"is_show"`     // 是否显示
+	Logo      string  `orm:"logo"`        // 团购Logo
+	Banner    string  `orm:"banner"`      // 团购Banner
+	UseAllNum int     `orm:"use_all_num"` // 大团购数量
+	IsTopic   int     `orm:"is_topic"`
+	SkuName   string  `orm:"sku_name"` // sku name
+	IsVip     int     `orm:"is_vip"`   // 是否需要会员购买
+}
+
+type Admin_packet struct {
+	Id         int    `orm:"id"`
+	Name       string `orm:"name"`       // 数据包名
+	Title      string `orm:"title"`      // 数据包标题
+	Author     string `orm:"author"`     // 作者
+	AuthorUrl  string `orm:"author_url"` // 作者url
+	Version    string `orm:"version"`
+	Tables     string `orm:"tables"`      // 数据表名
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	Status     int    `orm:"status"`      // 状态
+}
+
+type Face_device struct {
+	Id            int     `orm:"id"`
+	Name          string  `orm:"name"`           // 设备名字
+	Describe      string  `orm:"describe"`       // 设备描述
+	Address       string  `orm:"address"`        // 详细地址
+	Mac           string  `orm:"mac"`            // 设备mac
+	Sign          string  `orm:"sign"`           // 设备sign
+	Cmd           int     `orm:"cmd"`            // 荔枝默认14
+	RelayOpenVol  int     `orm:"relay_open_vol"` // 继电器极性
+	ChkFacePose   int     `orm:"chk_face_pose"`  // 正脸判断使能
+	FaceThreshold int     `orm:"face_threshold"` // 不传则表示不修改。识别阈值，范围1-100。建议80
+	LedBright     float64 `orm:"led_bright"`     // 不传则表示不修改。补光灯亮度调节，如0.1， 0.01
+	RelayOpenS    int     `orm:"relay_open_s"`   // 不传则表示不修改。继电器开光延时，可选1，2，3等
+	Flag          int     `orm:"flag"`           // 删除标识
+	CreatedAt     string  `orm:"created_at"`
+	UpdatedAt     string  `orm:"updated_at"`
+	IsDelete      int     `orm:"is_delete"`    // 是否远程删除
+	NetworkType   int     `orm:"network_type"` // 0 wifi 1网口 2 4G
+	NetworkData   string  `orm:"network_data"` // 联网配置参数存储
+}
+
+type Face_check_log struct {
+	Id        int    `orm:"id"`
+	Mac       string `orm:"mac"`       // 设备mac
+	DeviceId  int    `orm:"device_id"` // 设备id
+	CloudUid  string `orm:"cloud_uid"`
+	Photo     string `orm:"photo"`      // 图像
+	CloudTime int    `orm:"cloud_time"` // 云端时间
+	PhotoHash string `orm:"photo_hash"` // hash
+	FaceUid   int    `orm:"face_uid"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Marketing_card_tpl_service struct {
+	Id            int     `orm:"id"`
+	CardTplId     int     `orm:"card_tpl_id"`
+	ServiceId     int     `orm:"service_id"`     // 服务id
+	ServiceSkuId  int     `orm:"service_sku_id"` // sku id
+	CostPrice     float64 `orm:"cost_price"`     // 原价单价
+	UnitPrice     float64 `orm:"unit_price"`     // 单价
+	Num           int     `orm:"num"`            // 数量
+	Flag          int     `orm:"flag"`           // 删除标识
+	CreatedAt     string  `orm:"created_at"`
+	UpdatedAt     string  `orm:"updated_at"`
+	ServiceTitle  string  `orm:"service_title"` // 标题
+	SkuName       string  `orm:"sku_name"`      // sku 名称
+	ServiceAreaId int     `orm:"service_area_id"`
+}
+
+type Marketing_packet_tpl struct {
+	Id          int     `orm:"id"`
+	Price       float64 `orm:"price"`
+	Title       string  `orm:"title"`
+	Describe    string  `orm:"describe"` // 描述
+	Type        string  `orm:"type"`     // 来源渠道
+	Flag        int     `orm:"flag"`     // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	PlatformKey string  `orm:"platform_key"`
+}
+
 type Sm_service_area struct {
 	Id         int    `orm:"id"`
 	Title      string `orm:"title"`
@@ -496,79 +637,6 @@ type Sm_service_area struct {
 	Flag       int    `orm:"flag"`        // 删除标识
 	CreatedAt  string `orm:"created_at"`
 	UpdatedAt  string `orm:"updated_at"`
-}
-
-type Sm_users struct {
-	Id              int     `orm:"id"`
-	Cuid            int     `orm:"cuid"`
-	Longitude       float64 `orm:"longitude"`
-	Latitude        float64 `orm:"latitude"`
-	IsSetArea       int     `orm:"is_set_area"`
-	AreaName        string  `orm:"area_name"`        // 当前区域的名称
-	AreaLevel       int     `orm:"area_level"`       // 0省1市 2区 3小区
-	AddreaaCheckId  int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
-	Flag            int     `orm:"flag"`             // 删除标识
-	CreatedAt       string  `orm:"created_at"`
-	UpdatedAt       string  `orm:"updated_at"`
-	IsNewUser       int     `orm:"is_new_user"`        // 是否是当前端新用户
-	IsGjAuth        int     `orm:"is_gj_auth"`         // 是否工匠认证 0否 1认证中 2已认证 -1驳回
-	GjIdcardTop     string  `orm:"gj_idcard_top"`      // 身份证正面
-	GjIdcardBom     string  `orm:"gj_idcard_bom"`      // 身份证背面
-	GjIdcardId      string  `orm:"gj_idcard_id"`       // 身份证号码
-	GjIdcardEndTime string  `orm:"gj_idcard_end_time"` // 到期时间
-	GjIdcardAddress string  `orm:"gj_idcard_address"`  // 身份证地址
-	GjName          string  `orm:"gj_name"`            // 认证姓名
-	GjAvatar        string  `orm:"gj_avatar"`          // 工匠头像
-	GjProvinceId    int     `orm:"gj_province_id"`     // 省id
-	GjCityId        int     `orm:"gj_city_id"`         // 市id
-	GjAreaId        int     `orm:"gj_area_id"`         // 区id
-	GjAreaLevel     int     `orm:"gj_area_level"`      // 区域等级 0省 1市 2区
-	GjMobile        string  `orm:"gj_mobile"`          // 工匠认证手机号
-	GjDesc          string  `orm:"gj_desc"`            // 工匠介绍
-	GjSfCuid        int     `orm:"gj_sf_cuid"`         // 师傅id
-	IsSf            int     `orm:"is_sf"`              // 是否师父
-	GjErrMsg        string  `orm:"gj_err_msg"`         // 认证失败文案
-	SfTime          string  `orm:"sf_time"`            // 出师日期
-}
-
-type Ucenter_openid struct {
-	Id          int    `orm:"id"`
-	Cuid        int    `orm:"cuid"`         // ucenter id
-	PlatformKey string `orm:"platform_key"` // 平台key
-	Type        string `orm:"type"`         // 类型 wechat ali app
-	Flag        int    `orm:"flag"`         // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	Openid      string `orm:"openid"`
-}
-
-type Admin_log struct {
-	Id         int    `orm:"id"`          // 主键
-	ActionId   int    `orm:"action_id"`   // 行为id
-	UserId     int    `orm:"user_id"`     // 执行用户id
-	ActionIp   int    `orm:"action_ip"`   // 执行行为者ip
-	Model      string `orm:"model"`       // 触发行为的表
-	RecordId   int    `orm:"record_id"`   // 触发行为的数据id
-	Remark     string `orm:"remark"`      // 日志备注
-	Status     int    `orm:"status"`      // 状态
-	CreateTime int    `orm:"create_time"` // 执行行为的时间
-}
-
-type Partner_users struct {
-	Id        int     `orm:"id"`
-	Username  string  `orm:"username"`  // 账号
-	Password  string  `orm:"password"`  // 密码
-	Mobile    string  `orm:"mobile"`    // 手机号
-	Nickname  string  `orm:"nickname"`  // 昵称
-	Email     string  `orm:"email"`     // 邮箱
-	Gender    string  `orm:"gender"`    // 性别
-	Status    int     `orm:"status"`    // 状态 0停用 1启用
-	RoleType  int     `orm:"role_type"` // 0无权限 1小区合伙人 2区县级合伙人 3城市合伙人 4省合伙人
-	Flag      int     `orm:"flag"`      // 删除标识
-	CreatedAt string  `orm:"created_at"`
-	UpdatedAt string  `orm:"updated_at"`
-	Describe  string  `orm:"describe"`
-	Money     float64 `orm:"money"` // 余额
 }
 
 type Sm_users_service struct {
@@ -610,24 +678,11 @@ type Sm_users_service struct {
 	ServiceSeckillId int     `orm:"service_seckill_id"`
 	Describe         string  `orm:"describe"`
 	Pics             string  `orm:"pics"`
-}
-
-type System_banner struct {
-	Id          int    `orm:"id"`
-	Title       string `orm:"title"`    // 标题
-	Describe    string `orm:"describe"` // 描述
-	Banner      string `orm:"banner"`
-	GotoType    int    `orm:"goto_type"` // 0不转跳 1单页 2path
-	Path        string `orm:"path"`      // 路径
-	Param       string `orm:"param"`     // 页面参数 或者id
-	PlatformKey string `orm:"platform_key"`
-	IsShow      int    `orm:"is_show"`
-	Sort        int    `orm:"sort"`
-	Flag        int    `orm:"flag"` // 删除标识
-	UpdatedAt   string `orm:"updated_at"`
-	CreatedAt   string `orm:"created_at"`
-	BannerKey   string `orm:"banner_key"`
-	VideoUrl    string `orm:"video_url"`
+	IsNewWork        int     `orm:"is_new_work"` // 多工人订单-后结算
+	IsJiesuan        int     `orm:"is_jiesuan"`
+	TotalFrPrice     float64 `orm:"total_fr_price"`   // 总分润出去的金额
+	TotalWorkPrice   float64 `orm:"total_work_price"` // 总工人金额
+	AdminDesc        string  `orm:"admin_desc"`
 }
 
 type Ucenter_bank struct {
@@ -642,455 +697,6 @@ type Ucenter_bank struct {
 	Flag        int    `orm:"flag"` // 删除标识
 	CreatedAt   string `orm:"created_at"`
 	UpdatedAt   string `orm:"updated_at"`
-}
-
-type Admin_module struct {
-	Id           int    `orm:"id"`
-	Name         string `orm:"name"`          // 模块名称（标识）
-	Title        string `orm:"title"`         // 模块标题
-	Icon         string `orm:"icon"`          // 图标
-	Description  string `orm:"description"`   // 描述
-	Author       string `orm:"author"`        // 作者
-	AuthorUrl    string `orm:"author_url"`    // 作者主页
-	Config       string `orm:"config"`        // 配置信息
-	Access       string `orm:"access"`        // 授权配置
-	Version      string `orm:"version"`       // 版本号
-	Identifier   string `orm:"identifier"`    // 模块唯一标识符
-	SystemModule int    `orm:"system_module"` // 是否为系统模块
-	CreateTime   int    `orm:"create_time"`   // 创建时间
-	UpdateTime   int    `orm:"update_time"`   // 更新时间
-	Sort         int    `orm:"sort"`          // 排序
-	Status       int    `orm:"status"`        // 状态
-}
-
-type Log struct {
-	Id        int    `orm:"id"`
-	Content   string `orm:"content"`
-	Flag      int    `orm:"flag"` // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type Marketing_pw struct {
-	Id          int     `orm:"id"`
-	PwName      string  `orm:"pw_name"`  // 转盘名称
-	Describe    string  `orm:"describe"` // 描述
-	PlatformKey string  `orm:"platform_key"`
-	MinPrice    float64 `orm:"min_price"`  // 最低达成金额
-	Background  string  `orm:"background"` // 背景图
-	ShareNum    int     `orm:"share_num"`  // 需要分享人数量
-	Circle      int     `orm:"circle"`     // 周期 天
-	BeginTime   string  `orm:"begin_time"` // 开始时间
-	IsStart     int     `orm:"is_start"`   // 是否开始
-	Flag        int     `orm:"flag"`       // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
-	RuleContent string  `orm:"rule_content"` // 规则描述富文本
-}
-
-type Sm_service_sku struct {
-	Id            int     `orm:"id"`
-	ServiceId     int     `orm:"service_id"` // 服务id
-	SkuName       string  `orm:"sku_name"`   // sku名称
-	Describe      string  `orm:"describe"`   // 描述
-	SkuLogo       string  `orm:"sku_logo"`   // logo 小图标
-	Price         float64 `orm:"price"`      // 售价
-	CostPrice     float64 `orm:"cost_price"` // 原价
-	SpNum         int     `orm:"sp_num"`     // 单个人可以购买促销产品数量
-	SpType        int     `orm:"sp_type"`    // 促销类型 0非促销 1新用户首单限定 2当前sku限定 3当前商品限定  10捆绑销售
-	Sort          int     `orm:"sort"`       // 排序
-	Flag          int     `orm:"flag"`       // 删除标识
-	CreatedAt     string  `orm:"created_at"`
-	UpdatedAt     string  `orm:"updated_at"`
-	Stock         int     `orm:"stock"`           // 库存
-	ApptTplId     int     `orm:"appt_tpl_id"`     // 预生成模板id
-	ServiceAreaId int     `orm:"service_area_id"` // 区域id
-	GjPrice       float64 `orm:"gj_price"`        // 工匠金额
-	IsGjPrice     int     `orm:"is_gj_price"`     // 是否固定工匠金额
-	SkuTagId      int     `orm:"sku_tag_id"`      // SKU标识
-}
-
-type Marketing_pw_orders struct {
-	Id          int    `orm:"id"`
-	Cuid        int    `orm:"cuid"`
-	PlatformKey string `orm:"platform_key"`
-	PwId        int    `orm:"pw_id"`
-	PwPrizeId   int    `orm:"pw_prize_id"`
-	ShareNum    int    `orm:"share_num"` // 需要分享多少人
-	UseNum      int    `orm:"use_num"`   // 已经分享多少人
-	Status      int    `orm:"status"`    // 0创建 1成功 -1未达成
-	Flag        int    `orm:"flag"`      // 删除标识
-	UpdatedAt   string `orm:"updated_at"`
-	CreatedAt   string `orm:"created_at"`
-}
-
-type Marketing_score_rule struct {
-	Id          int    `orm:"id"`
-	Name        string `orm:"name"`         // 积分模板名称
-	ClientTitle string `orm:"client_title"` // 获取积分标题
-	PlatformKey string `orm:"platform_key"` // 平台key
-	Score       int    `orm:"score"`        // 获取积分
-	Status      int    `orm:"status"`       // 是否开启
-	IsOne       int    `orm:"is_one"`       // 是否只能获取一次
-	Flag        int    `orm:"flag"`         // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	ScoreKey    string `orm:"score_key"` // 唯一标识key
-}
-
-type Message struct {
-	Id              int    `orm:"id"`
-	Cuid            int    `orm:"cuid"`
-	MessageKey      string `orm:"message_key"`
-	Title           string `orm:"title"`        // 标题
-	Desc            string `orm:"desc"`         // 描述
-	Content         string `orm:"content"`      // 内容
-	MessageType     int    `orm:"message_type"` // 消息类型
-	PathType        string `orm:"path_type"`    // 链接类型
-	PathId          string `orm:"path_id"`      // 链接id
-	IsFormId        int    `orm:"is_form_id"`   // 是否消息模板
-	SmallTplId      string `orm:"small_tpl_id"` // 消息模板id
-	SmallTplContent string `orm:"small_tpl_content"`
-	SmallTplOpenid  string `orm:"small_tpl_openid"`
-	IsSms           int    `orm:"is_sms"` // 是否发送短信
-	Mobile          string `orm:"mobile"`
-	SmsContent      string `orm:"sms_content"` // 短信内容
-	IsEmail         int    `orm:"is_email"`    // 是否发邮件
-	Email           string `orm:"email"`
-	EmailTitle      string `orm:"email_title"`
-	EmailContent    string `orm:"email_content"`
-	MsgTplId        int    `orm:"msg_tpl_id"`   // message tpl id
-	PlatformKey     string `orm:"platform_key"` // 平台key
-	PushData        string `orm:"push_data"`
-	Flag            int    `orm:"flag"` // -1删除
-	CreatedAt       string `orm:"created_at"`
-	UpdatedAt       string `orm:"updated_at"`
-	IsRead          int    `orm:"is_read"` // 是否已读
-}
-
-type Message_queue struct {
-	Id              int    `orm:"id"`
-	Cuid            int    `orm:"cuid"`
-	MessageKey      string `orm:"message_key"`
-	Title           string `orm:"title"`        // 标题
-	Desc            string `orm:"desc"`         // 描述
-	Content         string `orm:"content"`      // 内容
-	MessageType     int    `orm:"message_type"` // 消息类型
-	PathType        string `orm:"path_type"`    // 链接类型
-	PathId          string `orm:"path_id"`      // 链接id
-	IsFormId        int    `orm:"is_form_id"`   // 是否消息模板
-	SmallTplId      string `orm:"small_tpl_id"` // 消息模板id
-	SmallTplContent string `orm:"small_tpl_content"`
-	SmallTplOpenid  string `orm:"small_tpl_openid"`
-	IsSms           int    `orm:"is_sms"` // 是否发送短信
-	Mobile          string `orm:"mobile"`
-	SmsContent      string `orm:"sms_content"` // 短信内容
-	IsEmail         int    `orm:"is_email"`    // 是否发邮件
-	Email           string `orm:"email"`
-	EmailTitle      string `orm:"email_title"`
-	EmailContent    string `orm:"email_content"`
-	IsSend          int    `orm:"is_send"`    // 是否发送
-	MsgTplId        int    `orm:"msg_tpl_id"` // message tpl id
-	CreatedAt       string `orm:"created_at"`
-	UpdatedAt       string `orm:"updated_at"`
-	DeletedAt       string `orm:"deleted_at"`
-	Flag            int    `orm:"flag"`   // -1删除
-	IsPop           int    `orm:"is_pop"` // 1已经出列
-	PushData        string `orm:"push_data"`
-	PlatformKey     string `orm:"platform_key"`
-	IsUcId          int    `orm:"is_uc_id"`
-	SmallTplPath    string `orm:"small_tpl_path"`
-}
-
-type Sm_service_appt_item_tpl struct {
-	Id        int    `orm:"id"`
-	ApptTplId int    `orm:"appt_tpl_id"` // 模板tplid
-	BeginTime string `orm:"begin_time"`  // 开始时间
-	EndTime   string `orm:"end_time"`    // 结束时间
-	Title     string `orm:"title"`       // 用于前台展示
-	Sort      int    `orm:"sort"`        // 排序
-	IsShow    int    `orm:"is_show"`     // 是否显示
-	Num       int    `orm:"num"`         // 可预约次数
-	Flag      int    `orm:"flag"`        // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type System_config struct {
-	Id          int    `orm:"id"`
-	K           string `orm:"k"`            // key
-	V           string `orm:"v"`            // value
-	Title       string `orm:"title"`        // 标题
-	Describe    string `orm:"describe"`     // 描述
-	PlatformKey string `orm:"platform_key"` // platform_key  如果全局写ALL
-	Flag        int    `orm:"flag"`         // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-}
-
-type Ucenter_commission struct {
-	Id            int    `orm:"id"`
-	PlatformKey   string `orm:"platform_key"`    // 平台key
-	AllShareScale int    `orm:"all_share_scale"` // 分享最大比例
-	AllOptScale   int    `orm:"all_opt_scale"`   // 其他收益最大比例
-	ShareLv1Scale int    `orm:"share_lv1_scale"` // 分享一级
-	ShareLv2Scale int    `orm:"share_lv2_scale"` // 分享二级
-	OptLv1Scale   int    `orm:"opt_lv1_scale"`   // 其他收益一级
-	OptLv2Scale   int    `orm:"opt_lv2_scale"`   // 其他收益二级
-	Status        int    `orm:"status"`          // 0停用 1启用
-	Flag          int    `orm:"flag"`            // 删除标识
-	CreatedAt     string `orm:"created_at"`
-	UpdatedAt     string `orm:"updated_at"`
-}
-
-type Helper struct {
-	Id          int    `orm:"id"`
-	CatId       int    `orm:"cat_id"`
-	Title       string `orm:"title"`   // 标题
-	Content     string `orm:"content"` // 富文本
-	Logo        string `orm:"logo"`    // logo
-	Sort        int    `orm:"sort"`    // 排序
-	Flag        int    `orm:"flag"`    // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	PlatformKey string `orm:"platform_key"`
-	IsTopic     int    `orm:"is_topic"`
-	IsShow      int    `orm:"is_show"` // 是否显示
-}
-
-type Sm_service_gp_level struct {
-	Id          int     `orm:"id"`
-	ServiceGpId int     `orm:"service_gp_id"` // 团购id
-	Level       int     `orm:"level"`         // 等级
-	Price       float64 `orm:"price"`         // 达成价格
-	Flag        int     `orm:"flag"`          // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
-	Title       string  `orm:"title"` // 标题
-	Num         int     `orm:"num"`   // 最低达成人数
-}
-
-type Sm_service_seckill struct {
-	Id        int     `orm:"id"`
-	ServiceId int     `orm:"service_id"` // 服务id
-	Title     string  `orm:"title"`      // 秒杀标题
-	Content   string  `orm:"content"`    // 富文本
-	Price     float64 `orm:"price"`      // 价格
-	CostPrice float64 `orm:"cost_price"` // 原价
-	BeginTime string  `orm:"begin_time"` // 开始时间
-	EndTime   string  `orm:"end_time"`   // 到期时间
-	LimitType int     `orm:"limit_type"` // 拼团区域限制 0不限制sku相等下单  1限制sku相等下单
-	Status    int     `orm:"status"`     // 0未开始  1已开始 10已结束
-	Logo      string  `orm:"logo"`       // 秒杀Logo
-	Banner    string  `orm:"banner"`     // 秒杀 Banner
-	Num       int     `orm:"num"`        // 秒杀数量
-	UseNum    int     `orm:"use_num"`    // 已秒数量
-	IsTopic   int     `orm:"is_topic"`
-	Flag      int     `orm:"flag"` // 删除标识
-	CreatedAt string  `orm:"created_at"`
-	UpdatedAt string  `orm:"updated_at"`
-	SkuName   string  `orm:"sku_name"` // sku name
-	IsShow    int     `orm:"is_show"`  // 是否显示
-}
-
-type Sm_users_service_gp struct {
-	Id             int    `orm:"id"`
-	ServiceId      int    `orm:"service_id"`       // 服务id
-	ServiceGpId    int    `orm:"service_gp_id"`    // 服务拼团id
-	ServiceSkuId   int    `orm:"service_sku_id"`   // 服务sku
-	OrderId        int    `orm:"order_id"`         // 订单id
-	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
-	Cuid           int    `orm:"cuid"`
-	Status         int    `orm:"status"` // -1结束 0未支付 1支付 2完成
-	Flag           int    `orm:"flag"`   // 删除标识
-	CreatedAt      string `orm:"created_at"`
-	UpdatedAt      string `orm:"updated_at"`
-	Num            int    `orm:"num"`
-}
-
-type Marketing_packet struct {
-	Id          int     `orm:"id"`
-	Cuid        int     `orm:"cuid"`
-	Price       float64 `orm:"price"`
-	Title       string  `orm:"title"`
-	Describe    string  `orm:"describe"` // 描述
-	Status      int     `orm:"status"`   // 0正常 1使用 -1过期或者禁用
-	Type        string  `orm:"type"`     // 来源渠道
-	Flag        int     `orm:"flag"`     // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
-	PlatformKey string  `orm:"platform_key"`
-	PacketNo    string  `orm:"packet_no"`
-	SCuid       int     `orm:"s_cuid"` // 来源用户
-}
-
-type Sm_service_gp struct {
-	Id        int     `orm:"id"`
-	ServiceId int     `orm:"service_id"`  // 服务id
-	Title     string  `orm:"title"`       // 团购标题
-	Content   string  `orm:"content"`     // 富文本
-	AllNum    int     `orm:"all_num"`     // 满足多少成大团
-	ShareNum  int     `orm:"share_num"`   // 满足多少成小团
-	Type      int     `orm:"type"`        // 0满大团 1满小团  2满大小团 5阶梯团 10不管团多少都tm成
-	Price     float64 `orm:"price"`       // 价格
-	CostPrice float64 `orm:"cost_price"`  // 原价
-	BeginTime string  `orm:"begin_time"`  // 开始时间
-	EndTime   string  `orm:"end_time"`    // 到期时间
-	LimitType int     `orm:"limit_type"`  // 拼团区域限制 0不限制sku相等下单  1限制sku相等下单
-	UseMaxNum int     `orm:"use_max_num"` // 当前拼团一个用户最大可拼次数
-	Status    int     `orm:"status"`      // 0未开始  1已开始 10已结束
-	Flag      int     `orm:"flag"`        // 删除标识
-	CreatedAt string  `orm:"created_at"`
-	UpdatedAt string  `orm:"updated_at"`
-	IsShow    int     `orm:"is_show"`     // 是否显示
-	Logo      string  `orm:"logo"`        // 团购Logo
-	Banner    string  `orm:"banner"`      // 团购Banner
-	UseAllNum int     `orm:"use_all_num"` // 大团购数量
-	IsTopic   int     `orm:"is_topic"`
-	SkuName   string  `orm:"sku_name"` // sku name
-}
-
-type Sm_service_seckill_sku struct {
-	Id               int    `orm:"id"`
-	ServiceId        int    `orm:"service_id"`
-	ServiceSeckillId int    `orm:"service_seckill_id"`
-	ServiceAreaId    int    `orm:"service_area_id"` // 区域id
-	ServiceSkuId     int    `orm:"service_sku_id"`  // sku id
-	Flag             int    `orm:"flag"`            // 删除标识
-	CreatedAt        string `orm:"created_at"`
-	UpdatedAt        string `orm:"updated_at"`
-}
-
-type Sm_users_address struct {
-	Id             int     `orm:"id"`
-	AdrName        string  `orm:"adr_name"`      // 选择地址名称
-	AdrLatitude    float64 `orm:"adr_latitude"`  // 维度
-	AdrLongitude   float64 `orm:"adr_longitude"` // 经度
-	Address        string  `orm:"address"`       // 详细门牌号
-	Cuid           int     `orm:"cuid"`
-	IsDefault      int     `orm:"is_default"` // 是否默认
-	Name           string  `orm:"name"`       // 姓名
-	Mobile         string  `orm:"mobile"`     // 手机号
-	Flag           int     `orm:"flag"`       // 删除标识
-	CreatedAt      string  `orm:"created_at"`
-	UpdatedAt      string  `orm:"updated_at"`
-	AreaLevel      int     `orm:"area_level"`       // 0省1市 2区 3小区
-	AddreaaCheckId int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
-}
-
-type Sm_users_comment struct {
-	Id             int    `orm:"id"`
-	ServiceId      int    `orm:"service_id"`       // 服务id
-	ApptId         int    `orm:"appt_id"`          // 服务区间
-	ServiceSkuId   int    `orm:"service_sku_id"`   // 服务sku
-	OrderId        int    `orm:"order_id"`         // 订单id
-	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
-	ServiceAreaId  int    `orm:"service_area_id"`  // 区域id
-	Cuid           int    `orm:"cuid"`
-	Type           int    `orm:"type"` // 0用户 1商家
-	Content        string `orm:"content"`
-	Pics           string `orm:"pics"`
-	VideoUrl       string `orm:"video_url"`
-	Flag           int    `orm:"flag"` // 删除标识
-	CreatedAt      string `orm:"created_at"`
-	UpdatedAt      string `orm:"updated_at"`
-	Avatar         string `orm:"avatar"`   // 备份头像
-	Nickname       string `orm:"nickname"` // 备份昵称
-	Star           int    `orm:"star"`     // 星 1非常不满意 2不满意 3一般 4满意 5 非常满意
-	Tags           string `orm:"tags"`
-	IsOld          int    `orm:"is_old"` // 老数据
-}
-
-type Ucenter_address struct {
-	Id             int     `orm:"id"`
-	AdrName        string  `orm:"adr_name"`      // 选择地址名称
-	AdrLatitude    float64 `orm:"adr_latitude"`  // 维度
-	AdrLongitude   float64 `orm:"adr_longitude"` // 经度
-	Address        string  `orm:"address"`       // 详细门牌号
-	Cuid           int     `orm:"cuid"`
-	IsDefault      int     `orm:"is_default"` // 是否默认
-	Name           string  `orm:"name"`       // 姓名
-	Mobile         string  `orm:"mobile"`     // 手机号
-	Flag           int     `orm:"flag"`       // 删除标识
-	CreatedAt      string  `orm:"created_at"`
-	UpdatedAt      string  `orm:"updated_at"`
-	AreaLevel      int     `orm:"area_level"`       // 0省1市 2区 3小区
-	AddreaaCheckId int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
-	PlatformKey    string  `orm:"platform_key"`     // 平台key
-}
-
-type Ucenter_collect struct {
-	Id          int    `orm:"id"`
-	ProjectType string `orm:"project_type"` // 项目类型
-	PlatformKey string `orm:"platform_key"` // 平台key
-	Cuid        int    `orm:"cuid"`         // 用户id
-	ProjectId   int    `orm:"project_id"`   // 项目id
-	Flag        int    `orm:"flag"`         // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-}
-
-type Admin_access struct {
-	Module string `orm:"module"` // 模型名称
-	Group  string `orm:"group"`  // 权限分组标识
-	Uid    int    `orm:"uid"`    // 用户id
-	Nid    string `orm:"nid"`    // 授权节点id
-	Tag    string `orm:"tag"`    // 分组标签
-}
-
-type Admin_message struct {
-	Id         int    `orm:"id"`
-	UidReceive int    `orm:"uid_receive"` // 接收消息的用户id
-	UidSend    int    `orm:"uid_send"`    // 发送消息的用户id
-	Type       string `orm:"type"`        // 消息分类
-	Content    string `orm:"content"`     // 消息内容
-	Status     int    `orm:"status"`      // 状态
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	ReadTime   int    `orm:"read_time"`   // 阅读时间
-}
-
-type Marketing_packet_tpl struct {
-	Id          int     `orm:"id"`
-	Price       float64 `orm:"price"`
-	Title       string  `orm:"title"`
-	Describe    string  `orm:"describe"` // 描述
-	Type        string  `orm:"type"`     // 来源渠道
-	Flag        int     `orm:"flag"`     // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
-	PlatformKey string  `orm:"platform_key"`
-}
-
-type Marketing_pw_prize struct {
-	Id         int     `orm:"id"`
-	PwId       int     `orm:"pw_id"`       // 转盘id
-	PrizeTitle string  `orm:"prize_title"` // 奖品名称
-	PrizeType  int     `orm:"prize_type"`  // 上门端0红包 1优惠券 2服务 10冇
-	ProjectId  int     `orm:"project_id"`  // 项目id
-	ProjectTag string  `orm:"project_tag"` // 比如skutag  优惠券id
-	Price      float64 `orm:"price"`       // 实际金额 - 红包类直接使用这个
-	CostPrice  float64 `orm:"cost_price"`  // 原价
-	Icon       string  `orm:"icon"`        // ICON
-	Scale      int     `orm:"scale"`       // 获奖比例
-	Flag       int     `orm:"flag"`
-	CreatedAt  string  `orm:"created_at"`
-	UpdatedAt  string  `orm:"updated_at"`
-	Status     int     `orm:"status"`   // 0未开启 1开启
-	Describe   string  `orm:"describe"` // 中奖描述
-}
-
-type Ucenter_feedback struct {
-	Id          int    `orm:"id"`
-	Uname       string `orm:"uname"`
-	Mobile      string `orm:"mobile"`
-	Content     string `orm:"content"`
-	Cuid        int    `orm:"cuid"`
-	Flag        int    `orm:"flag"` // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	PlatformKey string `orm:"platform_key"`
-	IsBlack     int    `orm:"is_black"` // 是否是黑名单提交
 }
 
 type Admin_attachment struct {
@@ -1116,6 +722,164 @@ type Admin_attachment struct {
 	Height     int    `orm:"height"`      // 图片高度
 }
 
+type Admin_hook struct {
+	Id          int    `orm:"id"`
+	Name        string `orm:"name"`        // 钩子名称
+	Plugin      string `orm:"plugin"`      // 钩子来自哪个插件
+	Description string `orm:"description"` // 钩子描述
+	System      int    `orm:"system"`      // 是否为系统钩子
+	CreateTime  int    `orm:"create_time"` // 创建时间
+	UpdateTime  int    `orm:"update_time"` // 更新时间
+	Status      int    `orm:"status"`      // 状态
+}
+
+type Admin_message struct {
+	Id         int    `orm:"id"`
+	UidReceive int    `orm:"uid_receive"` // 接收消息的用户id
+	UidSend    int    `orm:"uid_send"`    // 发送消息的用户id
+	Type       string `orm:"type"`        // 消息分类
+	Content    string `orm:"content"`     // 消息内容
+	Status     int    `orm:"status"`      // 状态
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	ReadTime   int    `orm:"read_time"`   // 阅读时间
+}
+
+type Partner_accounts struct {
+	Id         int     `orm:"id"`
+	PartnerId  int     `orm:"partner_id"`  // 合伙人id
+	OrderId    int     `orm:"order_id"`    // 订单id
+	Price      float64 `orm:"price"`       // 到账金额
+	AreaType   int     `orm:"area_type"`   // 0 全国 1全省 2市 3区 4小区
+	HousingId  int     `orm:"housing_id"`  // 小区id
+	ProvinceId int     `orm:"province_id"` // 省id
+	CityId     int     `orm:"city_id"`     // 市id
+	AreaId     int     `orm:"area_id"`     // 区id
+	Flag       int     `orm:"flag"`        // 删除标识
+	CreatedAt  string  `orm:"created_at"`
+	UpdatedAt  string  `orm:"updated_at"`
+}
+
+type Sm_quck_pay_orders struct {
+	Id         int     `orm:"id"`
+	Title      string  `orm:"title"`    // 标题
+	Describe   string  `orm:"describe"` // 描述
+	Logo       string  `orm:"logo"`
+	Background string  `orm:"background"` // 背景图
+	Price      float64 `orm:"price"`      // 支付金额
+	Images     string  `orm:"images"`
+	Flag       int     `orm:"flag"` // 删除标识
+	CreatedAt  string  `orm:"created_at"`
+	UpdatedAt  string  `orm:"updated_at"`
+	IsShow     int     `orm:"is_show"`
+	Cuid       int     `orm:"cuid"`
+	QuckPayId  int     `orm:"quck_pay_id"`
+	OrderId    int     `orm:"order_id"`
+	IsPay      int     `orm:"is_pay"` // 0待支付 1支付
+	Status     int     `orm:"status"` // 0待支付 1支付
+}
+
+type Sm_service_appt struct {
+	Id            int    `orm:"id"`
+	ApptItemTplId int    `orm:"appt_item_tpl_id"` // 对应服务时间名
+	BeginTime     string `orm:"begin_time"`       // 开始时间
+	EndTime       string `orm:"end_time"`         // 结束时间
+	Title         string `orm:"title"`            // 用于前台展示
+	Sort          int    `orm:"sort"`             // 排序
+	IsShow        int    `orm:"is_show"`          // 是否显示
+	Num           int    `orm:"num"`              // 可预约次数
+	Status        int    `orm:"status"`           // 0待预约 1已约满  9暂停预约 -1禁止预约
+	UseNum        int    `orm:"use_num"`          // 已预约人数
+	AreaType      int    `orm:"area_type"`        // 限定区域范围等级 0全国 1省 2市 3区 4小区
+	ProvinceId    int    `orm:"province_id"`      // 省id
+	CityId        int    `orm:"city_id"`          // 市id
+	AreaId        int    `orm:"area_id"`          // 区id
+	HousingId     int    `orm:"housing_id"`       // 小区id
+	CreatedAt     string `orm:"created_at"`
+	ServiceId     int    `orm:"service_id"`     // 服务id
+	ServiceSkuId  int    `orm:"service_sku_id"` // sku id
+	UpdatedAt     string `orm:"updated_at"`
+	Flag          int    `orm:"flag"`        // 删除标识
+	ApptDate      string `orm:"appt_date"`   // 预约日期
+	ApptTplId     int    `orm:"appt_tpl_id"` // 预生成模板id
+	ServiceAreaId int    `orm:"service_area_id"`
+}
+
+type Sm_service_log struct {
+	Id             int    `orm:"id"`
+	ServiceId      int    `orm:"service_id"`
+	ServiceSkuId   int    `orm:"service_sku_id"`   // sku id
+	ServiceAreaId  int    `orm:"service_area_id"`  // 区域id
+	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
+	Cuid           int    `orm:"cuid"`
+	Content        string `orm:"content"`
+	Pics           string `orm:"pics"`
+	Avatar         string `orm:"avatar"`   // 备份头像
+	Nickname       string `orm:"nickname"` // 备份昵称
+	Flag           int    `orm:"flag"`     // 删除标识
+	CreatedAt      string `orm:"created_at"`
+	UpdatedAt      string `orm:"updated_at"`
+}
+
+type Sm_service_seckill_sku struct {
+	Id               int    `orm:"id"`
+	ServiceId        int    `orm:"service_id"`
+	ServiceSeckillId int    `orm:"service_seckill_id"`
+	ServiceAreaId    int    `orm:"service_area_id"` // 区域id
+	ServiceSkuId     int    `orm:"service_sku_id"`  // sku id
+	Flag             int    `orm:"flag"`            // 删除标识
+	CreatedAt        string `orm:"created_at"`
+	UpdatedAt        string `orm:"updated_at"`
+}
+
+type Admin_config struct {
+	Id         int    `orm:"id"`
+	Name       string `orm:"name"`        // 名称
+	Title      string `orm:"title"`       // 标题
+	Group      string `orm:"group"`       // 配置分组
+	Type       string `orm:"type"`        // 类型
+	Value      string `orm:"value"`       // 配置值
+	Options    string `orm:"options"`     // 配置项
+	Tips       string `orm:"tips"`        // 配置提示
+	AjaxUrl    string `orm:"ajax_url"`    // 联动下拉框ajax地址
+	NextItems  string `orm:"next_items"`  // 联动下拉框的下级下拉框名，多个以逗号隔开
+	Param      string `orm:"param"`       // 联动下拉框请求参数名
+	Format     string `orm:"format"`      // 格式，用于格式文本
+	Table      string `orm:"table"`       // 表名，只用于快速联动类型
+	Level      int    `orm:"level"`       // 联动级别，只用于快速联动类型
+	Key        string `orm:"key"`         // 键字段，只用于快速联动类型
+	Option     string `orm:"option"`      // 值字段，只用于快速联动类型
+	Pid        string `orm:"pid"`         // 父级id字段，只用于快速联动类型
+	Ak         string `orm:"ak"`          // 百度地图appkey
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	Sort       int    `orm:"sort"`        // 排序
+	Status     int    `orm:"status"`      // 状态：0禁用，1启用
+}
+
+type Admin_hook_plugin struct {
+	Id         int    `orm:"id"`
+	Hook       string `orm:"hook"`        // 钩子id
+	Plugin     string `orm:"plugin"`      // 插件标识
+	CreateTime int    `orm:"create_time"` // 添加时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	Sort       int    `orm:"sort"`        // 排序
+	Status     int    `orm:"status"`      // 状态
+}
+
+type Ucenter_vip struct {
+	Id        int     `orm:"id"`
+	Title     string  `orm:"title"`      // 标题
+	VipDay    int     `orm:"vip_day"`    // 时长
+	CostPrice float64 `orm:"cost_price"` // 原价
+	Price     float64 `orm:"price"`      // 现价 支付价格
+	Describe  string  `orm:"describe"`   // 描述
+	Sort      int     `orm:"sort"`       // 排序
+	Flag      int     `orm:"flag"`       // 删除标识
+	CreatedAt string  `orm:"created_at"`
+	UpdatedAt string  `orm:"updated_at"`
+}
+
 type Admin_user struct {
 	Id            int     `orm:"id"`
 	Username      string  `orm:"username"`        // 用户名
@@ -1139,70 +903,134 @@ type Admin_user struct {
 	Status        int     `orm:"status"`          // 状态：0禁用，1启用
 }
 
-type Helper_cats struct {
+type Face_users struct {
+	Id        int    `orm:"id"`
+	Name      string `orm:"name"`      // 姓名
+	Mobile    string `orm:"mobile"`    // 手机号
+	Feature   string `orm:"feature"`   // 特征
+	CloudUid  string `orm:"cloud_uid"` // 云端用于匹配的id
+	CloudId   int    `orm:"cloud_id"`  // 云端id
+	Flag      int    `orm:"flag"`      // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+	AvatarUrl string `orm:"avatar_url"` // 头像url
+}
+
+type Marketing_pw_prize struct {
+	Id         int     `orm:"id"`
+	PwId       int     `orm:"pw_id"`       // 转盘id
+	PrizeTitle string  `orm:"prize_title"` // 奖品名称
+	PrizeType  int     `orm:"prize_type"`  // 上门端0红包 1优惠券 2服务 10冇
+	ProjectId  int     `orm:"project_id"`  // 项目id
+	ProjectTag string  `orm:"project_tag"` // 比如skutag  优惠券id
+	Price      float64 `orm:"price"`       // 实际金额 - 红包类直接使用这个
+	CostPrice  float64 `orm:"cost_price"`  // 原价
+	Icon       string  `orm:"icon"`        // ICON
+	Scale      int     `orm:"scale"`       // 获奖比例
+	Flag       int     `orm:"flag"`
+	CreatedAt  string  `orm:"created_at"`
+	UpdatedAt  string  `orm:"updated_at"`
+	Status     int     `orm:"status"`   // 0未开启 1开启
+	Describe   string  `orm:"describe"` // 中奖描述
+	Sort       int     `orm:"sort"`     // 排序
+}
+
+type Sm_service_appt_tpl struct {
+	Id        int    `orm:"id"`
+	TplName   string `orm:"tpl_name"` // 模板名称
+	Describe  string `orm:"describe"` // 描述
+	Flag      int    `orm:"flag"`     // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Ucenter_action_log struct {
+	Id        int    `orm:"id"`
+	Cuid      int    `orm:"cuid"`
+	Action    string `orm:"action"`  // 行为
+	Content   string `orm:"content"` // 内容
+	Title     string `orm:"title"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Ucenter_address struct {
+	Id             int     `orm:"id"`
+	AdrName        string  `orm:"adr_name"`      // 选择地址名称
+	AdrLatitude    float64 `orm:"adr_latitude"`  // 维度
+	AdrLongitude   float64 `orm:"adr_longitude"` // 经度
+	Address        string  `orm:"address"`       // 详细门牌号
+	Cuid           int     `orm:"cuid"`
+	IsDefault      int     `orm:"is_default"` // 是否默认
+	Name           string  `orm:"name"`       // 姓名
+	Mobile         string  `orm:"mobile"`     // 手机号
+	Flag           int     `orm:"flag"`       // 删除标识
+	CreatedAt      string  `orm:"created_at"`
+	UpdatedAt      string  `orm:"updated_at"`
+	AreaLevel      int     `orm:"area_level"`       // 0省1市 2区 3小区
+	AddreaaCheckId int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
+	PlatformKey    string  `orm:"platform_key"`     // 平台key
+}
+
+type Admin_access struct {
+	Module string `orm:"module"` // 模型名称
+	Group  string `orm:"group"`  // 权限分组标识
+	Uid    int    `orm:"uid"`    // 用户id
+	Nid    string `orm:"nid"`    // 授权节点id
+	Tag    string `orm:"tag"`    // 分组标签
+}
+
+type Admin_plugin struct {
 	Id          int    `orm:"id"`
+	Name        string `orm:"name"`        // 插件名称
+	Title       string `orm:"title"`       // 插件标题
+	Icon        string `orm:"icon"`        // 图标
+	Description string `orm:"description"` // 插件描述
+	Author      string `orm:"author"`      // 作者
+	AuthorUrl   string `orm:"author_url"`  // 作者主页
+	Config      string `orm:"config"`      // 配置信息
+	Version     string `orm:"version"`     // 版本号
+	Identifier  string `orm:"identifier"`  // 插件唯一标识符
+	Admin       int    `orm:"admin"`       // 是否有后台管理
+	CreateTime  int    `orm:"create_time"` // 安装时间
+	UpdateTime  int    `orm:"update_time"` // 更新时间
+	Sort        int    `orm:"sort"`        // 排序
+	Status      int    `orm:"status"`      // 状态
+}
+
+type System_banner struct {
+	Id          int    `orm:"id"`
+	Title       string `orm:"title"`    // 标题
+	Describe    string `orm:"describe"` // 描述
+	Banner      string `orm:"banner"`
+	GotoType    int    `orm:"goto_type"` // 0不转跳 1单页 2path
+	Path        string `orm:"path"`      // 路径
+	Param       string `orm:"param"`     // 页面参数 或者id
 	PlatformKey string `orm:"platform_key"`
-	CatName     string `orm:"cat_name"` // 分类名称
-	CatLogo     string `orm:"cat_logo"` // 分类logo
-	CatDesc     string `orm:"cat_desc"` // 分类描述
-	IsShow      int    `orm:"is_show"`  // 是否显示
-	Sort        int    `orm:"sort"`     // 排序
-	Flag        int    `orm:"flag"`     // 删除标识
+	IsShow      int    `orm:"is_show"`
+	Sort        int    `orm:"sort"`
+	Flag        int    `orm:"flag"` // 删除标识
+	UpdatedAt   string `orm:"updated_at"`
+	CreatedAt   string `orm:"created_at"`
+	BannerKey   string `orm:"banner_key"`
+	VideoUrl    string `orm:"video_url"`
+	HousingId   int    `orm:"housing_id"` // 对应的id city 或者housingid
+}
+
+type System_pages struct {
+	Id          int    `orm:"id"`
+	Title       string `orm:"title"`    // 标题
+	Describe    string `orm:"describe"` // 描述
+	Content     string `orm:"content"`  // 富文本
+	PlatformKey string `orm:"platform_key"`
+	IsShow      int    `orm:"is_show"`
+	Flag        int    `orm:"flag"` // 删除标识
 	CreatedAt   string `orm:"created_at"`
 	UpdatedAt   string `orm:"updated_at"`
-}
-
-type Marketing_coupon struct {
-	Id            int     `orm:"id"`
-	CouponTplId   int     `orm:"coupon_tpl_id"`   // 模板id
-	CouponQueueId int     `orm:"coupon_queue_id"` // 批量发送id 如果有
-	SourceType    int     `orm:"source_type"`     // 0后台发送 1新用户注册 2事件触发
-	Cuid          int     `orm:"cuid"`
-	Logo          string  `orm:"logo"`
-	Title         string  `orm:"title"`        // 优惠券名称
-	PlatformKey   string  `orm:"platform_key"` // 平台key
-	Price         float64 `orm:"price"`        // 优惠金额/最大优惠金额
-	FullPrice     float64 `orm:"full_price"`   // 满金额条件
-	Type          int     `orm:"type"`         // 0满减 1全局折扣 2满折
-	Zkb           int     `orm:"zkb"`          // 折扣比 0 100
-	ProjectId     int     `orm:"project_id"`   // 对应项目id （上门端是skuid 或者serviceid）
-	ProjectType   int     `orm:"project_type"` // 对应项目类型。每个平台不同  （上门端0 sku 1 service）
-	EndTime       int     `orm:"end_time"`     // 到期时间。被转换的时间戳
-	Describe      string  `orm:"describe"`     // 描述
-	IsUse         int     `orm:"is_use"`       // 是否使用
-	OrderId       int     `orm:"order_id"`     // 使用后订单id
-	Flag          int     `orm:"flag"`         // 删除标识
-	UpdatedAt     string  `orm:"updated_at"`
-	CreatedAt     string  `orm:"created_at"`
-	CouponKey     string  `orm:"coupon_key"` // 优惠券唯一key
-}
-
-type Message_tpl struct {
-	Id              int    `orm:"id"`
-	MessageKey      string `orm:"message_key"` // 唯一标识
-	Title           string `orm:"title"`
-	Desc            string `orm:"desc"`
-	Content         string `orm:"content"`
-	AppType         int    `orm:"app_type"` // 0用户端 1商家端
-	IsMsg           int    `orm:"is_msg"`   // 是否发送消息
-	MessageType     string `orm:"message_type"`
-	PathType        string `orm:"path_type"`         // 路径类型
-	PathId          string `orm:"path_id"`           // 路径id 或者路径
-	IsFormId        int    `orm:"is_form_id"`        // 是否使用小程序模板id推送
-	SmallTplId      string `orm:"small_tpl_id"`      // 小程序模板id
-	SmallTplContent string `orm:"small_tpl_content"` // 小程序模板内容 json
-	IsSms           int    `orm:"is_sms"`            // 是否发送短信
-	SmsContent      string `orm:"sms_content"`       // 短信内容
-	IsEmail         int    `orm:"is_email"`          // 是否发送短信
-	EmailTitle      string `orm:"email_title"`
-	EmailContent    string `orm:"email_content"`
-	CreatedAt       string `orm:"created_at"`
-	UpdatedAt       string `orm:"updated_at"`
-	DeletedAt       string `orm:"deleted_at"`
-	Flag            int    `orm:"flag"`     // -1删除
-	IsUcId          int    `orm:"is_uc_id"` // 是否使用用户平台
-	PlatformKey     string `orm:"platform_key"`
-	SmallTplPath    string `orm:"small_tpl_path"`
+	Sort        int    `orm:"sort"` // 排序
+	Logo        string `orm:"logo"`
+	PageKey     string `orm:"page_key"` // 页面key
 }
 
 type Ucenter_orders struct {
@@ -1238,142 +1066,131 @@ type Ucenter_orders struct {
 	ShareLv2Cuid  int     `orm:"share_lv2_cuid"`
 	OptLv1Cuid    int     `orm:"opt_lv1_cuid"`
 	OptLv2Cuid    int     `orm:"opt_lv2_cuid"`
-	OrderType     int     `orm:"order_type"` // 订单类型0常规购买订单  1团购 10VIP
-	PayNo         string  `orm:"pay_no"`     // 线上付款订单
-	Describe      string  `orm:"describe"`   // 描述
+	IsAccounts    int     `orm:"is_accounts"` // 是否结算
+	OrderType     int     `orm:"order_type"`  // 订单类型0常规购买订单  1团购 10VIP 20快捷支付
+	PayNo         string  `orm:"pay_no"`      // 线上付款订单
+	Describe      string  `orm:"describe"`    // 描述
 	ProjectId     int     `orm:"project_id"`
 	VipPriceD     float64 `orm:"vip_price_d"` // vip折扣多少钱
 	Pics          string  `orm:"pics"`
+	PartnerPrice  float64 `orm:"partner_price"` // 合伙人金额
 }
 
-type Ucenter_price_log struct {
-	Id          int     `orm:"id"`
-	Cuid        int     `orm:"cuid"`
-	Price       float64 `orm:"price"`        // 金额
-	PlatformKey string  `orm:"platform_key"` // 平台key
-	Flag        int     `orm:"flag"`         // 删除标识
-	CreatedAt   string  `orm:"created_at"`
-	UpdatedAt   string  `orm:"updated_at"`
+type Ucenter_users struct {
+	Id             int     `orm:"id"`
+	Username       string  `orm:"username"`        // 账号
+	Password       string  `orm:"password"`        // 密码
+	Mobile         string  `orm:"mobile"`          // 手机号
+	Nickname       string  `orm:"nickname"`        // 昵称
+	Email          string  `orm:"email"`           // 邮箱
+	Avatar         string  `orm:"avatar"`          // 头像
+	Gender         string  `orm:"gender"`          // 性别
+	Status         int     `orm:"status"`          // 状态 0停用 1启用
+	RoleType       int     `orm:"role_type"`       // 0无权限 1小区合伙人 2区县级合伙人 3城市合伙人 4省合伙人
+	Score          int     `orm:"score"`           // 积分
+	Money          float64 `orm:"money"`           // 余额
+	OkMoney        float64 `orm:"ok_money"`        // 可提现余额
+	NoMoney        float64 `orm:"no_money"`        // 不可提现金额
+	LastLoginIp    string  `orm:"last_login_ip"`   // 最后一次登录ip
+	LastLoginTime  int     `orm:"last_login_time"` // 最后一次登录时间戳
+	LastLongitude  float64 `orm:"last_longitude"`  // 最后一次经度
+	LastLatitude   float64 `orm:"last_latitude"`   // 最后一次维度
+	ShareOne       int     `orm:"share_one"`       // 一级分享
+	ShareTwo       int     `orm:"share_two"`       // 二级分享
+	StOne          int     `orm:"st_one"`          // 一级师徒
+	StTwo          int     `orm:"st_two"`          // 二级师徒
+	UserKey        string  `orm:"user_key"`        // 用户注册唯一key
+	WechatUnionid  string  `orm:"wechat_unionid"`  // 微信相关unionid
+	RegType        int     `orm:"reg_type"`        // 注册类型 0手机号验证码 1账号
+	RegSource      string  `orm:"reg_source"`      // 注册来源 例如 手机 微信 小程序
+	Flag           int     `orm:"flag"`            // 删除标识
+	CreatedAt      string  `orm:"created_at"`
+	UpdatedAt      string  `orm:"updated_at"`
+	RegPlatformKey string  `orm:"reg_platform_key"` // 从哪个平台注册的
+	IsVip          int     `orm:"is_vip"`           // 是否是vip
+	BindUserinfo   int     `orm:"bind_userinfo"`    // 是否绑定用户信息
+	VipEndTime     string  `orm:"vip_end_time"`     // vip到期时间
+	IsPayPassword  int     `orm:"is_pay_password"`  // 是否填写支付密码
+	PayPassword    string  `orm:"pay_password"`     // 支付密码
+	OldManagerCuid int     `orm:"old_manager_cuid"`
+	IsWork         int     `orm:"is_work"`         // 是否工人0否 1认证 2通过 -1拒绝
+	IsAuth         int     `orm:"is_auth"`         // 是否实名认证 0 否 1审核 2通过 -1拒绝
+	IdcardId       string  `orm:"idcard_id"`       // 身份证号
+	IdcardBom      string  `orm:"idcard_bom"`      // 身份证背面
+	IdcardTop      string  `orm:"idcard_top"`      // 身份证正面
+	IdcardRen      string  `orm:"idcard_ren"`      // 手持证件
+	IdcardAddress  string  `orm:"idcard_address"`  // 身份证地址
+	IdcardNation   string  `orm:"idcard_nation"`   // 身份民族
+	IdcardGender   string  `orm:"idcard_gender"`   // 性别
+	IdcardProvince string  `orm:"idcard_province"` // 省
+	IdcardCity     string  `orm:"idcard_city"`     // 市
+	IdcardArea     string  `orm:"idcard_area"`     // 区
 }
 
-type Marketing_score struct {
-	Id          int    `orm:"id"`
-	Title       string `orm:"title"`        // 获取积分标题
-	PlatformKey string `orm:"platform_key"` // 平台key
-	Score       int    `orm:"score"`        // 获取积分
-	Flag        int    `orm:"flag"`         // 删除标识
-	CreatedAt   string `orm:"created_at"`
-	UpdatedAt   string `orm:"updated_at"`
-	Type        int    `orm:"type"` // 0获取 1支出
-	Cuid        int    `orm:"cuid"`
-	ScoreRuleId int    `orm:"score_rule_id"` // 规则id
-	OldScore    int    `orm:"old_score"`     // 获取之前的积分
+type Marketing_seckill_packet_link struct {
+	Id              int     `orm:"id"`
+	SeckillPacketId int     `orm:"seckill_packet_id"` // 抢红包id
+	Price           float64 `orm:"price"`             // 红包金额
+	Num             int     `orm:"num"`               // 红包数量
+	UseNum          int     `orm:"use_num"`           // 使用数量
+	IsEnd           int     `orm:"is_end"`            // 是否抢完
+	Flag            int     `orm:"flag"`              // 删除标识
+	CreatedAt       string  `orm:"created_at"`
+	UpdatedAt       string  `orm:"updated_at"`
 }
 
-type Sm_service_gp_sku struct {
-	Id            int    `orm:"id"`
-	ServiceId     int    `orm:"service_id"`
-	ServiceGpId   int    `orm:"service_gp_id"`
-	ServiceAreaId int    `orm:"service_area_id"` // 区域id
-	ServiceSkuId  int    `orm:"service_sku_id"`  // sku id
-	Flag          int    `orm:"flag"`            // 删除标识
-	CreatedAt     string `orm:"created_at"`
-	UpdatedAt     string `orm:"updated_at"`
-}
-
-type Ucenter_action_log struct {
-	Id        int    `orm:"id"`
-	Cuid      int    `orm:"cuid"`
-	Action    string `orm:"action"`  // 行为
-	Content   string `orm:"content"` // 内容
-	Title     string `orm:"title"`
-	Flag      int    `orm:"flag"` // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type Ucenter_vip struct {
+type Partner_users struct {
 	Id        int     `orm:"id"`
-	Title     string  `orm:"title"`      // 标题
-	VipDay    int     `orm:"vip_day"`    // 时长
-	CostPrice float64 `orm:"cost_price"` // 原价
-	Price     float64 `orm:"price"`      // 现价 支付价格
-	Describe  string  `orm:"describe"`   // 描述
-	Sort      int     `orm:"sort"`       // 排序
-	Flag      int     `orm:"flag"`       // 删除标识
+	Username  string  `orm:"username"`  // 账号
+	Password  string  `orm:"password"`  // 密码
+	Mobile    string  `orm:"mobile"`    // 手机号
+	Nickname  string  `orm:"nickname"`  // 昵称
+	Email     string  `orm:"email"`     // 邮箱
+	Gender    string  `orm:"gender"`    // 性别
+	Status    int     `orm:"status"`    // 状态 0停用 1启用
+	RoleType  int     `orm:"role_type"` // 0无权限 1小区合伙人 2区县级合伙人 3城市合伙人 4省合伙人
+	Flag      int     `orm:"flag"`      // 删除标识
 	CreatedAt string  `orm:"created_at"`
 	UpdatedAt string  `orm:"updated_at"`
+	Describe  string  `orm:"describe"`
+	Money     float64 `orm:"money"` // 余额
+	Avatar    string  `orm:"avatar"`
 }
 
-type Admin_config struct {
-	Id         int    `orm:"id"`
-	Name       string `orm:"name"`        // 名称
-	Title      string `orm:"title"`       // 标题
-	Group      string `orm:"group"`       // 配置分组
-	Type       string `orm:"type"`        // 类型
-	Value      string `orm:"value"`       // 配置值
-	Options    string `orm:"options"`     // 配置项
-	Tips       string `orm:"tips"`        // 配置提示
-	AjaxUrl    string `orm:"ajax_url"`    // 联动下拉框ajax地址
-	NextItems  string `orm:"next_items"`  // 联动下拉框的下级下拉框名，多个以逗号隔开
-	Param      string `orm:"param"`       // 联动下拉框请求参数名
-	Format     string `orm:"format"`      // 格式，用于格式文本
-	Table      string `orm:"table"`       // 表名，只用于快速联动类型
-	Level      int    `orm:"level"`       // 联动级别，只用于快速联动类型
-	Key        string `orm:"key"`         // 键字段，只用于快速联动类型
-	Option     string `orm:"option"`      // 值字段，只用于快速联动类型
-	Pid        string `orm:"pid"`         // 父级id字段，只用于快速联动类型
-	Ak         string `orm:"ak"`          // 百度地图appkey
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	Sort       int    `orm:"sort"`        // 排序
-	Status     int    `orm:"status"`      // 状态：0禁用，1启用
+type Sm_service_sku struct {
+	Id            int     `orm:"id"`
+	ServiceId     int     `orm:"service_id"` // 服务id
+	SkuName       string  `orm:"sku_name"`   // sku名称
+	Describe      string  `orm:"describe"`   // 描述
+	SkuLogo       string  `orm:"sku_logo"`   // logo 小图标
+	Price         float64 `orm:"price"`      // 售价
+	CostPrice     float64 `orm:"cost_price"` // 原价
+	SpNum         int     `orm:"sp_num"`     // 单个人可以购买促销产品数量
+	SpType        int     `orm:"sp_type"`    // 促销类型 0非促销 1新用户首单限定 2当前sku限定 3当前商品限定  10捆绑销售
+	Sort          int     `orm:"sort"`       // 排序
+	Flag          int     `orm:"flag"`       // 删除标识
+	CreatedAt     string  `orm:"created_at"`
+	UpdatedAt     string  `orm:"updated_at"`
+	Stock         int     `orm:"stock"`           // 库存
+	ApptTplId     int     `orm:"appt_tpl_id"`     // 预生成模板id
+	ServiceAreaId int     `orm:"service_area_id"` // 区域id
+	GjPrice       float64 `orm:"gj_price"`        // 工匠金额
+	IsGjPrice     int     `orm:"is_gj_price"`     // 是否固定工匠金额
+	SkuTagId      int     `orm:"sku_tag_id"`      // SKU标识
+	IsShow        int     `orm:"is_show"`
 }
 
-type Admin_users struct {
-	Id        int    `orm:"id"`
-	Username  string `orm:"username"` // 账号
-	Password  string `orm:"password"` // 密码
-	Mobile    string `orm:"mobile"`   // 手机号
-	Nickname  string `orm:"nickname"` // 昵称
-	Email     string `orm:"email"`    // 邮箱
-	Gender    string `orm:"gender"`   // 性别
-	Status    int    `orm:"status"`   // 状态 0停用 1启用
-	Flag      int    `orm:"flag"`     // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
-}
-
-type Address_housing struct {
-	Id         int     `orm:"id"`
-	Name       string  `orm:"name"`        // 小区名称
-	ProvinceId int     `orm:"province_id"` // 省id
-	CityId     int     `orm:"city_id"`     // 市id
-	AreaId     int     `orm:"area_id"`     // 区id
-	AddressId  int     `orm:"address_id"`  // 最后一级id
-	Describe   string  `orm:"describe"`    // 描述
-	IsShow     int     `orm:"is_show"`     // 是否显示
-	Flag       int     `orm:"flag"`        // 删除标识
-	Longitude  float64 `orm:"longitude"`   // 经度
-	Latitude   float64 `orm:"latitude"`    // 维度
-	CreatedAt  string  `orm:"created_at"`
-	UpdatedAt  string  `orm:"updated_at"`
-	Logo       string  `orm:"logo"`
-	Points     string  `orm:"points"` // 区域坐标系
-	Scale      int     `orm:"scale"`  // 分润
-}
-
-type Admin_packet struct {
-	Id         int    `orm:"id"`
-	Name       string `orm:"name"`       // 数据包名
-	Title      string `orm:"title"`      // 数据包标题
-	Author     string `orm:"author"`     // 作者
-	AuthorUrl  string `orm:"author_url"` // 作者url
-	Version    string `orm:"version"`
-	Tables     string `orm:"tables"`      // 数据表名
-	CreateTime int    `orm:"create_time"` // 创建时间
-	UpdateTime int    `orm:"update_time"` // 更新时间
-	Status     int    `orm:"status"`      // 状态
+type Helper_cats struct {
+	Id          int    `orm:"id"`
+	PlatformKey string `orm:"platform_key"`
+	CatName     string `orm:"cat_name"` // 分类名称
+	CatLogo     string `orm:"cat_logo"` // 分类logo
+	CatDesc     string `orm:"cat_desc"` // 分类描述
+	IsShow      int    `orm:"is_show"`  // 是否显示
+	Sort        int    `orm:"sort"`     // 排序
+	Flag        int    `orm:"flag"`     // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
 }
 
 type Marketing_coupon_tpl struct {
@@ -1395,6 +1212,339 @@ type Marketing_coupon_tpl struct {
 	TplKey      string  `orm:"tpl_key"`  // 模板KEY
 }
 
+type Ucenter_accounts struct {
+	Id          int     `orm:"id"`
+	Cuid        int     `orm:"cuid"`         // ucenter uid
+	PlatformKey string  `orm:"platform_key"` // 牵扯的平台
+	Type        int     `orm:"type"`         // 0直接收益 1分润收益 2师徒收益 10现金红包收益 50充值收益 100提现 101购买商品
+	Level       int     `orm:"level"`        // 收益等级 比如 0一级分享收益 1二级分享收益
+	Content     string  `orm:"content"`      // 详细内容
+	Describe    string  `orm:"describe"`     // 描述  主要是显示这里
+	ProjectId   int     `orm:"project_id"`   // 项目id
+	OrderId     int     `orm:"order_id"`     // 订单id
+	OrderNo     int     `orm:"order_no"`     // 订单编号
+	Price       float64 `orm:"price"`        // 金额
+	IsDz        int     `orm:"is_dz"`        // 是否到账 1是
+	SourceCuid  int     `orm:"source_cuid"`  // 来源用户。比如是谁分享产生的给你费用
+	ProjectName string  `orm:"project_name"` // 项目名称
+	Title       string  `orm:"title"`        // 标题
+	Flag        int     `orm:"flag"`         // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	AccountNo   string  `orm:"account_no"` // 订单号
+	IsOld       int     `orm:"is_old"`     // 是否是老订单
+}
+
+type Ucenter_optshare struct {
+	Id           int    `orm:"id"`
+	Cuid         int    `orm:"cuid"`           // 用户id
+	PlatformKey  string `orm:"platform_key"`   // 平台key
+	ShareLv1Cuid int    `orm:"share_lv1_cuid"` // 上级
+	ShareLv2Cuid int    `orm:"share_lv2_cuid"` // 上级二级
+	Level        int    `orm:"level"`          // 分享等级 0一级 1二级
+	Status       int    `orm:"status"`         // 0不产生分润 1产生分润
+	Flag         int    `orm:"flag"`           // 删除标识
+	CreatedAt    string `orm:"created_at"`
+	UpdatedAt    string `orm:"updated_at"`
+}
+
+type Marketing_score struct {
+	Id          int    `orm:"id"`
+	Title       string `orm:"title"`        // 获取积分标题
+	PlatformKey string `orm:"platform_key"` // 平台key
+	Score       int    `orm:"score"`        // 获取积分
+	Flag        int    `orm:"flag"`         // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	Type        int    `orm:"type"` // 0获取 1支出
+	Cuid        int    `orm:"cuid"`
+	ScoreRuleId int    `orm:"score_rule_id"` // 规则id
+	OldScore    int    `orm:"old_score"`     // 获取之前的积分
+	ProjectId   int    `orm:"project_id"`    // 积分使用的项目id
+	ProjectType int    `orm:"project_type"`  // 积分使用类型
+}
+
+type Marketing_seckill_packet struct {
+	Id         int    `orm:"id"`
+	Type       int    `orm:"type"`   // 0红包(不需要付费)
+	Title      string `orm:"title"`  // 标题
+	Status     int    `orm:"status"` // 0未开始 1开始 2结束
+	Flag       int    `orm:"flag"`   // 删除标识
+	CreatedAt  string `orm:"created_at"`
+	UpdatedAt  string `orm:"updated_at"`
+	Background string `orm:"background"` // 背景图
+}
+
+type Message struct {
+	Id              int    `orm:"id"`
+	Cuid            int    `orm:"cuid"`
+	MessageKey      string `orm:"message_key"`
+	Title           string `orm:"title"`        // 标题
+	Desc            string `orm:"desc"`         // 描述
+	Content         string `orm:"content"`      // 内容
+	MessageType     int    `orm:"message_type"` // 消息类型
+	PathType        string `orm:"path_type"`    // 链接类型
+	PathId          string `orm:"path_id"`      // 链接id
+	IsFormId        int    `orm:"is_form_id"`   // 是否消息模板
+	SmallTplId      string `orm:"small_tpl_id"` // 消息模板id
+	SmallTplContent string `orm:"small_tpl_content"`
+	SmallTplOpenid  string `orm:"small_tpl_openid"`
+	IsSms           int    `orm:"is_sms"` // 是否发送短信
+	Mobile          string `orm:"mobile"`
+	SmsContent      string `orm:"sms_content"` // 短信内容
+	IsEmail         int    `orm:"is_email"`    // 是否发邮件
+	Email           string `orm:"email"`
+	EmailTitle      string `orm:"email_title"`
+	EmailContent    string `orm:"email_content"`
+	MsgTplId        int    `orm:"msg_tpl_id"`   // message tpl id
+	PlatformKey     string `orm:"platform_key"` // 平台key
+	PushData        string `orm:"push_data"`
+	Flag            int    `orm:"flag"` // -1删除
+	CreatedAt       string `orm:"created_at"`
+	UpdatedAt       string `orm:"updated_at"`
+	IsRead          int    `orm:"is_read"` // 是否已读
+}
+
+type Sm_service struct {
+	Id              int     `orm:"id"`
+	Title           string  `orm:"title"`          // 标题
+	Logo            string  `orm:"logo"`           // 列表logo
+	Icon            string  `orm:"icon"`           // 首页icon
+	Banner          string  `orm:"banner"`         // banner列表 json
+	CatsId          int     `orm:"cats_id"`        // 分类id
+	Describe        string  `orm:"describe"`       // 描述
+	Content         string  `orm:"content"`        // 富文本内容
+	IsVideo         int     `orm:"is_video"`       // 是否显示视频banner
+	VideoUrl        string  `orm:"video_url"`      // 视频url
+	ShowNum         int     `orm:"show_num"`       // 显示数量
+	PayNum          int     `orm:"pay_num"`        // 销售数量
+	CollectNum      int     `orm:"collect_num"`    // 收藏数量
+	ShareNum        int     `orm:"share_num"`      // 分享数量
+	MinPrice        float64 `orm:"min_price"`      // 最小售价（用于限定最低单品购买以及显示）
+	MaxPrice        float64 `orm:"max_price"`      // 最大售价，只用于显示
+	MinCostPrice    float64 `orm:"min_cost_price"` // 最小销售原价
+	MaxCostPrice    float64 `orm:"max_cost_price"` // 最高售价原价
+	ProjectType     int     `orm:"project_type"`   // 0正常 1团购
+	IsShow          int     `orm:"is_show"`        // 是否显示
+	Status          int     `orm:"status"`         // 0停售 1正常销售  10预售
+	Flag            int     `orm:"flag"`           // 删除标识
+	CreatedAt       string  `orm:"created_at"`
+	UpdatedAt       string  `orm:"updated_at"`
+	IsDelete        int     `orm:"is_delete"`          // 是否远程删除
+	IsTopic         int     `orm:"is_topic"`           // 是否推荐
+	IsNew           int     `orm:"is_new"`             // 是否new
+	Sort            int     `orm:"sort"`               // 排序
+	AreaType        int     `orm:"area_type"`          // 限定区域范围等级 0全国 1省 2市 3区 4小区
+	ProvinceId      int     `orm:"province_id"`        // 省id
+	CityId          int     `orm:"city_id"`            // 市id
+	AreaId          int     `orm:"area_id"`            // 区id
+	HousingId       int     `orm:"housing_id"`         // 小区id
+	IsVipPrice      int     `orm:"is_vip_price"`       // 是否有vip折扣
+	IsClientUseAppt int     `orm:"is_client_use_appt"` // 判断是否需要用户端选择服务区间
+}
+
+type Sm_users_address struct {
+	Id             int     `orm:"id"`
+	AdrName        string  `orm:"adr_name"`      // 选择地址名称
+	AdrLatitude    float64 `orm:"adr_latitude"`  // 维度
+	AdrLongitude   float64 `orm:"adr_longitude"` // 经度
+	Address        string  `orm:"address"`       // 详细门牌号
+	Cuid           int     `orm:"cuid"`
+	IsDefault      int     `orm:"is_default"` // 是否默认
+	Name           string  `orm:"name"`       // 姓名
+	Mobile         string  `orm:"mobile"`     // 手机号
+	Flag           int     `orm:"flag"`       // 删除标识
+	CreatedAt      string  `orm:"created_at"`
+	UpdatedAt      string  `orm:"updated_at"`
+	AreaLevel      int     `orm:"area_level"`       // 0省1市 2区 3小区
+	AddreaaCheckId int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
+}
+
+type Ucenter_price_log struct {
+	Id          int     `orm:"id"`
+	Cuid        int     `orm:"cuid"`
+	Price       float64 `orm:"price"`        // 金额
+	PlatformKey string  `orm:"platform_key"` // 平台key
+	Flag        int     `orm:"flag"`         // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+}
+
+type Log struct {
+	Id        int    `orm:"id"`
+	Content   string `orm:"content"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Marketing_packet struct {
+	Id          int     `orm:"id"`
+	Cuid        int     `orm:"cuid"`
+	Price       float64 `orm:"price"`
+	Title       string  `orm:"title"`
+	Describe    string  `orm:"describe"` // 描述
+	Status      int     `orm:"status"`   // 0正常 1使用 -1过期或者禁用
+	Type        string  `orm:"type"`     // 来源渠道
+	Flag        int     `orm:"flag"`     // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	PlatformKey string  `orm:"platform_key"`
+	PacketNo    string  `orm:"packet_no"`
+	SCuid       int     `orm:"s_cuid"` // 来源用户
+}
+
+type Admin_menu struct {
+	Id         int    `orm:"id"`
+	Pid        int    `orm:"pid"`         // 上级菜单id
+	Module     string `orm:"module"`      // 模块名称
+	Title      string `orm:"title"`       // 菜单标题
+	Icon       string `orm:"icon"`        // 菜单图标
+	UrlType    string `orm:"url_type"`    // 链接类型（link：外链，module：模块）
+	UrlValue   string `orm:"url_value"`   // 链接地址
+	UrlTarget  string `orm:"url_target"`  // 链接打开方式：_blank,_self
+	OnlineHide int    `orm:"online_hide"` // 网站上线后是否隐藏
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	Sort       int    `orm:"sort"`        // 排序
+	SystemMenu int    `orm:"system_menu"` // 是否为系统菜单，系统菜单不可删除
+	Status     int    `orm:"status"`      // 状态
+	Params     string `orm:"params"`      // 参数
+}
+
+type Sm_service_gp_level struct {
+	Id          int     `orm:"id"`
+	ServiceGpId int     `orm:"service_gp_id"` // 团购id
+	Level       int     `orm:"level"`         // 等级
+	Price       float64 `orm:"price"`         // 达成价格
+	Flag        int     `orm:"flag"`          // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	Title       string  `orm:"title"` // 标题
+	Num         int     `orm:"num"`   // 最低达成人数
+}
+
+type Ucenter_openid struct {
+	Id          int    `orm:"id"`
+	Cuid        int    `orm:"cuid"`         // ucenter id
+	PlatformKey string `orm:"platform_key"` // 平台key
+	Type        string `orm:"type"`         // 类型 wechat ali app
+	Flag        int    `orm:"flag"`         // 删除标识
+	CreatedAt   string `orm:"created_at"`
+	UpdatedAt   string `orm:"updated_at"`
+	Openid      string `orm:"openid"`
+}
+
+type Xinxi_news_cats struct {
+	Id        int    `orm:"id"`
+	Name      string `orm:"name"`
+	Logo      string `orm:"logo"`
+	Pid       int    `orm:"pid"`
+	Flag      int    `orm:"flag"` // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+	Sort      int    `orm:"sort"`
+	IsShow    int    `orm:"is_show"`
+}
+
+type Address_housing struct {
+	Id         int     `orm:"id"`
+	Name       string  `orm:"name"`        // 小区名称
+	ProvinceId int     `orm:"province_id"` // 省id
+	CityId     int     `orm:"city_id"`     // 市id
+	AreaId     int     `orm:"area_id"`     // 区id
+	AddressId  int     `orm:"address_id"`  // 最后一级id
+	Describe   string  `orm:"describe"`    // 描述
+	IsShow     int     `orm:"is_show"`     // 是否显示
+	Flag       int     `orm:"flag"`        // 删除标识
+	Longitude  float64 `orm:"longitude"`   // 经度
+	Latitude   float64 `orm:"latitude"`    // 维度
+	CreatedAt  string  `orm:"created_at"`
+	UpdatedAt  string  `orm:"updated_at"`
+	Logo       string  `orm:"logo"`
+	Points     string  `orm:"points"` // 区域坐标系
+	Scale      int     `orm:"scale"`  // 分润
+}
+
+type Admin_action struct {
+	Id         int    `orm:"id"`
+	Module     string `orm:"module"`      // 所属模块名
+	Name       string `orm:"name"`        // 行为唯一标识
+	Title      string `orm:"title"`       // 行为标题
+	Remark     string `orm:"remark"`      // 行为描述
+	Rule       string `orm:"rule"`        // 行为规则
+	Log        string `orm:"log"`         // 日志规则
+	Status     int    `orm:"status"`      // 状态
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+}
+
+type Admin_log struct {
+	Id         int    `orm:"id"`          // 主键
+	ActionId   int    `orm:"action_id"`   // 行为id
+	UserId     int    `orm:"user_id"`     // 执行用户id
+	ActionIp   int    `orm:"action_ip"`   // 执行行为者ip
+	Model      string `orm:"model"`       // 触发行为的表
+	RecordId   int    `orm:"record_id"`   // 触发行为的数据id
+	Remark     string `orm:"remark"`      // 日志备注
+	Status     int    `orm:"status"`      // 状态
+	CreateTime int    `orm:"create_time"` // 执行行为的时间
+}
+
+type Admin_users struct {
+	Id        int    `orm:"id"`
+	Username  string `orm:"username"` // 账号
+	Password  string `orm:"password"` // 密码
+	Mobile    string `orm:"mobile"`   // 手机号
+	Nickname  string `orm:"nickname"` // 昵称
+	Email     string `orm:"email"`    // 邮箱
+	Gender    string `orm:"gender"`   // 性别
+	Status    int    `orm:"status"`   // 状态 0停用 1启用
+	Flag      int    `orm:"flag"`     // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
+}
+
+type Marketing_card struct {
+	Id           int    `orm:"id"`
+	PlatformKey  string `orm:"platform_key"`
+	EndTime      int    `orm:"end_time"`    // 到期时间 时间戳
+	CardLogo     string `orm:"card_logo"`   // 卡片的logo
+	CardPic      string `orm:"card_pic"`    // 卡片图片
+	Num          int    `orm:"num"`         // 服务数量
+	UseNum       int    `orm:"use_num"`     // 服务使用数量
+	AreaType     int    `orm:"area_type"`   // 区域类型 0 全国 1省 2 市 3区 4小区
+	ProvinceId   int    `orm:"province_id"` // 省id
+	CityId       int    `orm:"city_id"`     // 市id
+	AreaId       int    `orm:"area_id"`     // 区id
+	HousingId    int    `orm:"housing_id"`  // 小区id
+	Flag         int    `orm:"flag"`        // 删除标识
+	CreatedAt    string `orm:"created_at"`
+	UpdatedAt    string `orm:"updated_at"`
+	CardTplId    int    `orm:"card_tpl_id"`   // 模板id
+	Cuid         int    `orm:"cuid"`          // 用户id
+	IsUse        int    `orm:"is_use"`        // 是否使用
+	CardNo       string `orm:"card_no"`       // 卡片号码
+	CardPassword string `orm:"card_password"` // 卡片密码 预留
+	Status       int    `orm:"status"`        // 0未使用 1使用 2用完 -1删除
+	OrderNo      string `orm:"order_no"`      // 订单编号
+	OrderId      int    `orm:"order_id"`      // 订单id
+}
+
+type Marketing_pw_orders struct {
+	Id          int    `orm:"id"`
+	Cuid        int    `orm:"cuid"`
+	PlatformKey string `orm:"platform_key"`
+	PwId        int    `orm:"pw_id"`
+	PwPrizeId   int    `orm:"pw_prize_id"`
+	ShareNum    int    `orm:"share_num"` // 需要分享多少人
+	UseNum      int    `orm:"use_num"`   // 已经分享多少人
+	Status      int    `orm:"status"`    // 0创建 1成功 -1未达成
+	Flag        int    `orm:"flag"`      // 删除标识
+	UpdatedAt   string `orm:"updated_at"`
+	CreatedAt   string `orm:"created_at"`
+}
+
 type Marketing_seckill_packet_users struct {
 	Id                  int    `orm:"id"`
 	Cuid                int    `orm:"cuid"`
@@ -1406,42 +1556,135 @@ type Marketing_seckill_packet_users struct {
 	UpdatedAt           string `orm:"updated_at"`
 }
 
-type Partner_area struct {
-	Id         int    `orm:"id"`
-	PartenrId  int    `orm:"partenr_id"`
-	AreaType   int    `orm:"area_type"`   // 0 全国 1全省 2市 3区 4小区
-	ProvinceId int    `orm:"province_id"` // 省id
-	CityId     int    `orm:"city_id"`     // 市id
-	AreaId     int    `orm:"area_id"`     // 区id
-	HousingId  int    `orm:"housing_id"`  // 小区id
-	Flag       int    `orm:"flag"`        // 删除标识
-	CreatedAt  string `orm:"created_at"`
-	UpdatedAt  string `orm:"updated_at"`
+type Sm_service_appt_item_tpl struct {
+	Id        int    `orm:"id"`
+	ApptTplId int    `orm:"appt_tpl_id"` // 模板tplid
+	BeginTime string `orm:"begin_time"`  // 开始时间
+	EndTime   string `orm:"end_time"`    // 结束时间
+	Title     string `orm:"title"`       // 用于前台展示
+	Sort      int    `orm:"sort"`        // 排序
+	IsShow    int    `orm:"is_show"`     // 是否显示
+	Num       int    `orm:"num"`         // 可预约次数
+	Flag      int    `orm:"flag"`        // 删除标识
+	CreatedAt string `orm:"created_at"`
+	UpdatedAt string `orm:"updated_at"`
 }
 
-type Sm_service_cats struct {
+type Admin_icon struct {
+	Id         int    `orm:"id"`
+	Name       string `orm:"name"`        // 图标名称
+	Url        string `orm:"url"`         // 图标css地址
+	Prefix     string `orm:"prefix"`      // 图标前缀
+	FontFamily string `orm:"font_family"` // 字体名
+	CreateTime int    `orm:"create_time"` // 创建时间
+	UpdateTime int    `orm:"update_time"` // 更新时间
+	Status     int    `orm:"status"`      // 状态
+}
+
+type Admin_icon_list struct {
+	Id     int    `orm:"id"`
+	IconId int    `orm:"icon_id"` // 所属图标id
+	Title  string `orm:"title"`   // 图标标题
+	Class  string `orm:"class"`   // 图标类名
+	Code   string `orm:"code"`    // 图标关键词
+}
+
+type Sm_users_service_gp struct {
+	Id             int    `orm:"id"`
+	ServiceId      int    `orm:"service_id"`       // 服务id
+	ServiceGpId    int    `orm:"service_gp_id"`    // 服务拼团id
+	ServiceSkuId   int    `orm:"service_sku_id"`   // 服务sku
+	OrderId        int    `orm:"order_id"`         // 订单id
+	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
+	Cuid           int    `orm:"cuid"`
+	Status         int    `orm:"status"` // -1结束 0未支付 1支付 2完成
+	Flag           int    `orm:"flag"`   // 删除标识
+	CreatedAt      string `orm:"created_at"`
+	UpdatedAt      string `orm:"updated_at"`
+	Num            int    `orm:"num"`
+}
+
+type Ucenter_feedback struct {
 	Id          int    `orm:"id"`
-	CatName     string `orm:"cat_name"`      // 分类名称
-	CatLogo     string `orm:"cat_logo"`      // 分类logo
-	CatHomeLogo string `orm:"cat_home_logo"` // 用于首页显示的logo
-	CatTags     string `orm:"cat_tags"`      // 分类标签
-	Sort        int    `orm:"sort"`          // 排序 倒序
-	IsShow      int    `orm:"is_show"`
+	Uname       string `orm:"uname"`
+	Mobile      string `orm:"mobile"`
+	Content     string `orm:"content"`
+	Cuid        int    `orm:"cuid"`
 	Flag        int    `orm:"flag"` // 删除标识
 	CreatedAt   string `orm:"created_at"`
 	UpdatedAt   string `orm:"updated_at"`
-	Pid         int    `orm:"pid"`
-	Level       int    `orm:"level"`    // 层级
-	IsTopic     int    `orm:"is_topic"` // 是否首页置顶
-	BgColor     string `orm:"bg_color"`
+	PlatformKey string `orm:"platform_key"`
+	IsBlack     int    `orm:"is_black"` // 是否是黑名单提交
 }
 
-type Sm_service_sku_tags struct {
-	Id        int    `orm:"id"`
-	TagName   string `orm:"tag_name"` // 标签名称
-	Describe  string `orm:"describe"` // 描述
-	IsShow    int    `orm:"is_show"`
-	Flag      int    `orm:"flag"` // 删除标识
-	CreatedAt string `orm:"created_at"`
-	UpdatedAt string `orm:"updated_at"`
+type Ucenter_orders_log struct {
+	Id          int     `orm:"id"`
+	Cuid        int     `orm:"cuid"`
+	PlatformKey string  `orm:"platform_key"`
+	OrderId     int     `orm:"order_id"`
+	OrderNo     string  `orm:"order_no"`
+	Type        int     `orm:"type"`         // 0平台收益 1商家收益(工人) 2分润收入 3师徒收入 10合伙人收入
+	ProjectType int     `orm:"project_type"` // 项目类型 0上门服务
+	ProjectId   int     `orm:"project_id"`   // 对应项目id us_id
+	Describe    string  `orm:"describe"`     // 描述
+	Flag        int     `orm:"flag"`         // 删除标识
+	CreatedAt   string  `orm:"created_at"`
+	UpdatedAt   string  `orm:"updated_at"`
+	Price       float64 `orm:"price"` // 对应金额
+}
+
+type Sm_users struct {
+	Id              int     `orm:"id"`
+	Cuid            int     `orm:"cuid"`
+	Longitude       float64 `orm:"longitude"`
+	Latitude        float64 `orm:"latitude"`
+	IsSetArea       int     `orm:"is_set_area"`
+	AreaName        string  `orm:"area_name"`        // 当前区域的名称
+	AreaLevel       int     `orm:"area_level"`       // 0省1市 2区 3小区
+	AddreaaCheckId  int     `orm:"addreaa_check_id"` // 对应的id city 或者housingid
+	Flag            int     `orm:"flag"`             // 删除标识
+	CreatedAt       string  `orm:"created_at"`
+	UpdatedAt       string  `orm:"updated_at"`
+	IsNewUser       int     `orm:"is_new_user"`        // 是否是当前端新用户
+	IsGjAuth        int     `orm:"is_gj_auth"`         // 是否工匠认证 0否 1认证中 2已认证 -1驳回
+	GjIdcardTop     string  `orm:"gj_idcard_top"`      // 身份证正面
+	GjIdcardBom     string  `orm:"gj_idcard_bom"`      // 身份证背面
+	GjIdcardId      string  `orm:"gj_idcard_id"`       // 身份证号码
+	GjIdcardEndTime string  `orm:"gj_idcard_end_time"` // 到期时间
+	GjIdcardAddress string  `orm:"gj_idcard_address"`  // 身份证地址
+	GjName          string  `orm:"gj_name"`            // 认证姓名
+	GjAvatar        string  `orm:"gj_avatar"`          // 工匠头像
+	GjProvinceId    int     `orm:"gj_province_id"`     // 省id
+	GjCityId        int     `orm:"gj_city_id"`         // 市id
+	GjAreaId        int     `orm:"gj_area_id"`         // 区id
+	GjAreaLevel     int     `orm:"gj_area_level"`      // 区域等级 0省 1市 2区
+	GjMobile        string  `orm:"gj_mobile"`          // 工匠认证手机号
+	GjDesc          string  `orm:"gj_desc"`            // 工匠介绍
+	GjSfCuid        int     `orm:"gj_sf_cuid"`         // 师傅id
+	IsSf            int     `orm:"is_sf"`              // 是否师父
+	GjErrMsg        string  `orm:"gj_err_msg"`         // 认证失败文案
+	SfTime          string  `orm:"sf_time"`            // 出师日期
+}
+
+type Sm_users_comment struct {
+	Id             int    `orm:"id"`
+	ServiceId      int    `orm:"service_id"`       // 服务id
+	ApptId         int    `orm:"appt_id"`          // 服务区间
+	ServiceSkuId   int    `orm:"service_sku_id"`   // 服务sku
+	OrderId        int    `orm:"order_id"`         // 订单id
+	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
+	ServiceAreaId  int    `orm:"service_area_id"`  // 区域id
+	Cuid           int    `orm:"cuid"`
+	Type           int    `orm:"type"` // 0用户 1商家
+	Content        string `orm:"content"`
+	Pics           string `orm:"pics"`
+	VideoUrl       string `orm:"video_url"`
+	Flag           int    `orm:"flag"` // 删除标识
+	CreatedAt      string `orm:"created_at"`
+	UpdatedAt      string `orm:"updated_at"`
+	Avatar         string `orm:"avatar"`   // 备份头像
+	Nickname       string `orm:"nickname"` // 备份昵称
+	Star           int    `orm:"star"`     // 星 1非常不满意 2不满意 3一般 4满意 5 非常满意
+	Tags           string `orm:"tags"`
+	IsOld          int    `orm:"is_old"` // 老数据
 }

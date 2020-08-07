@@ -12,9 +12,9 @@ type UcenterPriceLog struct {
 	UpdatedAt time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
 	Flag      int       `orm:"default(1)" json:"flag"` //-1删除
 
-	Cuid        int     `orm:"cuid"`
-	Price       float64 `orm:"price"`        // 金额
-	PlatformKey string  `orm:"platform_key"` // 平台key
+	Cuid        int     `json:"cuid"`
+	Price       float64 `json:"price"`        // 金额
+	PlatformKey string  `json:"platform_key"` // 平台key
 }
 
 func init() {

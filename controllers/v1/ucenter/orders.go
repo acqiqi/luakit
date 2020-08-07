@@ -213,3 +213,8 @@ func (this *OrdersController) CloseOrders() {
 		utils.ApiErr(this.Controller, "删除失败"+err.Error())
 	}
 }
+
+// 结束订单
+func (this *OrdersController) EndOrders() {
+
+}

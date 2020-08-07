@@ -53,3 +53,28 @@ func HttpPostJson(url string, body interface{}, cb interface{}) error {
 	JsonDecode(string(b), &cb)
 	return nil
 }
+
+// Http Post Json 请求 不带回调
+func HttpPostJsonNotCallback(url string, body interface{}, platform_key string) error {
+	requestBody := JsonEncode(body)
+	var jsonStr = []byte(requestBody)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("PlatformKey", platform_key)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	b, _ := ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return errors.New(string(b))
+	}
+	log.Println(string(b))
+	return nil
+}

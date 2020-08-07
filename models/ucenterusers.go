@@ -12,7 +12,7 @@ import (
 )
 
 type UcenterUsers struct {
-	Id        int64     `json:"id"`
+	Id        int64     `orm:"pk" json:"id"`
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)" json:"created_at"`
 	UpdatedAt time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
 	Flag      int       `orm:"default(1)" json:"flag"` //-1删除
@@ -232,4 +232,35 @@ func DeleteUcenterUsers(id int64) (err error) {
 		}
 	}
 	return
+}
+
+// 检测是否有分享用户
+func CheckShareUser(cuid int64) (v *UcenterUsers, err error) {
+	user, err := GetUcenterUsersById(cuid)
+	if err != nil {
+		return nil, err
+	}
+	if user.ShareOne == 0 {
+		return nil, errors.New("无师傅")
+	}
+	o := orm.NewOrm()
+	v = &UcenterUsers{}
+	if err = o.QueryTable(new(UcenterUsers)).Filter("Id", user.ShareOne).Filter("flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+// 插入金额
+func SetUcenterUsersOkMoney(cuid int64, price float64) error {
+	user, err := GetUcenterUsersById(cuid)
+	if err != nil {
+		return err
+	}
+	user.OkMoney = user.OkMoney + price
+	user.Money = user.Money + price
+	if err := UpdateUcenterUsersById(user); err != nil {
+		return err
+	}
+	return nil
 }

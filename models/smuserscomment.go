@@ -17,21 +17,21 @@ type SmUsersComment struct {
 	UpdatedAt time.Time `orm:"auto_now;type(datetime)" json:"updated_at"`
 	Flag      int       `orm:"default(1)" json:"flag"` //-1删除
 
-	ServiceId      int    `orm:"service_id"`       // 服务id
-	ApptId         int    `orm:"appt_id"`          // 服务区间
-	ServiceSkuId   int    `orm:"service_sku_id"`   // 服务sku
-	OrderId        int    `orm:"order_id"`         // 订单id
-	UsersServiceId int    `orm:"users_service_id"` // 用户服务表id
-	ServiceAreaId  int    `orm:"service_area_id"`  // 区域id
-	Cuid           int    `orm:"cuid"`
-	Type           int    `orm:"type"` // 0用户 1商家
-	Content        string `orm:"content"`
-	Pics           string `orm:"pics"`
-	VideoUrl       string `orm:"video_url"`
-	Avatar         string `orm:"avatar"`   // 备份头像
-	Nickname       string `orm:"nickname"` // 备份昵称
-	Star           int    `orm:"star"`     // 星 1非常不满意 2不满意 3一般 4满意 5 非常满意
-	Tags           string `orm:"tags"`
+	ServiceId      int    `json:"service_id"`       // 服务id
+	ApptId         int    `json:"appt_id"`          // 服务区间
+	ServiceSkuId   int    `json:"service_sku_id"`   // 服务sku
+	OrderId        int    `json:"order_id"`         // 订单id
+	UsersServiceId int    `json:"users_service_id"` // 用户服务表id
+	ServiceAreaId  int    `json:"service_area_id"`  // 区域id
+	Cuid           int    `json:"cuid"`
+	Type           int    `json:"type"` // 0用户 1商家
+	Content        string `json:"content"`
+	Pics           string `json:"pics"`
+	VideoUrl       string `json:"video_url"`
+	Avatar         string `json:"avatar"`   // 备份头像
+	Nickname       string `json:"nickname"` // 备份昵称
+	Star           int    `json:"star"`     // 星 1非常不满意 2不满意 3一般 4满意 5 非常满意
+	Tags           string `json:"tags"`
 	IsOld          int    `json:"is_old"`
 }
 
