@@ -22,6 +22,7 @@ type MarketingPacket struct {
 	PlatformKey string  `json:"platform_key"`
 	PacketNo    string  `json:"packet_no"`
 	SCuid       int     `json:"s_cuid"` // 来源用户
+	EndTime     int64   `json:"end_time"`
 }
 
 const (
@@ -43,6 +44,8 @@ func init() {
 func GenerUserPacket(m *MarketingPacket) (id int64, err error) {
 	m.Status = 0
 	m.Flag = 1
+	t := time.Now().Unix()
+	m.EndTime = (t + (86400 * 30))
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return

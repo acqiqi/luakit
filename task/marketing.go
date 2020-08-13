@@ -27,3 +27,14 @@ func PwTask() error {
 	log.Println(cb)
 	return nil
 }
+
+// 红包到期处理
+func PacketEnd() error {
+	cb := new(utils.CallBackStrcut)
+	if err := utils.HttpPostJson(utils.ServiceConfig.String("webapi_url")+
+		"api/task/packetEnd", utils.GetEmptyStruct, &cb); err != nil {
+		return err
+	}
+	log.Println(cb)
+	return nil
+}
