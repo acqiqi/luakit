@@ -18,7 +18,7 @@ type ExcelUtils struct {
 type QuotationTable struct {
 	Content  string  `json:"content"`
 	Unit     string  `json:"unit"`
-	Num      int     `json:"num"`
+	Num      float64 `json:"num"`
 	Zl       float64 `json:"zl"`
 	Fl       float64 `json:"fl"`
 	Work     float64 `json:"work"`
