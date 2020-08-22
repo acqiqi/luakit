@@ -27,6 +27,8 @@ func SubscribeCallback(client mqtt.Client, msg mqtt.Message) {
 
 	if msg.Topic() == "/vhake/hub/pub/face" {
 		utils.SetCacheString("/vhake/hub/pub/face", string(data), time.Second*20)
+	} else if msg.Topic() == "/" {
+
 	}
 
 	//Publish("/device/ambit/test/pub", 2, "false")
