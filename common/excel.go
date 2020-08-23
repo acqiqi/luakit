@@ -62,11 +62,11 @@ func (this *ExcelUtils) Test() error {
 	f.SetCellStyle("Sheet1", "A2", "K2", style)
 
 	//测试业务
-	q, err := models.GetSmQuotationById(2)
+	q, err := models.GetSmQuotationById(8)
 	if err != nil {
 		return errors.New("报价单不存在")
 	}
-	q_count, q_list, err := models.GetSmQuotationLinkListByQId(2)
+	q_count, q_list, err := models.GetSmQuotationLinkListByQId(8)
 	if err != nil || q_count == 0 {
 		return errors.New("没有项目")
 	}
@@ -80,6 +80,8 @@ func (this *ExcelUtils) Test() error {
 		f.SetCellValue("Sheet1", "B"+strconv.Itoa(3+i), v.CatName)
 		f.SetCellStyle("Sheet1", "A"+strconv.Itoa(3+i), "K"+strconv.Itoa(3+i), style)
 		table_list := []QuotationTable{}
+		log.Println(v.TableJson)
+		log.Println("-")
 		err := utils.JsonDecode(v.TableJson, &table_list)
 		if err != nil {
 			return errors.New("Table数据错误")
@@ -110,6 +112,7 @@ func (this *ExcelUtils) Test() error {
 	// Save xlsx file by the given path.
 	if err := f.SaveAs("./Book1.xlsx"); err != nil {
 		fmt.Println(err)
+		fmt.Println("?????????????")
 	}
 	log.Print("ojbk")
 	return nil

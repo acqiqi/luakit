@@ -18,8 +18,10 @@ func main() {
 	log.Println("Init Project")
 	//setup()
 	u := common.ExcelUtils{}
-	u.Test()
-
+	err := u.Test()
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
 
 func setup() {
