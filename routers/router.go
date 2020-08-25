@@ -6,6 +6,7 @@ import (
 	"luakit/controllers/v1/face"
 	"luakit/controllers/v1/marketing"
 	"luakit/controllers/v1/message"
+	"luakit/controllers/v1/partner"
 	"luakit/controllers/v1/platform"
 	"luakit/controllers/v1/sm"
 	"luakit/controllers/v1/ucenter"
@@ -22,6 +23,11 @@ func init() {
 			),
 			beego.NSAutoRouter(
 				&marketing.CouponController{},
+			),
+		),
+		beego.NSNamespace("/partner",
+			beego.NSAutoRouter(
+				&partner.QuotationController{},
 			),
 		),
 		beego.NSNamespace("/face",

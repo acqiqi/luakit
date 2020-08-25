@@ -3,31 +3,39 @@ package partner
 import (
 	"github.com/astaxie/beego"
 	"log"
+	"luakit/common"
 	"luakit/controllers/v1/apibase"
 	"luakit/models"
 	"luakit/utils"
 )
 
-func (this *CouponController) Prepare() {
+func (this *QuotationController) Prepare() {
 	log.Println("Prepare")
-	platform := apibase.Auth2PlatformBase(this.Controller)
+	platform := apibase.AuthPlatformBase(this.Controller)
 	this.Platform = *platform
 }
 
-type CouponController struct {
+type QuotationController struct {
 	beego.Controller
 	Platform models.UcenterPlatform
 }
 
-func (this *CouponController) GetInfo() {
+func (this *QuotationController) ExcelOut() {
 	c := struct {
-		CouponId int64 `json:"coupon_id"`
+		Id int64 `json:"id"`
 	}{}
 	utils.GetPostJson(this.Controller, &c)
-	conpon, err := models.GetMarketingCouponById(c.CouponId)
+
+	u := common.ExcelUtils{}
+	err, quotation_no := u.Test(c.Id)
 	if err != nil {
-		utils.ApiErr(this.Controller, "优惠券不存在")
+		log.Println(err.Error())
+		utils.ApiErr(this.Controller, err.Error())
 	}
 
-	utils.ApiOk(this.Controller, "获取成功", conpon)
+	utils.ApiOk(this.Controller, "获取成功", struct {
+		Path string `json:"path"`
+	}{
+		Path: "http://export.ddgongjiang.com/" + quotation_no + ".xlsx",
+	})
 }

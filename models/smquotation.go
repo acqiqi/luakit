@@ -24,6 +24,9 @@ type SmQuotation struct {
 	UName       string  `json:"u_name"`       // 用户姓名
 	PartnerId   int     `json:"partner_id"`   // 合伙人id
 	EndPrice    float64 `json:"end_price"`    // 最终价格
+	FixedPrice  float64 `json:"fixed_price"`  //一口价
+	ManagerBl   int     `json:"manager_bl"`   //管理费比例
+	TaxBl       int     `json:"tax_bl"`       //税率
 }
 
 func init() {
