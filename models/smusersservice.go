@@ -53,6 +53,9 @@ type SmUsersService struct {
 	TotalFrPrice     float64 `json:"total_fr_price"`   // 总分润出去的金额
 	TotalWorkPrice   float64 `json:"total_work_price"` // 总工人金额
 	AdminDesc        string  `json:"admin_desc"`
+
+	UseShareLv1 int `orm:"use_share_lv1"` // 强制一级分享
+	UseShareLv2 int `orm:"use_share_lv2"` // 强制二级分享
 }
 
 func init() {

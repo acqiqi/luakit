@@ -17,7 +17,6 @@ func main() {
 	go mqtt.Init()
 	log.Println("Init Project")
 	setup()
-
 }
 
 func setup() {

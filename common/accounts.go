@@ -452,15 +452,31 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 	if err != nil {
 		return err
 	}
+
+	//把当前订单金额抽出来
+	all_order_price := this.Orders.Price
+	// ！！！ 查询是否有关联订单
+	link_count, link_orders, _ := models.GetLinkOrders(this.Orders.Id)
+	if link_count > 0 {
+		log.Println(link_count, link_orders)
+		for _, v := range *link_orders {
+			//注入金额进来
+			all_order_price = all_order_price + v.Price
+			//修改订单状态
+			v.Status = 9
+			models.UpdateUcenterOrdersById(&v)
+		}
+	}
+
 	//抽出分润金额
-	share_all_price := utils.Decimal(float64(this.Orders.Price) * (float64(share_all) / 100))
+	share_all_price := utils.Decimal(float64(all_order_price) * (float64(share_all) / 100))
 	share_lv1_price := utils.Decimal(share_all_price * (float64(share_lv1) / 100))
 	share_lv2_price := utils.Decimal(share_all_price * (float64(share_lv2) / 100))
-	//查询工人抽成
-	platform_scale_price := utils.Decimal(float64(this.Orders.Price) * (float64(share_scale) / 100))
+	//查询平台抽成
+	platform_scale_price := utils.Decimal(float64(all_order_price) * (float64(share_scale) / 100))
 	log.Println("分润总收益", share_all_price, share_lv1_price, share_lv2_price, platform_scale_price)
 
-	in_price := this.Orders.Price - share_all_price - platform_scale_price //计算出工人实际获取金额
+	in_price := all_order_price - share_all_price - platform_scale_price //计算出工人实际获取金额
 	log.Println("剩余订单金额", in_price)
 
 	//订单日志
@@ -476,59 +492,60 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 	models.AddUcenterOrdersLog(m)
 	total_price = total_price + platform_scale_price //插入给一级分享的钱
 
-	//查询当前用户是否有一级分润
-	share_user_lv1, err := models.CheckShareUser(this.Users.Id)
-	if err == nil {
-		log.Println("一级分享用户", share_user_lv1)
-
-		//处理第一级分享收益
-		//生成红包
-		upack := new(models.MarketingPacket)
-		upack.PlatformKey = "DDSM_CLIENT"
-		upack.Cuid = int(share_user_lv1.Id)
-		upack.SCuid = int(this.Users.Id)
-		upack.Price = share_lv1_price
-		upack.Title = "一级分享收益"
-		upack.Describe = "收益到账" + strconv.FormatFloat(utils.Decimal(share_lv1_price), 'f', 2, 64)
-		upack.Type = models.PACKET_TYPE_SHARE1
-		upack.PacketNo = uuid.NewV4().String()
-		models.GenerUserPacket(upack)
-		// 订单日志
-		m := new(models.UcenterOrdersLog)
-		m.PlatformKey = "DDSM_CLEINT"
-		m.Price = share_lv1_price
-		m.Cuid = int(share_user_lv1.Id)
-		m.OrderId = int(this.Orders.Id)
-		m.OrderNo = this.Orders.OrderNo
-		m.ProjectId = int(this.SmUsersService.Id)
-		m.Type = models.UCENTER_ORDERS_LOG_TYPE_SHARE
-		m.Describe = "一级分享收益"
-		models.AddUcenterOrdersLog(m)
-		total_price = total_price + share_lv1_price //插入给一级分享的钱
-		//发布消息
-		msg_utils := new(MessageCenterUtils)
-		msg_utils.Price = m.Price
-		msg_utils.Users = *share_user_lv1
-		msg_utils.SmService = this.SmService
-		msg_utils.SmUsersService = this.SmUsersService
-		msg_utils.Orders = this.Orders
-		msg_utils.ToUsers = this.Users
-
-		msg_utils.PlatformKey = "DDSM_CLIENT"
-		msg_utils.MessageKey = "SHARE_SY_DZ"
-		msg_utils.PushMessage()
-
-		//查询当前用户是否有二级分润
-		share_user_lv2, err := models.CheckShareUser(share_user_lv1.Id)
+	//！！！先查询是否有一级use
+	if this.Orders.UseShareLv1 > 0 {
+		use_share_user_lv1, err := models.GetUcenterUsersById(int64(this.Orders.UseShareLv1))
 		if err == nil {
-			log.Println("二级分享用户", share_user_lv2)
+			log.Println("强制一级分享用户", use_share_user_lv1)
 
-			//处理第二级分享收益
+			//处理强制一级分享收益
 			//生成红包
 			upack := new(models.MarketingPacket)
 			upack.PlatformKey = "DDSM_CLIENT"
-			upack.Cuid = int(share_user_lv2.Id)
-			upack.SCuid = int(share_user_lv1.Id)
+			upack.Cuid = int(use_share_user_lv1.Id)
+			upack.SCuid = int(this.Users.Id)
+			upack.Price = share_lv1_price
+			upack.Title = "一级分享收益"
+			upack.Describe = "收益到账" + strconv.FormatFloat(utils.Decimal(share_lv1_price), 'f', 2, 64)
+			upack.Type = models.PACKET_TYPE_SHARE1
+			upack.PacketNo = uuid.NewV4().String()
+			models.GenerUserPacket(upack)
+			// 订单日志
+			m := new(models.UcenterOrdersLog)
+			m.PlatformKey = "DDSM_CLEINT"
+			m.Price = share_lv1_price
+			m.Cuid = int(use_share_user_lv1.Id)
+			m.OrderId = int(this.Orders.Id)
+			m.OrderNo = this.Orders.OrderNo
+			m.ProjectId = int(this.SmUsersService.Id)
+			m.Type = models.UCENTER_ORDERS_LOG_TYPE_SHARE
+			m.Describe = "一级分享收益"
+			models.AddUcenterOrdersLog(m)
+			total_price = total_price + share_lv1_price //插入给一级分享的钱
+			//发布消息
+			msg_utils := new(MessageCenterUtils)
+			msg_utils.Price = m.Price
+			msg_utils.Users = *use_share_user_lv1
+			msg_utils.SmService = this.SmService
+			msg_utils.SmUsersService = this.SmUsersService
+			msg_utils.Orders = this.Orders
+			msg_utils.ToUsers = this.Users
+
+			msg_utils.PlatformKey = "DDSM_CLIENT"
+			msg_utils.MessageKey = "SHARE_SY_DZ"
+			msg_utils.PushMessage()
+		}
+
+		use_share_user_lv2, err := models.GetUcenterUsersById(int64(this.Orders.UseShareLv2))
+		if err == nil {
+			log.Println("强制二级分享用户", use_share_user_lv2)
+
+			//处理第强制二级分享收益
+			//生成红包
+			upack := new(models.MarketingPacket)
+			upack.PlatformKey = "DDSM_CLIENT"
+			upack.Cuid = int(use_share_user_lv2.Id)
+			upack.SCuid = int(use_share_user_lv2.Id)
 			upack.Price = share_lv2_price
 			upack.Title = "二级分享收益"
 			upack.Describe = "收益到账" + strconv.FormatFloat(utils.Decimal(share_lv2_price), 'f', 2, 64)
@@ -539,7 +556,7 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 			m := new(models.UcenterOrdersLog)
 			m.PlatformKey = "DDSM_CLEINT"
 			m.Price = share_lv2_price
-			m.Cuid = int(share_user_lv2.Id)
+			m.Cuid = int(use_share_user_lv2.Id)
 			m.OrderId = int(this.Orders.Id)
 			m.OrderNo = this.Orders.OrderNo
 			m.ProjectId = int(this.SmUsersService.Id)
@@ -550,15 +567,102 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 			//发布消息
 			msg_utils := new(MessageCenterUtils)
 			msg_utils.Price = m.Price
-			msg_utils.Users = *share_user_lv2
+			msg_utils.Users = *use_share_user_lv2
 			msg_utils.SmService = this.SmService
 			msg_utils.SmUsersService = this.SmUsersService
 			msg_utils.Orders = this.Orders
-			msg_utils.ToUsers = *share_user_lv1
+			msg_utils.ToUsers = this.Users
 
 			msg_utils.PlatformKey = "DDSM_CLIENT"
 			msg_utils.MessageKey = "SHARE_SY_DZ"
 			msg_utils.PushMessage()
+		}
+	} else {
+		//如果没有强制use 就按照默认的一二级分享
+		//查询当前用户是否有一级分润
+		share_user_lv1, err := models.CheckShareUser(this.Users.Id)
+		if err == nil {
+			log.Println("一级分享用户", share_user_lv1)
+
+			//处理第一级分享收益
+			//生成红包
+			upack := new(models.MarketingPacket)
+			upack.PlatformKey = "DDSM_CLIENT"
+			upack.Cuid = int(share_user_lv1.Id)
+			upack.SCuid = int(this.Users.Id)
+			upack.Price = share_lv1_price
+			upack.Title = "一级分享收益"
+			upack.Describe = "收益到账" + strconv.FormatFloat(utils.Decimal(share_lv1_price), 'f', 2, 64)
+			upack.Type = models.PACKET_TYPE_SHARE1
+			upack.PacketNo = uuid.NewV4().String()
+			models.GenerUserPacket(upack)
+			// 订单日志
+			m := new(models.UcenterOrdersLog)
+			m.PlatformKey = "DDSM_CLEINT"
+			m.Price = share_lv1_price
+			m.Cuid = int(share_user_lv1.Id)
+			m.OrderId = int(this.Orders.Id)
+			m.OrderNo = this.Orders.OrderNo
+			m.ProjectId = int(this.SmUsersService.Id)
+			m.Type = models.UCENTER_ORDERS_LOG_TYPE_SHARE
+			m.Describe = "一级分享收益"
+			models.AddUcenterOrdersLog(m)
+			total_price = total_price + share_lv1_price //插入给一级分享的钱
+			//发布消息
+			msg_utils := new(MessageCenterUtils)
+			msg_utils.Price = m.Price
+			msg_utils.Users = *share_user_lv1
+			msg_utils.SmService = this.SmService
+			msg_utils.SmUsersService = this.SmUsersService
+			msg_utils.Orders = this.Orders
+			msg_utils.ToUsers = this.Users
+
+			msg_utils.PlatformKey = "DDSM_CLIENT"
+			msg_utils.MessageKey = "SHARE_SY_DZ"
+			msg_utils.PushMessage()
+
+			//查询当前用户是否有二级分润
+			share_user_lv2, err := models.CheckShareUser(share_user_lv1.Id)
+			if err == nil {
+				log.Println("二级分享用户", share_user_lv2)
+
+				//处理第二级分享收益
+				//生成红包
+				upack := new(models.MarketingPacket)
+				upack.PlatformKey = "DDSM_CLIENT"
+				upack.Cuid = int(share_user_lv2.Id)
+				upack.SCuid = int(share_user_lv1.Id)
+				upack.Price = share_lv2_price
+				upack.Title = "二级分享收益"
+				upack.Describe = "收益到账" + strconv.FormatFloat(utils.Decimal(share_lv2_price), 'f', 2, 64)
+				upack.Type = models.PACKET_TYPE_SHARE2
+				upack.PacketNo = uuid.NewV4().String()
+				models.GenerUserPacket(upack)
+				// 订单日志
+				m := new(models.UcenterOrdersLog)
+				m.PlatformKey = "DDSM_CLEINT"
+				m.Price = share_lv2_price
+				m.Cuid = int(share_user_lv2.Id)
+				m.OrderId = int(this.Orders.Id)
+				m.OrderNo = this.Orders.OrderNo
+				m.ProjectId = int(this.SmUsersService.Id)
+				m.Type = models.UCENTER_ORDERS_LOG_TYPE_SHARE
+				m.Describe = "二级分享收益"
+				models.AddUcenterOrdersLog(m)
+				total_price = total_price + share_lv2_price //插入给二级分享的钱
+				//发布消息
+				msg_utils := new(MessageCenterUtils)
+				msg_utils.Price = m.Price
+				msg_utils.Users = *share_user_lv2
+				msg_utils.SmService = this.SmService
+				msg_utils.SmUsersService = this.SmUsersService
+				msg_utils.Orders = this.Orders
+				msg_utils.ToUsers = *share_user_lv1
+
+				msg_utils.PlatformKey = "DDSM_CLIENT"
+				msg_utils.MessageKey = "SHARE_SY_DZ"
+				msg_utils.PushMessage()
+			}
 		}
 	}
 
@@ -569,7 +673,7 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 	}
 	log.Println("所有金额", all_use_price)
 
-	platform_price := this.Orders.Price - all_use_price
+	platform_price := all_order_price - all_use_price
 
 	//查询是否有合伙人
 	partner, err := models.GetPartnerUsersById(int64(this.Orders.PartnerId))

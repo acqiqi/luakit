@@ -51,7 +51,7 @@ func (this *ExcelUtils) Test(id int64) (err error, quotation_no string) {
 	f.SetCellValue("Sheet1", "F1", "唯一编码："+q.QuotationNo)
 
 	f.SetRowHeight("Sheet1", 1, 30)
-	style, err := f.NewStyle(`{"font":{"family":"Berlin Sans FB Demi","size":12,"color":"#333333"}}`)
+	style, err := f.NewStyle(`{"font":{"size":12,"color":"#333333"}}`)
 	if err != nil {
 		return err, ""
 	}
@@ -65,9 +65,9 @@ func (this *ExcelUtils) Test(id int64) (err error, quotation_no string) {
 	f.SetColWidth("Sheet1", "C", "C", 5)
 	f.SetCellValue("Sheet1", "D2", "数量")
 	f.SetColWidth("Sheet1", "D", "D", 6)
-	f.SetCellValue("Sheet1", "E2", "主料单价")
+	f.SetCellValue("Sheet1", "E2", "主材单价")
 	f.SetColWidth("Sheet1", "E", "E", 10)
-	f.SetCellValue("Sheet1", "F2", "辅料单价")
+	f.SetCellValue("Sheet1", "F2", "辅材单价")
 	f.SetColWidth("Sheet1", "F", "F", 10)
 	f.SetCellValue("Sheet1", "G2", "用工单价")
 	f.SetColWidth("Sheet1", "G", "G", 10)
@@ -77,7 +77,7 @@ func (this *ExcelUtils) Test(id int64) (err error, quotation_no string) {
 	//f.SetCellValue("Sheet1", "K2", "备注")
 	f.SetColWidth("Sheet1", "J", "J", 20)
 	f.SetRowHeight("Sheet1", 2, 30)
-	style, err = f.NewStyle(`{"font":{"family":"Berlin Sans FB Demi","size":12,"color":"#333333"},"alignment":{"horizontal":"center"}}`)
+	style, err = f.NewStyle(`{"font":{"size":12,"color":"#333333"},"alignment":{"horizontal":"center"}}`)
 	if err != nil {
 		return err, ""
 	}
@@ -177,9 +177,9 @@ func (this *ExcelUtils) Test(id int64) (err error, quotation_no string) {
 	log.Println(totalAll)
 	// 绘制边框
 
-	b_style, err := f.NewStyle(`{"border":[{"type":"left","color":"333333","style":1},{"type":"top","color":"333333","style":1},{"type":"bottom","color":"333333","style":1},{"type":"right","color":"333333","style":1}],"font":{"family":"Berlin Sans FB Demi","size":12,"color":"#333333"},"alignment":{"horizontal":"center","vertical":"center"}}`)
+	b_style, err := f.NewStyle(`{"border":[{"type":"left","color":"333333","style":1},{"type":"top","color":"333333","style":1},{"type":"bottom","color":"333333","style":1},{"type":"right","color":"333333","style":1}],"font":{"size":12,"color":"#333333"},"alignment":{"horizontal":"center","vertical":"center"}}`)
 	f.SetCellStyle("Sheet1", "A"+strconv.Itoa(1), "J"+strconv.Itoa(tableRow), b_style)
-	b_style, err = f.NewStyle(`{"border":[{"type":"left","color":"333333","style":1},{"type":"top","color":"333333","style":1},{"type":"bottom","color":"333333","style":1},{"type":"right","color":"333333","style":1}],"font":{"family":"Berlin Sans FB Demi","size":12,"color":"#333333"},"alignment":{"horizontal":"left","vertical":"center"}}`)
+	b_style, err = f.NewStyle(`{"border":[{"type":"left","color":"333333","style":1},{"type":"top","color":"333333","style":1},{"type":"bottom","color":"333333","style":1},{"type":"right","color":"333333","style":1}],"font":{"size":12,"color":"#333333"},"alignment":{"horizontal":"left","vertical":"center"}}`)
 	f.SetCellStyle("Sheet1", "A1", "J1", b_style)
 
 	//设定高度
