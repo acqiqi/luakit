@@ -17,6 +17,7 @@ func main() {
 	go mqtt.Init()
 	log.Println("Init Project")
 	setup()
+	//reptile.GetDYRSNewsAll(14150,14300)
 }
 
 func setup() {

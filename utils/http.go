@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,6 +27,25 @@ func HttpGetJson(url string, cb interface{}) error {
 	}
 	JsonDecode(string(b), &cb)
 	return nil
+}
+
+// Http Get String 请求
+func HttpGetString(url string) (cb string, err error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	b, _ := ioutil.ReadAll(resp.Body)
+	if resp.StatusCode != 200 {
+		return "", errors.New(string(b))
+	}
+	return string(b), nil
 }
 
 // Http Post Json 请求
@@ -77,4 +97,18 @@ func HttpPostJsonNotCallback(url string, body interface{}, platform_key string) 
 	}
 	log.Println(string(b))
 	return nil
+}
+
+//保存图片
+func HttpGetDownload(url string, filepath string) {
+	resp, err := http.Get(url)
+	defer resp.Body.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	_ = ioutil.WriteFile(filepath, body, 0755)
 }
