@@ -463,6 +463,7 @@ func (this *Accounts) accountsOrdersOrSmService() error {
 			//注入金额进来
 			all_order_price = all_order_price + v.Price
 			//修改订单状态
+			v.IsAccounts = 1
 			v.Status = 9
 			models.UpdateUcenterOrdersById(&v)
 		}
