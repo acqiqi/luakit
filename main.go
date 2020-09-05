@@ -15,7 +15,7 @@ func main() {
 	//utils.InitModel()
 
 	go mqtt.Init()
-	log.Println("Init Project")
+	log.Println("Init Project 2020-09-05 09:18:56")
 	setup()
 	//reptile.GetDYRSNewsAll(14150,14300)
 }
