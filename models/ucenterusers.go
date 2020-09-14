@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"luakit/utils"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -127,6 +128,28 @@ func GetUcenterUsersByMobile(mobile string) (v *UcenterUsers, err error) {
 		return v, nil
 	}
 	return nil, err
+}
+
+func CheckUcenterUsersByUserKey(user_key string) (v *UcenterUsers, err error) {
+	o := orm.NewOrm()
+	v = &UcenterUsers{}
+
+	if err = o.QueryTable(new(UcenterUsers)).Filter("UserKey", user_key).Filter("flag", 1).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+// 获取UserKey
+func GetNewUserKey() (user_key string) {
+	r := utils.RandInt64(100000, 999999)
+
+	_, err := CheckUcenterUsersByUserKey(strconv.FormatInt(r, 10))
+	if err == nil {
+		return GetNewUserKey()
+	} else {
+		return strconv.FormatInt(r, 10)
+	}
 }
 
 // GetAllPost retrieves all Post matches certain condition. Returns empty list if
@@ -263,4 +286,14 @@ func SetUcenterUsersOkMoney(cuid int64, price float64) error {
 		return err
 	}
 	return nil
+}
+
+//只用于同步
+func GetUcenterUsersWorkList() (row int64, v *[]UcenterUsers, err error) {
+	o := orm.NewOrm()
+	v = &[]UcenterUsers{}
+	if row, err = o.QueryTable(new(UcenterUsers)).Filter("Id__gt", 34133).Filter("RegPlatformKey", "GY_NEWS").Filter("flag", 1).RelatedSel().All(v); err == nil {
+		return row, v, nil
+	}
+	return 0, nil, err
 }

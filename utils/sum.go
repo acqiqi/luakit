@@ -115,3 +115,12 @@ func GetRand(proArr []int) int {
 func Decimal(value float64) float64 {
 	return math.Trunc(value*1e2+0.5) * 1e-2
 }
+
+//生成区间随机数
+func RandInt64(min, max int64) int64 {
+	if min >= max || min == 0 || max == 0 {
+		return max
+	}
+	rand.Seed(time.Now().UnixNano())
+	return rand.Int63n(max-min) + min
+}
