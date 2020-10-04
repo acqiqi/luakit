@@ -34,9 +34,10 @@ type ExcelStyle struct {
 }
 
 type ExcelKey struct {
-	Name string `json:"name"` //字段名
-	Key  string `json:"key"`  //字段key
-	Type string `json:"type"` //数据类型 Image
+	Name  string  `json:"name"`  //字段名
+	Key   string  `json:"key"`   //字段key
+	Type  string  `json:"type"`  //数据类型 Image
+	Width float64 `json:"width"` //宽度
 }
 
 var abc_key = []string{
@@ -81,6 +82,9 @@ func (this *ExcelUtils) Export() error {
 	//先插入表头字段名
 	for key, value := range this.Keys {
 		this.F.SetCellValue(this.SheetName, abc_key[key+1]+"2", value.Name)
+		if value.Width > 0 {
+			this.F.SetColWidth(this.SheetName, abc_key[key+1], abc_key[key+1], value.Width)
+		}
 	}
 
 	//生成数据
@@ -89,7 +93,7 @@ func (this *ExcelUtils) Export() error {
 			//插入
 			if val.Type == "Image" {
 				this.F.AddPictureFromBytes(this.SheetName, abc_key[key+1]+strconv.Itoa(index+3),
-					`{"x_scale": 0.5, "y_scale": 0.5,"height":"10"}`,
+					`{"x_offset": 15, "y_offset": 10, "print_obj": true, "lock_aspect_ratio": true, "locked": true, "positioning": "oneCell"}`,
 					"1", ".jpg",
 					item[val.Key].([]byte))
 			} else {

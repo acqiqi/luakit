@@ -28,6 +28,10 @@ type WechatUtils struct {
 		// 数据
 		Data map[string]interface{} `json:"data"`
 	}
+	SmallQrcodeData struct {
+		Path  string `json:"path"`  //页面路径
+		Width int    `json:"width"` //默认430
+	}
 }
 
 type WechatValueStruct struct {
@@ -65,6 +69,18 @@ func (this *WechatUtils) GetAccessToken() error {
 		return nil
 	}
 
+}
+
+// 获取微信小程序二维码
+func (this *WechatUtils) GetSmallQrcode() (cb []byte, err error) {
+	url := fmt.Sprintf("https://api.weixin.qq.com/wxa/getwxacode?access_token=%s",
+		this.AccessToken)
+
+	data, err := HttpPostBytes(url, this.SmallQrcodeData)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
 func (this *WechatUtils) SendMessage() error {
